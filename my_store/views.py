@@ -1,11 +1,11 @@
 from django.shortcuts import render
+from django.views.generic import ListView
 from .models import Product
 
 
-def base_view(request):
-    products = Product.objects.all()
+class ProductsListView(ListView):
+    model = Product
+    template_name = 'products_list.html'
+    context_object_name = 'products'
 
-    my_context = {
-        'products': products,
-    }
-    return render(request, 'base.html', my_context)
+
