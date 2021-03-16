@@ -6,6 +6,7 @@
     <thead>
     <tr>
         <th scope="col">Name</th>
+        <th scope="col">Category</th>
         <th scope="col">Price</th>
         <th scope="col">Quantity</th>
         <th scope="col">Description</th>
@@ -16,6 +17,7 @@
     {% for p in products %}
     <tr>
         <td>{{ p.name }}</td>
+        <td>{{ p.category.name }}</td>
         <td>{{ p.price }}</td>
         <td>{{ p.quantity | default:'-'}}</td>
         <td>{{ p.description | default:'-'}}</td>
