@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-from .models import Product
+from .models import Product, Category
 
 
 class ProductsListView(ListView):
@@ -8,4 +8,9 @@ class ProductsListView(ListView):
     template_name = 'products_list.html'
     context_object_name = 'products'
 
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'category_list.html'
+    context_object_name = 'categories'
 
