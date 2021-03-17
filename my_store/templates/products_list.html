@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 
+{% block title %}Products{% endblock %}
+
 {% block content %}
+
+
+{% for p in products %}
+<ul class="list-group">
+    <li class="list-group-item">{{ p.category.name }}</li>
+</ul>
+{% endfor %}
 
 <table class="table">
     <thead>
@@ -13,17 +22,18 @@
     </tr>
     </thead>
 
-    <tbody>
-    {% for p in products %}
-    <tr>
-        <td>{{ p.name }}</td>
-        <td>{{ p.category.name }}</td>
-        <td>{{ p.price }}</td>
-        <td>{{ p.quantity | default:'-'}}</td>
-        <td>{{ p.description | default:'-'}}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
+        <tbody>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.category.name }}</td>
+            <td>{{ p.price }}</td>
+            <td>{{ p.quantity | default:'-'}}</td>
+            <td>{{ p.description | default:'-'}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
 
-</table>
+    </table>
+
 {% endblock %}
