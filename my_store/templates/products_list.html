@@ -4,14 +4,25 @@
 
 {% block content %}
 
+<header>
+    <h1>Products</h1>
+</header>
 
-{% for p in products %}
-<ul class="list-group">
-    <li class="list-group-item">{{ p.category.name }}</li>
-</ul>
-{% endfor %}
+<nav>
+    <h4 style="text-align: center;">Navbar</h4>
+</nav>
 
-<table class="table">
+<div class="list-group-container">
+    <h4 class="categories-title">Categories</h4>
+    {% for p in products %}
+    <ul class="list-group">
+        <li class="list-group-item">{{ p.category.name }}</li>
+    </ul>
+    {% endfor %}
+</div>
+
+<div class="table-container">
+    <table class="table">
     <thead>
     <tr>
         <th scope="col">Name</th>
@@ -37,3 +48,4 @@
     </table>
 
 {% endblock %}
+</div>

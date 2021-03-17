@@ -1,4 +1,38 @@
-table {
-    background-color: lightblue;
+nav {
+padding: 4px;
+background-color: #5F9EA0;
 }
 
+.list-group-container {
+    float: left;
+    width: 20%;
+    border-style: hidden;
+    background-color: #DCDCDC;
+
+}
+
+.list-group-item {
+    border-style: hidden;
+    background-color: #DCDCDC;
+
+}
+
+.table-container {
+    float: left;
+    width: 80%;
+    border-left-style: outset;
+    border-right-style: outset;
+}
+
+header {
+background-color: lightblue;
+margin: auto;
+padding: 30px;
+border-bottom-style: outset;
+text-align: center;
+}
+
+.categories-title {
+    padding:6px;
+
+}
