@@ -14,9 +14,9 @@
 
 <div class="list-group-container">
     <h4 class="categories-title">Categories</h4>
-    {% for p in products %}
+    {% for c in categories %}
     <ul class="list-group">
-        <li class="list-group-item">{{ p.category.name }}</li>
+        <li class="list-group-item">{{ c.name }}</li>
     </ul>
     {% endfor %}
 </div>
@@ -46,6 +46,11 @@
         </tbody>
 
     </table>
+
+<a class="btn btn-primary" href="{% url 'create_product' %}" role="button">Add product</a>
+
+
+
 
 {% endblock %}
 </div>
