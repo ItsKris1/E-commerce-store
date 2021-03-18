@@ -26,6 +26,7 @@
     <thead>
     <tr>
         <th scope="col">Name</th>
+        <th scope="col">ID</th>
         <th scope="col">Category</th>
         <th scope="col">Price</th>
         <th scope="col">Quantity</th>
@@ -36,7 +37,8 @@
         <tbody>
         {% for p in products %}
         <tr>
-            <td>{{ p.name }}</td>
+            <td><a class="product-link" href="{% url 'product_details' p.id %}">{{ p.name }}</a></td>
+            <td>{{ p.id }}</td>
             <td>{{ p.category.name }}</td>
             <td>{{ p.price }}</td>
             <td>{{ p.quantity | default:'-'}}</td>
@@ -47,10 +49,7 @@
 
     </table>
 
-<a class="btn btn-primary" href="{% url 'create_product' %}" role="button">Add product</a>
-
-
-
-
+    <a class="btn btn-primary" href="{% url 'create_product' %}" role="button">Add product</a>
+   </div>
 {% endblock %}
-</div>
+
