@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.generic import ListView, CreateView, DetailView
 from django.urls import reverse_lazy
 from .models import Product, Category
+from .forms import ProductCreateForm
+
 
 
 class ProductsListView(ListView):
@@ -26,8 +28,9 @@ class CategoryListView(ListView):
 
 class CreateProductView(CreateView):
     template_name = 'create_product.html'
+    form_class = ProductCreateForm
     model = Product
-    fields = '__all__'
+    # fields = '__all__'
     success_url = reverse_lazy('products')
 
 

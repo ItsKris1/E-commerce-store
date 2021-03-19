@@ -8,6 +8,7 @@ header {
 background-color: lightblue;
 margin: auto;
 padding: 30px;
+height: 10%;
 border-bottom-style: outset;
 text-align: center;
 }
@@ -24,11 +25,16 @@ text-align: center;
 .list-group-item {
     border-style: hidden;
     background-color: #DCDCDC;
+    text-align: center;
 }
 
 .categories-title {
-    padding:6px;
+    padding:15px;
+    text-align: center;
+
 }
+
+
 
 
 /* TABLE */
@@ -44,3 +50,21 @@ text-align: center;
 .product-link {
 color: black;
 }
+
+.form-container {
+width: 50%;
+padding: 20px;
+float: left;
+
+}
+
+.side-box {
+padding: 50px;
+
+float: left;
+width: 25%;
+height:90vh;
+background-color: #5F9EA0;
+
+}
+
