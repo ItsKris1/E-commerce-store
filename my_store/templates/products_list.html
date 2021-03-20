@@ -11,9 +11,12 @@
             <h4 class="categories-title">Categories</h4>
                 {% for c in categories %}
                 <ul class="list-group">
-                    <li class="list-group-item">{{ c.name }}</li>
+                    <li class="list-group-item">
+                      <a href="{% url c.name %}">{{ c.name }}</a>
+                    </li>
                 </ul>
                 {% endfor %}
+            <a href="{% url 'categories' %">View all categories</a>
         </div>
 
         <div class="col-lg-9">
