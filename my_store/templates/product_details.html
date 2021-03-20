@@ -12,7 +12,7 @@
            <div class="col-4">
 
                <img src="{% static 'images/iphone5.jpg' %}"
-                class="rounded float-left" alt="Iphone-5">
+                class="img-fluid" alt="Iphone-5">
 
            </div>
 
@@ -27,7 +27,7 @@
                         <li class="list-group-item">Category: {{ products.category }}</li>
                     </ul>
 
-                <a class="btn btn-primary">Update product</a>
+                <a class="btn btn-primary" href="{% url 'update_product' products.id %}">Update product</a>
                 <a class="btn btn-primary" href="{% url 'delete_product' products.id %}">Delete product</a>
             </div>
     </div>
