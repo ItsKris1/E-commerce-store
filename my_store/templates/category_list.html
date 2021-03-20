@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}Categories{% endblock %}
-
-
-
 {% block content %}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+            <div class="col-4">
+                {% for c in categories %}
+                <ul class="list-group">
+                        <li class="list-group-item">{{ c.name }}</li>
+                    </ul>
+                {% endfor %}
+            </div>
+    </div>
+</div>
+
 {% endblock %}
