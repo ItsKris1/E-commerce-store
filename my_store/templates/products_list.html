@@ -4,45 +4,48 @@
 
 {% block content %}
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3">
 
-<div class="list-group-container">
-    <h4 class="categories-title">Categories</h4>
-    {% for c in categories %}
-    <ul class="list-group">
-        <li class="list-group-item">{{ c.name }}</li>
-    </ul>
-    {% endfor %}
+            <h4 class="categories-title">Categories</h4>
+                {% for c in categories %}
+                <ul class="list-group">
+                    <li class="list-group-item">{{ c.name }}</li>
+                </ul>
+                {% endfor %}
+        </div>
+
+        <div class="col-lg-9">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for p in products %}
+                <tr>
+                    <td><a class="product-link" href="{% url 'product_details' p.id %}">{{ p.name }}</a></td>
+                    <td>{{ p.category.name }}</td>
+                    <td>{{ p.price }}</td>
+                    <td>{{ p.quantity | default:'-'}}</td>
+                    <td>{{ p.description | default:'-'}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+    <a class="btn btn-primary" href="{% url 'create_product' %}">
+        <i class="fa fa-plus" aria-hidden="true"></i>Add product</a>
+
+        </div>
+    </div>
 </div>
 
-<div class="table-container">
-    <table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">ID</th>
-        <th scope="col">Category</th>
-        <th scope="col">Price</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Description</th>
-    </tr>
-    </thead>
-
-        <tbody>
-        {% for p in products %}
-        <tr>
-            <td><a class="product-link" href="{% url 'product_details' p.id %}">{{ p.name }}</a></td>
-            <td>{{ p.id }}</td>
-            <td>{{ p.category.name }}</td>
-            <td>{{ p.price }}</td>
-            <td>{{ p.quantity | default:'-'}}</td>
-            <td>{{ p.description | default:'-'}}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-
-    </table>
-
-    <a class="btn btn-primary" href="{% url 'create_product' %}" role="button">Add product</a>
-   </div>
 {% endblock %}
-

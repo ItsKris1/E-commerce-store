@@ -13,14 +13,7 @@ border-bottom-style: outset;
 text-align: center;
 }
 
-
-/* CATEGORIES GROUP */
-.list-group-container {
-    float: left;
-    width: 20%;
-    border-style: hidden;
-    background-color: #DCDCDC;
-}
+/* ---- */
 
 .list-group-item {
     border-style: hidden;
@@ -34,16 +27,6 @@ text-align: center;
 
 }
 
-
-
-
-/* TABLE */
-.table-container {
-    float: left;
-    width: 80%;
-    border-left-style: outset;
-    border-right-style: outset;
-}
 
 /* CUSTOMIZE BUTTONS */
 
