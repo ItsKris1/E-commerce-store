@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
+from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView
 from django.urls import reverse_lazy
 from .models import Product, Category
 from .forms import ProductCreateForm, CategoryCreateForm
@@ -14,10 +14,10 @@ class ProductsListView(ListView):
     def get_queryset(self):
         products = Product.objects.all()
 
-        category = self.request.GET.get('category', None)
+        category_id = self.request.GET.get('category', None)
 
-        if category is not None:
-            products = products.filter(category__id=int(category))
+        if category_id is not None:
+            products = products.filter(category__id=int(category_id))
 
         return products
 
@@ -60,6 +60,21 @@ class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductCreateForm
     context_object_name = 'products'
+
+
+class ProductBuyView(TemplateView):
+    template_name = 'buy_product.html'
+
+    def get_context_data(self, pk, **kwargs):
+        product = Product.objects.get(id=pk)
+
+        product.quantity = product.quantity - 1
+        product.save()
+
+        context = super().get_context_data(**kwargs)
+        context['product'] = product
+
+        return context
 
 
 # Categories
