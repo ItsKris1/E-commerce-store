@@ -15,6 +15,10 @@ class ProductsListView(ListView):
         products = Product.objects.all()
 
         category_id = self.request.GET.get('category', None)
+        search = self.request.GET.get('search', None)
+
+        if search is not None:
+            products = products.filter(name__icontains=search)
 
         if category_id is not None:
             products = products.filter(category__id=int(category_id))
@@ -140,4 +144,8 @@ class CategoryDeleteView(DeleteView):
     model = Category
     success_url = reverse_lazy('categories')
     context_object_name = 'categories'
+
+
+
+
 
