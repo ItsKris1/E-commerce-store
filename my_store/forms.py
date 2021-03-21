@@ -22,7 +22,7 @@ class ProductCreateForm(forms.ModelForm):
 
 class CategoryCreateForm(forms.ModelForm):
     class Meta:
-        model = Product
+        model = Category
         fields = ('name',)
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
