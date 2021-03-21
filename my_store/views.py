@@ -88,48 +88,6 @@ class CategoryListView(ListView):
     context_object_name = 'categories'
 
 
-class ElectronicsListView(ListView):
-    model = Product
-    template_name = 'category_electronics.html'
-    context_object_name = 'products'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data()
-
-        categories = Category.objects.all()
-        context['categories'] = categories
-
-        return context
-
-
-class ClothesListView(ListView):
-    model = Product
-    template_name = 'category_clothes.html'
-    context_object_name = 'products'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data()
-
-        categories = Category.objects.all()
-        context['categories'] = categories
-
-        return context
-
-
-class FruitsListView(ListView):
-    model = Product
-    template_name = 'category_fruits.html'
-    context_object_name = 'products'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data()
-
-        categories = Category.objects.all()
-        context['categories'] = categories
-
-        return context
-
-
 class CreateCategoryView(CreateView):
     template_name = 'create_category.html'
     form_class = CategoryCreateForm
