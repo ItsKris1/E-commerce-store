@@ -11,5 +11,7 @@ urlpatterns = [
     path('products/electronics', views.ElectronicsListView.as_view(), name='Electronics'),
     path('products/fruits', views.FruitsListView.as_view(), name='Fruits'),
     path('products_clothes', views.ClothesListView.as_view(), name='Clothes'),
+    path('create_category', views.CreateCategoryView.as_view(), name='create_category'),
+    path('delete_category/<int:pk>', views.CategoryDeleteView.as_view(), name='delete_category'),
 ]
 

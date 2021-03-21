@@ -12,7 +12,7 @@
                 {% for c in categories %}
                 <ul class="list-group">
                     <li class="list-group-item">
-                      <a href="{% url c.name %}">{{ c.name }}</a>
+                      <a href="{% url 'products' %}?category={{ c.id }}">{{ c.name }}</a>
                     </li>
                 </ul>
                 {% endfor %}
@@ -34,7 +34,7 @@
                 <tbody>
                 {% for p in products %}
                 <tr>
-                    <td><a class="product-link" href="{% url 'product_details' p.id %}">{{ p.name }}</a></td>
+                    <td><a href="{% url 'product_details' p.id %}">{{ p.name }}</a></td>
                     <td>{{ p.category.name }}</td>
                     <td>{{ p.price }}</td>
                     <td>{{ p.quantity | default:'-'}}</td>

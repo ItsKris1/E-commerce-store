@@ -18,3 +18,12 @@ class ProductCreateForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'})
         }
+
+
+class CategoryCreateForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('name',)
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
