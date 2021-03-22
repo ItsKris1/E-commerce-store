@@ -26,10 +26,14 @@
                         <li class="list-group-item">Description: {{ products.description }}</li>
                         <li class="list-group-item">Category: {{ products.category }}</li>
                     </ul>
-
+                {% if perms.my_store.update_product %}
                 <a class="btn btn-primary" href="{% url 'update_product' products.id %}">Update product</a>
                 <a class="btn btn-primary" href="{% url 'delete_product' products.id %}">Delete product</a>
+                {% endif %}
+
+                {% if user.is_authenticated %}
                 <a class="btn btn-primary" href="{% url 'buy_product' products.id %}">Buy</a>
+                {% endif %}
             </div>
     </div>
 </div>

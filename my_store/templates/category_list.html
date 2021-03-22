@@ -11,13 +11,17 @@
 
                         <li class="list-group-item">{{ c.name }}
                             <a href="{% url 'delete_category' c.id %}">
+                                {% if perms.my_store.add_product %}
                                 <i class="fa fa-trash-o fa-fw" aria-hidden="true"></i>
+                                {% endif %}
                             </a>
                         </li>
 
                 </ul>
                 {% endfor %}
+                {% if perms.my_store.create_category %}
                 <a href="{% url 'create_category' %}">Add category</a>
+                {% endif %}
             </div>
     </div>
 </div>

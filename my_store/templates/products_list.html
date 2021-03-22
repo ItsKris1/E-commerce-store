@@ -50,9 +50,10 @@
                 </tbody>
             </table>
 
+            {% if perms.my_store.add_product %}
     <a class="btn btn-primary" href="{% url 'create_product' %}">
         <i class="fa fa-plus" aria-hidden="true"></i>  Add product</a>
-
+    {% endif %}
         </div>
     </div>
 </div>
