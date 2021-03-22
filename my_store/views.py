@@ -3,6 +3,8 @@ from django.views.generic import ListView, CreateView, DetailView, DeleteView, U
 from django.urls import reverse_lazy
 from .models import Product, Category
 from .forms import ProductCreateForm, CategoryCreateForm
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.views import LogoutView, LoginView
 
 
 # Products
@@ -34,7 +36,8 @@ class ProductsListView(ListView):
         return context
 
 
-class CreateProductView(CreateView):
+class CreateProductView(CreateView, PermissionRequiredMixin):
+    permission_required = ['my_store.add_product']
     template_name = 'create_product.html'
     form_class = ProductCreateForm
     model = Product
@@ -48,14 +51,17 @@ class ProductDetailsView(DetailView):
     context_object_name = 'products'
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(DeleteView, PermissionRequiredMixin):
+    permission_required = ['my_store.delete_product']
+
     template_name = 'product_confirm_delete.html'
     model = Product
     success_url = reverse_lazy('products')
     context_object_name = 'products'
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(UpdateView, PermissionRequiredMixin):
+    permission_required = ['my_store.change_product']
 
     def get_success_url(self):
         return reverse_lazy('product_details', args=(self.object.id,))
@@ -88,7 +94,9 @@ class CategoryListView(ListView):
     context_object_name = 'categories'
 
 
-class CreateCategoryView(CreateView):
+class CreateCategoryView(CreateView, PermissionRequiredMixin):
+    permission_required = ['my_store.create_category']
+
     template_name = 'create_category.html'
     form_class = CategoryCreateForm
     model = Category
@@ -96,7 +104,8 @@ class CreateCategoryView(CreateView):
     success_url = reverse_lazy('categories')
 
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(DeleteView, PermissionRequiredMixin):
+    permission_required = ['my_store.delete_category']
 
     template_name = 'category_confirm_delete.html'
     model = Category
@@ -104,6 +113,8 @@ class CategoryDeleteView(DeleteView):
     context_object_name = 'categories'
 
 
+# LOGIN
 
-
+class Logout(LogoutView):
+    next_page = 'products'
 
