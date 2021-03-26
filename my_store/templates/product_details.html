@@ -1,43 +1,44 @@
-
 {% extends 'base.html' %}
 
 {% load static %}
-{% block title %}Product details{% endblock %}
+
+{% block title %}Details{% endblock %}
+{% block header %}Details{% endblock %}
+
 
 {% block content %}
+<div class="container pt-5">
+    <div class="card mb-3 mx-auto" style="max-width: 800px;">
+        <div class="row no-gutters">
 
-<div class="container-fluid">
-    <div class="row justify-content-start">
+            <div class="col-md-4">
+                <img src="{{ products.image.url }}" style="padding: 10px; width: 100%; height: auto; object-fit: contain;">
+            </div>
 
-           <div class="col-4">
+            <div class="col-md-8">
+                <div class="card-body">
 
-               <img src="{% static 'images/iphone5.jpg' %}"
-                class="img-fluid" alt="Iphone-5">
+                    <h5 class="card-title">{{products.name}}</h5>
+                    <p class="card-text">{{products.description}}</p>
+                    <p class="card-text">${{products.price}}</p>
+                    <p class="card-text">In stock: {{products.quantity}}</p>
+                    <p class="card-text"><a href="#">{{products.category}}</a></p>
 
-           </div>
 
-            <div class="col-4">
 
-                <h2 class="details-title">Product details</h2>
-                    <ul class="list-group">
-                        <li class="list-group-item">Name: {{ products.name }}</li>
-                        <li class="list-group-item">Price: {{ products.price }}</li>
-                        <li class="list-group-item">Quantity: {{ products.quantity }}</li>
-                        <li class="list-group-item">Description: {{ products.description }}</li>
-                        <li class="list-group-item">Category: {{ products.category }}</li>
-                    </ul>
+                </div>
+
                 {% if perms.my_store.update_product %}
-                <a class="btn btn-primary" href="{% url 'update_product' products.id %}">Update product</a>
-                <a class="btn btn-primary" href="{% url 'delete_product' products.id %}">Delete product</a>
+                <a class="btn btn-primary ml-auto" href="{% url 'update_product' products.id %}">Edit</a>
+                <a class="btn btn-primary ml-auto" href="{% url 'delete_product' products.id %}">Delete</a>
                 {% endif %}
 
                 {% if user.is_authenticated %}
-                <a class="btn btn-primary" href="{% url 'buy_product' products.id %}">Buy</a>
+                <a class="btn btn-primary ml-auto" href="{% url 'buy_product' products.id %}">Buy</a>
                 {% endif %}
+
             </div>
+        </div>
     </div>
 </div>
-
-
-
 {% endblock %}

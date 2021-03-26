@@ -4,21 +4,34 @@
 {% block title %}Products{% endblock %}
 
 {% block searchbar %}
+
 <form class="form-inline my-2 my-lg-0" method="get" action="">
       <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+</form>
+
+
 {% endblock %}
 
-{% block header %}Products{% endblock %}
+
+
+{% block header %}
+
+{% if category_name is None %}
+Products
+
+{% else %}
+{{category_name}}
+{% endif %}
+
+{% endblock %}
+
+
 
 {% block content %}
-
-<body>
-
 <div class="container-fluid">
     <div class="row bg-light">
-        <div class="col-lg-8 mx-auto mt-5">
+        <div class="col-lg-8 mx-auto pt-5">
             <div class="row row-cols-1 row-cols-md-4">
                 {% for p in products %}
                 <div class="col mb-4">
@@ -26,12 +39,8 @@
                         <img src="{{ p.image.url }}" class="card-img-top" alt="..." style="padding: 10px; height: 200px; width: auto; object-fit: contain;">
                         <div class="card-body">
                             <h5 class="card-title">{{p.name}}</h5>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">{{p.price}}</li>
-                                <li class="list-group-item">{{p.category}}</li>
-                                <li class="list-group-item"><a href="{% url 'product_details' p.id %}" class="card-link">View details..</a></li>
-                            </ul>
-
+                                <p class="card-text text-right">${{p.price}}</p>
+                                <p class="card-text text-left"><a href="{% url 'product_details' p.id %}" class="card-link">View details..</a></p>
                         </div>
                         </div>
                     </div>

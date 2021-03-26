@@ -19,7 +19,7 @@
 
 
 
-
+<body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Online Store</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,13 +43,30 @@
 
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">View all categories</a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for c in categories %}
+                    <a class="dropdown-item" href="{% url 'products' %}?category={{c.id}}">{{c.name}}</a>
+                    {% endfor %}
+
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">View all categories</a>
+
+
                 </div>
             </li>
 
 
+
+            {% if user.is_authenticated %}
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'log_out' %}">Log out <span class="sr-only">(current)</span></a>
+            </li>
+            {% else %}
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'login' %}">Login <span class="sr-only">(current)</span></a>
             </li>
+            {% endif %}
         </ul>
 
         {% block searchbar %} {% endblock %}
@@ -57,15 +74,10 @@
     </div>
 </nav>
 
-<div class="jumbotron jumbotron-fluid" style="margin: 0px; text-align: center;">
+<div class="jumbotron" style="margin: 0px; text-align: center;">
         <div class="container">
-            <h1 class="display-4">{% block header %}{% endblock %}</h1>
-            <p class="lead">
-                {% if user.is_authenticated %}
-                Logged in: {{ user }}
-                {% endif %}
-
-            </p>
+            <h1 class="display-4">
+                {% block header %}{% endblock %}</h1>
         </div>
     </div>
 
