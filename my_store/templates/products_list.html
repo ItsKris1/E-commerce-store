@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Products{% endblock %}
 
@@ -8,13 +9,49 @@
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 {% endblock %}
+
+{% block header %}Products{% endblock %}
+
 {% block content %}
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-3">
+<body>
 
-            <h4 class="categories-title">Categories</h4>
+<div class="container-fluid">
+    <div class="row bg-light">
+        <div class="col-lg-8 mx-auto mt-5">
+            <div class="row row-cols-1 row-cols-md-4">
+                {% for p in products %}
+                <div class="col mb-4">
+                    <div class="card">
+                        <img src="{{ p.image.url }}" class="card-img-top" alt="..." style="padding: 10px; height: 200px; width: auto; object-fit: contain;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{p.name}}</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{{p.price}}</li>
+                                <li class="list-group-item">{{p.category}}</li>
+                                <li class="list-group-item"><a href="{% url 'product_details' p.id %}" class="card-link">View details..</a></li>
+                            </ul>
+
+                        </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}
+
+           <!--
+           <h4 style="text-align: center;">Categories</h4>
                 {% for c in categories %}
                 <ul class="list-group">
                     <li class="list-group-item">
@@ -23,9 +60,10 @@
                 </ul>
                 {% endfor %}
             <a href="{% url 'categories' %}">View all categories</a>
-        </div>
+            -->
 
-        <div class="col-lg-9">
+
+<!--
             <table class="table">
                 <thead>
                     <tr>
@@ -54,8 +92,4 @@
     <a class="btn btn-primary" href="{% url 'create_product' %}">
         <i class="fa fa-plus" aria-hidden="true"></i>  Add product</a>
     {% endif %}
-        </div>
-    </div>
-</div>
-
-{% endblock %}
+    -->

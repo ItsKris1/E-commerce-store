@@ -1,16 +1,10 @@
 /* NAV AND HEADER */
-nav {
-padding: 4px;
-background-color: #5F9EA0;
-}
-
-header {
-background-color: lightblue;
-margin: auto;
-padding: 30px;
-height: 10%;
-border-bottom-style: outset;
-text-align: center;
+.topnav-centered a {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* ---- */
