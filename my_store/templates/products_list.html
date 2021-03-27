@@ -1,30 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
 {% block title %}Products{% endblock %}
-
-{% block searchbar %}
-
-<form class="form-inline my-2 my-lg-0" method="get" action="">
-      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</form>
-
-
-{% endblock %}
-
 
 
 {% block header %}
 
 {% if category_name is None %}
 Products
-
 {% else %}
 {{category_name}}
 {% endif %}
 
 {% endblock %}
+
+
+
+
+{% block searchbar %}
+<form class="form-inline my-2 my-lg-0" method="get" action="">
+      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+{% endblock %}
+
 
 
 
@@ -36,11 +36,18 @@ Products
                 {% for p in products %}
                 <div class="col mb-4">
                     <div class="card">
-                        <img src="{{ p.image.url }}" class="card-img-top" alt="..." style="padding: 10px; height: 200px; width: auto; object-fit: contain;">
+                        <a  class="card-link" href="{% url 'product_details' p.id %}">
+                            <img src="{{ p.image.url }}" class="card-img-top" alt="..." style="padding: 10px; height: 200px; object-fit: contain;">
+                        </a>
+
                         <div class="card-body">
-                            <h5 class="card-title">{{p.name}}</h5>
+                            <p>
+                                <a class="text-dark" href="{% url 'product_details' p.id %}">
+                                    <h5 class="card-title">{{p.name}}</h5>
+                                </a>
+                            </p>
+
                                 <p class="card-text text-right">${{p.price}}</p>
-                                <p class="card-text text-left"><a href="{% url 'product_details' p.id %}" class="card-link">View details..</a></p>
                         </div>
                         </div>
                     </div>
@@ -51,10 +58,6 @@ Products
 
         </div>
     </div>
-
-
-
-
 
 
 {% endblock %}

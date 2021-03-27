@@ -137,6 +137,7 @@ class CategoryDeleteView(DeleteView, PermissionRequiredMixin):
     context_object_name = 'categories1'
 
 
+
 class CategoryUpdateView(UpdateView):
     template_name = 'edit_category.html'
     model = Category
