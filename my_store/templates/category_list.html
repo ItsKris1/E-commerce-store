@@ -12,7 +12,11 @@
 
                 {% for c in categories %}
                 <ul class="list-group">
-                        <li class="list-group-item">{{ c.name }} <a href="{% url 'edit_category' c.id %}">Edit</a> </li>
+                        <li class="list-group-item">{{ c.name }}
+                            {% if perms.my_store.delete_category %}
+                            <a href="{% url 'edit_category' c.id %}">Edit</a>
+                            {% endif %}
+                        </li>
                 </ul>
                 {% endfor %}
 

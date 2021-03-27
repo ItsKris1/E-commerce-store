@@ -86,12 +86,27 @@ class ProductBuyView(TemplateView):
 
     def get_context_data(self, pk, **kwargs):
         product = Product.objects.get(id=pk)
-
         product.quantity = product.quantity - 1
         product.save()
 
         context = super().get_context_data(**kwargs)
         context['product'] = product
+
+        return context
+
+
+class ProductConfirmBuyView(TemplateView):
+    template_name = 'confirm_product_buy.html'
+
+    def get_context_data(self, pk, **kwargs):
+        context = super().get_context_data()
+        product = Product.objects.get(id=pk)
+
+        context = super().get_context_data(**kwargs)
+        context['product'] = product
+
+        products = Product.objects.all()
+        context['products'] = products
 
         return context
 

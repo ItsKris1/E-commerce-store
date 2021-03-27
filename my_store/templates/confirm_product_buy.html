@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Checkout{% endblock %}
+{% block header %}Checkout{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container pt-5">
+    <div class="card mb-3 mx-auto" style="max-width: 800px;">
+        <div class="row no-gutters">
+
+            <div class="col-md-4">
+                <img src="{{ product.image.url }}" style="padding: 10px; width: 100%; max-height: 400px; object-fit: contain;">
+            </div>
+
+            <div class="col-md-8">
+                <div class="card-body">
+
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">{{product.description}}</p>
+                    <p class="card-text">${{product.price}}</p>
+                    <p class="card-text"><a href="{% url 'buy_product' product.id %}">Confirm your order</a>
+                    <a href="" </p>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
