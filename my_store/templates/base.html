@@ -42,20 +42,9 @@
                     {% endfor %}
 
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">View all categories</a>
-
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    {% for c in categories %}
-                    <a class="dropdown-item" href="{% url 'products' %}?category={{c.id}}">{{c.name}}</a>
-                    {% endfor %}
-
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">View all categories</a>
-
-
+                    <a class="dropdown-item" href="{% url 'categories' %}">View all categories</a>
                 </div>
             </li>
-
 
 
             {% if user.is_authenticated %}

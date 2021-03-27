@@ -119,11 +119,16 @@ class CategoryDeleteView(DeleteView, PermissionRequiredMixin):
     template_name = 'category_confirm_delete.html'
     model = Category
     success_url = reverse_lazy('categories')
-    context_object_name = 'categories'
+    context_object_name = 'categories1'
 
+
+class CategoryUpdateView(UpdateView):
+    template_name = 'edit_category.html'
+    model = Category
+    context_object_name = 'categories1'
+    fields = '__all__'
 
 # LOGIN
-
 class Logout(LogoutView):
     next_page = 'products'
 

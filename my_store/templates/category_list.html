@@ -1,26 +1,24 @@
 {% extends 'base.html' %}
 
 {% block title %}Categories{% endblock %}
+
+{% block header %} All categories {% endblock %}
 {% block content %}
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
+
+<div class="container-fluid pt-5">
+    <div class="row bg-light justify-content-center">
             <div class="col-4">
+
                 {% for c in categories %}
                 <ul class="list-group">
-
-                        <li class="list-group-item">{{ c.name }}
-                            <a href="{% url 'delete_category' c.id %}">
-                                {% if perms.my_store.add_product %}
-                                <i class="fa fa-trash-o fa-fw" aria-hidden="true"></i>
-                                {% endif %}
-                            </a>
-                        </li>
-
+                        <li class="list-group-item">{{ c.name }} <a href="{% url 'edit_category' c.id %}">Edit</a> </li>
                 </ul>
                 {% endfor %}
+
                 {% if perms.my_store.create_category %}
                 <a href="{% url 'create_category' %}">Add category</a>
+
                 {% endif %}
             </div>
     </div>
