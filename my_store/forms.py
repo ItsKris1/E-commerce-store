@@ -1,6 +1,6 @@
 from django import forms
 from .models import Product, Category
-
+from django.contrib.auth.forms import AuthenticationForm
 
 class ProductCreateForm(forms.ModelForm):
     class Meta:
@@ -29,3 +29,20 @@ class CategoryCreateForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class UserLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm, self).__init__(*args, **kwargs)
+
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'id': 'hi'}
+        )
+    )
+
+    password = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+        )
+    )

@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-
+from .forms import UserLoginForm
 urlpatterns = [
     path('products_list', views.ProductsListView.as_view(), name='products'),
     path('create_product', views.CreateProductView.as_view(), name='create_product'),
@@ -17,7 +17,8 @@ urlpatterns = [
     path('delete_category/<int:pk>', views.CategoryDeleteView.as_view(), name='delete_category'),
     path('edit_category/<int:pk>', views.CategoryUpdateView.as_view(), name='edit_category'),
 
-    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
-    path('accounts/log_out/', views.Logout.as_view(), name='log_out'),
+
+    path('logout', views.LogoutView.as_view(), name='log_out'),
+    path('login', views.LoginView.as_view(template_name="registration/login.html", authentication_form=UserLoginForm), name='login'),
 ]
 

@@ -4,10 +4,6 @@
 
 
 <div class="container pt-5">
-
-
-
-
     <div class="card mb-3 mx-auto" style="max-width: 800px;">
         <div class="row no-gutters">
 
@@ -28,17 +24,20 @@
                     <p class="card-text"><a href="#">{{object.category}}</a></p>
 
 
-
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="row justify-content-center">
+
         <form method="post">
         {% csrf_token %}
-        <input type="submit" value="YES">
+            <input type="submit" class="btn btn-danger btn-lg px-5 my-5" value="YES">
+            <a class="btn btn-primary btn-lg px-5 my-5" href="{% url 'product_details' products.id %}">NO</a>
 
-    </form>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
