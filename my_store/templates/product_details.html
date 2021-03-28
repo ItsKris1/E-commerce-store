@@ -24,21 +24,26 @@
                     <p class="card-text">{{products.description}}</p>
                     <p class="card-text">${{products.price}}</p>
                     <p class="card-text">In stock: {{products.quantity}}</p>
-                    <p class="card-text"><a href="#">{{products.category}}</a></p>
+                    <p class="card-text"><a href="{% url 'products' %}?category= {{ products.category.id}}">{{products.category}}</a></p>
 
 
 
                 </div>
 
-
-
+                {% if not user.is_authenticated %}
+                <button type="button" class="btn btn-dark float-left mx-3" data-toggle="popover" data-trigger="focus"  data-content="You must be logged in to purchase products">Buy</button>
+                {% endif %}
                 {% if perms.my_store.update_product %}
-                <a class="btn btn-dark float-right m-2" href="{% url 'delete_product' products.id %}">Delete</a>
-                <a class="btn btn-dark float-right m-2" href="{% url 'update_product' products.id %}">Update</a>
+                <div class="btn-group float-right" role="group" aria-label="Basic example">
+                    <a class="btn btn-dark" href="{% url 'delete_product' products.id %}">Delete</a>
+                    <a class="btn btn-dark" href="{% url 'update_product' products.id %}">Update</a>
+                </div>
                 {% endif %}
 
+
+
                 {% if user.is_authenticated %}
-                <a class="btn btn-dark float-left m-2" href="{% url 'confirm_buy_product' products.id%}">Buy</a>
+                <a class="btn btn-dark float-left mx-3" href="{% url 'confirm_buy_product' products.id%}">Buy</a>
                 {% endif %}
 
             </div>

@@ -59,6 +59,14 @@ class ProductDetailsView(DetailView):
     model = Product
     context_object_name = 'products'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        categories = Category.objects.all()
+
+        context['categories'] = categories
+
+        return context
+
 
 class ProductDeleteView(DeleteView, PermissionRequiredMixin):
     permission_required = ['my_store.delete_product']
