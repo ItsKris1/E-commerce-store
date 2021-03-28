@@ -3,15 +3,11 @@
 {% block title %}Create a category{% endblock %}
 {% block content %}
 <form method="post">
-    <div class="side-box"></div>
-
-    <div class="form-container">
          <h2 style="text-align: center;">
             Create a Category..
         </h2>
         {{ form.as_p }}
         {% csrf_token %}
         <input type="submit" value="Create">
-    </div>
 </form>
 {% endblock %}
