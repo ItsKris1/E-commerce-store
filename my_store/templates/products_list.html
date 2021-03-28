@@ -31,11 +31,13 @@ All products
 {% block content %}
 <div class="container-fluid">
     <div class="row bg-light">
-        <div class="col-lg-8 mx-auto mt-4">
+        <div class="col-lg-8 mx-auto mt-5">
+            {% if perms.create_product %}
                <a class="btn btn-dark mb-3" href="{% url 'create_product' %}">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 Add product
             </a>
+            {% endif %}
             <div class="row row-cols-1 row-cols-md-4">
                 {% for p in products %}
                 <div class="col mb-4">

@@ -33,7 +33,7 @@
 
 
 
-<body>
+<body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="{% url 'products' %}">Online Store</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,14 +64,19 @@
         {% if user.is_authenticated %}
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="btn btn-secondary nav-link active py-1 mr-3" href="{% url 'log_out' %}">Log out</a>
+                <a class="btn btn-secondary nav-link active py-1 mr-3" href="{% url 'log_out' %}">
+                    <i class="fa fa-sign-in mr-2" aria-hidden="true"></i>
+                    Log out
+                </a>
             </li>
         </ul>
 
         {% else %}
         <ul class="navbar-nav mr-2">
             <li class="nav-item active">
-                    <a class="btn btn-secondary nav-link active py-1 mr-3" href="{% url 'login' %}">Login</a>
+                        <a class="btn btn-secondary nav-link active px-3 " href="{% url 'login' %}">
+                            <i class="fa fa-sign-in mr-2" aria-hidden="true"></i>Login
+                        </a>
             </li>
         </ul>
         {% endif %}
