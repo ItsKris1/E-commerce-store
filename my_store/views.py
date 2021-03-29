@@ -90,7 +90,7 @@ class ProductUpdateView(UpdateView, PermissionRequiredMixin):
 
 
 class ProductBuyView(TemplateView):
-    template_name = 'buy_product.html'
+    template_name = 'bought_product.html'
 
     def get_context_data(self, pk, **kwargs):
         product = Product.objects.get(id=pk)
@@ -146,10 +146,11 @@ class CategoryDeleteView(DeleteView, PermissionRequiredMixin):
 
 
 class CategoryUpdateView(UpdateView):
-    template_name = 'edit_category.html'
+    template_name = 'update_category.html'
     model = Category
     context_object_name = 'categories1'
     fields = '__all__'
+    success_url = reverse_lazy('categories')
 
 
 # LOGIN

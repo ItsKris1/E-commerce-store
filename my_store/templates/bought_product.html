@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Bought product {% endblock %}
+
+{% block header %} You have succesfully bought the product!{% endblock %}
+
+{% block content %}
+<img src="{% static 'my_store/image/succesfully_bought_product.png' %}">
+<a href="{% url 'products' %}" class="btn btn-dark btn-block py-3">Back to store</a>
+{% endblock %}
