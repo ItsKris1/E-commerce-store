@@ -14,19 +14,26 @@
 
                 {% for c in categories %}
                 <ul class="list-group">
-                        <li class="list-group-item">{{ c.name }}
+                        <li class="list-group-item">
+                            <a class="text-dark" href="{% url 'products' %}?category={{c.id}}">{{ c.name }}</a>
+
                             {% if perms.my_store.delete_category %}
-                            <a href="{% url 'edit_category' c.id %}">Edit</a>
+                            <a  href="{% url 'edit_category' c.id %}"><i class="fa fa-pencil text-dark ml-1" aria-hidden="true"></i></a>
                             {% endif %}
                         </li>
                 </ul>
                 {% endfor %}
 
-                {% if perms.my_store.create_category %}
-                <a href="{% url 'create_category' %}">Add category</a>
 
+                {% if perms.create_category %}
+                <a class="btn btn-dark mt-3" href="{% url 'create_category' %}">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add category
+                </a>
                 {% endif %}
+
             </div>
     </div>
 </div>
+
 {% endblock %}
