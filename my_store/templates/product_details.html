@@ -10,17 +10,16 @@
 
 {% block content %}
 <div class="container pt-5">
-    <div class="card  mb-3 mx-auto" style="max-width: 800px;">
-        <div class="row no-gutters" style="">
+    <div class="row no-gutters">
+        <div class="col-lg-4 bg-white">
+            {% if products.image %}
+            <img src="{{ products.image.url }}" class="" style="object-fit: contain; width: 100%; max-height: 500px;">
+            {% endif %}
 
-            <div class="col-md-4 ">
-                {% if products.image %}
-                <img src="{{ products.image.url }}" style="width: 100%; padding: 10px; height: 200px; object-fit: contain;">
-                {% endif %}
-            </div>
-
-            <div class="col-md-8">
-                <div class="card-body ">
+        </div>
+        <div class="col-lg-8">
+            <div class="card " style="border: 0;">
+                <div class="card-body ml-3">
 
                     <h5 class="card-title font-weight-bold">{{products.name}}</h5>
                     <p class="card-text">{{products.description}}</p>
@@ -29,14 +28,11 @@
                     <p class="card-text"><a href="{% url 'products' %}?category= {{ products.category.id}}">{{products.category}}</a></p>
 
 
-
-                </div>
-
                 {% if not user.is_authenticated %}
-                <button type="button" class="btn btn-dark float-left mx-3" data-toggle="popover" data-trigger="focus"  data-content="You must be logged in to purchase products">Buy</button>
+                <button type="button" class="btn btn-dark" data-toggle="popover" data-trigger="focus"  data-content="You must be logged in to purchase products">Buy</button>
                 {% endif %}
                 {% if perms.my_store.update_product %}
-                <div class="btn-group float-right mr-2" role="group" aria-label="Basic example">
+                <div class="btn-group float-right" role="group" aria-label="Basic example">
                     <a class="btn btn-dark" href="{% url 'delete_product' products.id %}">Delete</a>
                     <a class="btn btn-dark" href="{% url 'update_product' products.id %}">Update</a>
                 </div>
@@ -45,11 +41,14 @@
 
 
                 {% if user.is_authenticated %}
-                <a class="btn btn-dark mx-3" href="{% url 'confirm_buy_product' products.id%}">Buy</a>
+                <a class="btn btn-dark" href="{% url 'confirm_buy_product' products.id%}">Buy</a>
                 {% endif %}
 
+                </div>
+
             </div>
-        </div>
+    </div>
     </div>
 </div>
+
 {% endblock %}
