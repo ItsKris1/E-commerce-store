@@ -43,6 +43,6 @@ class UserLoginForm(AuthenticationForm):
 
     password = forms.CharField(
         widget=forms.TextInput(
-            attrs={'class': 'form-control'}
+            attrs={'class': 'form-control', 'type': 'password'}
         )
     )
