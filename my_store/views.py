@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView
 from django.urls import reverse_lazy
-from .models import Product, Category
+
+from django.contrib.auth.models import User
+from .models import Product, Category, Profile
 from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm
 
 from django.contrib.auth import login, authenticate
@@ -27,11 +29,13 @@ class ProductsListView(ListView):
         category_id = self.request.GET.get('category', None)
         search = self.request.GET.get('search', None)
 
+
         if search is not None:
             products = products.filter(name__icontains=search)
 
         if category_id is not None:
             products = products.filter(category__id=int(category_id))
+
 
         return products
 
@@ -41,13 +45,16 @@ class ProductsListView(ListView):
         categories = Category.objects.all()
         context['categories'] = categories
 
+        profile_id = self.request.GET.get('profile', None)
         category_id = self.request.GET.get('category', None)
+
         try:
             category_name = Category.objects.get(pk=category_id)
         except ObjectDoesNotExist:
             category_name = None
 
         context['category_name'] = category_name
+
 
         return context
 
@@ -171,7 +178,11 @@ def signup_view(request):
         form = SignUpForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            user = form.save()
+            user.refresh_from_db()
+
+            user.profile.first_name = form.cleaned_data.get('first_name')
+            user.save()
 
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
@@ -183,3 +194,13 @@ def signup_view(request):
         form = SignUpForm()
 
     return render(request, 'registration/sign_up.html', {'form': form})
+
+# PROFILE
+
+
+class UserProfileDetailsView(DetailView):
+    template_name = 'user_profile_view.html'
+    model = User
+    context_object_name = 'user'
+
+

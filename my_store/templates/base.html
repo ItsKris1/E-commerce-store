@@ -66,11 +66,22 @@
 
 
         {% if user.is_authenticated %}
+
+
+        <ul class="navbar-nav mr-3">
+            <li class="nav-item">
+                <a class="text-white py-1 mr-2" href="{% url 'profile_view' user.username user.id %}">
+                    <i class="fa fa-user mr-1" aria-hidden="true"></i>
+                    {{ user | title }}
+                </a>
+            </li>
+        </ul>
+
         <ul class="navbar-nav mr-3">
             <li class="nav-item">
                 <a class="text-white py-1 mr-2" href="{% url 'log_out' %}">
-                    <i class="fa fa-user mr-1" aria-hidden="true"></i>
-                    {{ user | title }}
+                    <i class="fa fa-sign-in mr-1" aria-hidden="true"></i>
+                    Log out
                 </a>
             </li>
         </ul>

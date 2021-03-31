@@ -22,6 +22,7 @@ urlpatterns = [
     path('accounts/login', views.LoginView.as_view(
         template_name="registration/login.html", authentication_form=UserLoginForm),
          name='login'),
-    path('accounts/sign_up', views.signup_view, name='sign_up')
+    path('accounts/sign_up', views.signup_view, name='sign_up'),
+    path('profile/<str:username>/<int:pk>', views.UserProfileDetailsView.as_view(), name='profile_view'),
 ]
 

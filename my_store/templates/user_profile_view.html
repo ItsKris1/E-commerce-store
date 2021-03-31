@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %} Profile details {% endblock %}
+{% block content %}
+<div class="container pt-5">
+    <div class="row no-gutters">
+        <div class="col-lg-3 bg-white">
+            {% if products.image %}
+            <img src="#" class="" style="object-fit: contain; width: 100%; max-height: 300px;">
+            {% else %}
+            <img src="{% static 'my_store/image/user_default_picture.jpg' %}" class="" style="object-fit: contain; width: 100%; max-height: 200px;">
+            {% endif %}
+
+        </div>
+        <div class="col-lg-9">
+            <div class="card " style="border: 0;">
+                <div class="card-body ml-3">
+
+                    <h5 class="card-title font-weight-bold">{{user.username | title}}</h5>
+                    <p class="card-text">First name: {{user.first_name}}</p>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
