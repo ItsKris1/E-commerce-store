@@ -18,7 +18,10 @@ urlpatterns = [
     path('edit_category/<int:pk>', views.CategoryUpdateView.as_view(), name='edit_category'),
 
 
-    path('logout', views.LogoutView.as_view(), name='log_out'),
-    path('login', views.LoginView.as_view(template_name="registration/login.html", authentication_form=UserLoginForm), name='login'),
+    path('accounts/log_out', views.LogoutView.as_view(), name='log_out'),
+    path('accounts/login', views.LoginView.as_view(
+        template_name="registration/login.html", authentication_form=UserLoginForm),
+         name='login'),
+    path('accounts/sign_up', views.SignUpView.as_view(), name='sign_up'),
 ]
 

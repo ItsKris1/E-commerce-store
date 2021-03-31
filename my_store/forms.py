@@ -1,6 +1,7 @@
 from django import forms
 from .models import Product, Category
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
 
 class ProductCreateForm(forms.ModelForm):
     class Meta:
@@ -46,3 +47,15 @@ class UserLoginForm(AuthenticationForm):
             attrs={'class': 'form-control', 'type': 'password'}
         )
     )
+
+
+class UserSignupForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2',)
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form_control'}),
+            'password1': forms.TextInput(attrs={'class': 'form-control', 'type': 'password'}),
+            'password2': forms.TextInput(attrs={'class': 'form-control', 'type': 'password'}),
+
+        }
