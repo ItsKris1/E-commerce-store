@@ -49,4 +49,31 @@ class UserLoginForm(AuthenticationForm):
     )
 
 
+class SignUpForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'id': 'Username'}
+        )
+    )
+
+    password1 = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'type': 'password', 'id': 'Password'}
+        )
+    )
+
+    password2 = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'type': 'password', 'id': 'Retype password'}
+        )
+    )
+
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
+
+
 

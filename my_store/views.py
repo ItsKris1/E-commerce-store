@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView
 from django.urls import reverse_lazy
 from .models import Product, Category
-from .forms import ProductCreateForm, CategoryCreateForm
+from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -165,3 +165,21 @@ class Logout(LogoutView):
     next_page = 'products'
 
 
+def signup_view(request):
+    if request.method == 'POST':
+
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+
+            login(request, user)
+            return redirect('login')
+    else:
+        form = SignUpForm()
+
+    return render(request, 'registration/sign_up.html', {'form': form})
