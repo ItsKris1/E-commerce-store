@@ -49,13 +49,4 @@ class UserLoginForm(AuthenticationForm):
     )
 
 
-class UserSignupForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ('username', 'password1', 'password2',)
-        widgets = {
-            'username': forms.TextInput(attrs={'class': 'form_control'}),
-            'password1': forms.TextInput(attrs={'class': 'form-control', 'type': 'password'}),
-            'password2': forms.TextInput(attrs={'class': 'form-control', 'type': 'password'}),
 
-        }

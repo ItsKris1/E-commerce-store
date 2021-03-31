@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
+{% block header %} Sign up {% endblock %}
+
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Register">
+
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 ">
+                {{ form.as_p }}
+                <input type="submit" value="Register">
+            </div>
+        </div>
+    </div>
+
 </form>
 {% endblock %}

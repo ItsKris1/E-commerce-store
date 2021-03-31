@@ -1,7 +1,11 @@
 from django.db import models
-
-
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.core.exceptions import ObjectDoesNotExist
 # Create your models here.
+
+
 class Product(models.Model):
     name = models.CharField(max_length=120)
     quantity = models.IntegerField(null=True, blank=True)
@@ -22,5 +26,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
 
 

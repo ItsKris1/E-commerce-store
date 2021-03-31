@@ -2,12 +2,17 @@ from django.shortcuts import render
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView
 from django.urls import reverse_lazy
 from .models import Product, Category
-from .forms import ProductCreateForm, CategoryCreateForm, UserSignupForm
+from .forms import ProductCreateForm, CategoryCreateForm
+
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.forms import UserCreationForm
+
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
+
+from django.shortcuts import render, redirect
 
 
 # Products
@@ -159,10 +164,4 @@ class CategoryUpdateView(UpdateView):
 class Logout(LogoutView):
     next_page = 'products'
 
-
-class SignUpView(SuccessMessageMixin, CreateView):
-    form_class = UserSignupForm
-    template_name = 'registration/sign_up.html'
-    success_message = 'You have successfully create a profile!'
-    success_url = reverse_lazy('login')
 
