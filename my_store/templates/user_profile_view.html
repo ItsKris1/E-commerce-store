@@ -18,9 +18,12 @@
                 <div class="card-body ml-3">
 
                     <h5 class="card-title font-weight-bold">{{user.username | title}}</h5>
-                    <p class="card-text">First name: {{user.first_name | default_if_none:'-'}}</p>
-                    <p class="card-text">Last name: {{user.last_name | default_if_none:'-'}}</p>
-                    <p class="card-text">Email: {{ user.email }}</p>
+                    <p class="card-text">First name: {{user.first_name }}</p>
+                    <p class="card-text">Last name: {{user.last_name }}</p>
+                    <p class="card-text">Location: {{user.profile.location | default_if_none:'-' }}</p>
+                    <p class="card-text">Preferred communication channels: {{user.profile.preferred_communication | default_if_none:'-' }}</p>
+
+
 
 
                 </div>
