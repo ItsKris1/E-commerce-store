@@ -34,6 +34,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=60, default=None)
     location = models.CharField(max_length=300, blank=True, null=True)
     preferred_communication = models.TextField(max_length=500, blank=True, null=True)
+    role = models.CharField(max_length=40, blank=True, null=True)
 
     def __str__(self):
         return self.user.username
