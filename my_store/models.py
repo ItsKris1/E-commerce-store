@@ -35,21 +35,6 @@ class Profile(models.Model):
     location = models.CharField(max_length=300, blank=True, null=True)
     email = models.EmailField(max_length=250, blank=True, null=True)
 
-    OWNER = 'Owner'
-    ADMIN = 'Admin'
-    USER = 'User'
-
-    ROLE_CHOICES = [
-        (OWNER, 'Owner'),
-        (ADMIN, 'Admin'),
-        (USER, 'User'),
-    ]
-
-    role = models.CharField(max_length=5,
-                            choices=ROLE_CHOICES,
-                            default=USER,
-                            )
-
     def __str__(self):
         return self.user.username
 

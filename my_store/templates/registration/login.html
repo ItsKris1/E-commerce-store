@@ -71,7 +71,7 @@
                 {% if form.non_field_errors %}
                 <div class="non-field-errors">
                     {% for err in form.non_field_errors %}
-                    <p class="form-error">{{ err }}</p>
+                    <p class="alert alert-danger p-2 mt-2" role="alert">{{ err }}</p>
                     {% endfor %}
                 </div>
                 {% endif %}
@@ -79,18 +79,28 @@
                 <div class="form-group">
 
                     <label for="{{ form.username.id_for_label }}">Username</label>
-
                     {{ form.username }}
-                    {{ form.username.errors }}
+
+                    {% if form.username.errors %}
+                        <div class="alert alert-danger p-2 mt-2" role="alert">
+                            {{ form.username.errors }}
+                        </div>
+                    {% endif %}
+
                 </div>
 
 
                 <div class="form-group">
 
                     <label for="{{ form.password.id_for_label }}">Password</label>
-
                     {{ form.password }}
-                    {{ form.password.errors }}
+
+                    {% if form.password.errors %}
+                    <div class="alert alert-danger p-2 mt-2" role="alert">
+                        {{ form.password.errors }}
+                    </div>
+                    {% endif %}
+
                 </div>
 
                 <input type="submit" class="btn btn-dark" value="Log in">
