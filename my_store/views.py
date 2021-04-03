@@ -206,25 +206,27 @@ def signup_view(request):
     return render(request, 'registration/sign_up.html', {'form': form})
 
 
-def profile_update_view(request):
+# PROFILE
+class UserProfileDetailsView(DetailView):
+    template_name = 'user_profile_view.html'
+    model = Profile
+    context_object_name = 'profile'
+
+
+def profile_update_view(request, pk):
 
     user = request.user
-    user_form = UserUpdateForm(request.POST or None,
-                               initial={'username': user.username}, instance=request.user)
+    user_form = UserUpdateForm(request.POST or None, instance=request.user)
 
-    user_profile_form = UserProfileUpdateForm(request.POST or None,
-                                              initial={'first_name': user.profile.first_name, 'last_name': user.profile.last_name,},
-                                              instance=request.user.profile)
+    user_profile_form = UserProfileUpdateForm(request.POST or None, instance=request.user.profile)
 
     if request.method == 'POST':
-
         if user_form.is_valid() and user_profile_form.is_valid():
-            user.username = user_form.cleaned_data['username']
-            user.profile.first_name = user_profile_form.cleaned_data['first_name']
-            user.profile.last_name = user_profile_form.cleaned_data['last_name']
+
             user.save()
             user.profile.save()
-            return redirect('login')
+
+            return redirect('profile_view', user.profile.id)
 
     context = {
         'user_form': user_form,
@@ -233,13 +235,8 @@ def profile_update_view(request):
 
     return render(request, 'user_profile_update_view.html', context)
 
-# PROFILE
 
 
-class UserProfileDetailsView(DetailView):
-    template_name = 'user_profile_view.html'
-    model = Profile
-    context_object_name = 'profile'
 
 
 

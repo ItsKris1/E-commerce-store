@@ -30,8 +30,8 @@ class Category(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=60, blank=True, null=True)
-    last_name = models.CharField(max_length=60, blank=True, null=True)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     location = models.CharField(max_length=300, blank=True, null=True)
     email = models.EmailField(max_length=250, blank=True, null=True)
 

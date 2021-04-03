@@ -21,8 +21,9 @@
 
                     <h5 class="card-title font-weight-bold">{{user | title}}
 
-                        <a class="btn btn-light float-right font-weight-bold" href="{% url 'profile_update_view' %}">
+                        <a class="btn btn-light float-right font-weight-bold" href="{% url 'profile_update_view' user.profile.id %}">
                             <i class="fa fa-pencil mr-1" aria-hidden="true"></i>Edit</a>
+
                     </h5>
                     <p class="card-text">First name: {{ user.profile.first_name | default_if_none:'-'}}</p>
                     <p class="card-text">Last name: {{user.profile.last_name | default_if_none:'-'}}</p>

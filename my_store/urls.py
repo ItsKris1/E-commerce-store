@@ -24,6 +24,6 @@ urlpatterns = [
          name='login'),
     path('accounts/sign_up', views.signup_view, name='sign_up'),
     path('profile/<int:pk>', views.UserProfileDetailsView.as_view(), name='profile_view'),
-    path('profile/edit/', views.profile_update_view, name='profile_update_view'),
+    path('profile/edit/<int:pk>', views.profile_update_view, name='profile_update_view'),
 ]
 
