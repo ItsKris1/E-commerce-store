@@ -30,14 +30,52 @@ All products
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row bg-light">
-        <div class="col-lg-8 mx-auto mt-5">
+    <div class="row  justify-content-center bg-light">
+        <div class="col-lg-3  mt-5">
+
             {% if perms.create_product %}
-               <a class="btn btn-dark mb-3" href="{% url 'create_product' %}">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                Add product
-            </a>
+                <a class="btn btn-dark ml-3 px-4 mb-2 " href="{% url 'create_product' %}">
+                    <i class="fa fa-plus mr-2" aria-hidden="true"></i>
+                    Add product
+                </a>
             {% endif %}
+            <div class="shadow-sm p-3  mb-2 bg-white rounded">Sort by:<i class="fa fa-sort float-right" aria-hidden="true"></i></div>
+
+
+
+
+
+
+            <ul class="list-group">
+                <li class="list-group-item ml-3"  type="button" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+                    Price
+                    <div class="dropdown-menu" >
+                        <a class="dropdown-item" href="#">High to low</a>
+                        <a class="dropdown-item" href="#">Low to high</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="list-group">
+                <li class="list-group-item ml-3">Brand</li>
+            </ul>
+
+            <ul class="list-group">
+                <li class="list-group-item ml-3"  type="button" data-toggle="dropdown" id="saabas" aria-haspopup="true" aria-expanded="false">
+                    Alphabetical order
+                    <div class="dropdown-menu" aria-labelledby="saabas">
+                        <a class="dropdown-item" href="#">A to Z</a>
+                        <a class="dropdown-item" href="#">Z to A</a>
+                    </div>
+                </li>
+            </ul>
+
+
+        </div>
+
+
+        <div class="col-lg-8    mt-5">
+
             <div class="row row-cols-1 row-cols-md-4">
                 {% for p in products %}
                 <div class="col mb-4">
