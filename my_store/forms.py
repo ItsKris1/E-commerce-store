@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Category
+from .models import Product, Category, Profile
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
@@ -53,7 +53,7 @@ class SignUpForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
 
-    username = forms.CharField(
+    username = forms.CharField(max_length=15,
         widget=forms.TextInput(
             attrs={'class': 'form-control', 'id': 'Username'}
         )
@@ -100,4 +100,32 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'first_name', 'last_name', 'email', 'location', 'password1', 'password2')
 
 
+class UserUpdateForm(forms.ModelForm):
+
+    username = forms.CharField(max_length=15,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'Username'}))
+
+    class Meta:
+        model = User
+        fields = ('username',)
+
+
+class UserProfileUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = (
+
+            'first_name',
+            'last_name',
+            'location',
+            'email',
+        )
+
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
 

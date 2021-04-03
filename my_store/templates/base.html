@@ -70,7 +70,7 @@
 
         <ul class="navbar-nav mr-3">
             <li class="nav-item">
-                <a class="text-white py-1 mr-2" href="{% url 'profile_view' user.username user.id %}">
+                <a class="text-white py-1 mr-2" href="{% url 'profile_view' user.profile.id %}">
                     <i class="fa fa-user mr-1" aria-hidden="true"></i>
                     {{ user | title }}
                 </a>

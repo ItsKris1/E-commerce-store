@@ -4,24 +4,30 @@
 {% block header %} Profile details {% endblock %}
 {% block content %}
 <div class="container pt-5">
-    <div class="row no-gutters">
-        <div class="col-lg-3 bg-white">
+    <div class="row no-gutters border-lg">
+        <div class="col-lg-3 bg-light">
             {% if products.image %}
-            <img src="#" class="" style="object-fit: contain; width: 100%; max-height: 300px;">
+            <img src="#" class="" style="object-fit: contain; width: auto; max-height: 300px;">
             {% else %}
-            <img src="{% static 'my_store/image/user_default_picture.jpg' %}" class="" style="object-fit: contain; width: 100%; max-height: 200px;">
+            <img src="{% static 'my_store/image/user_default_picture.jpg' %}" class="float-right"
+                 style="border: 1px solid rgba(0,0,0,.125); object-fit: contain; width: 100%; width: auto;max-height: 200px;">
             {% endif %}
 
         </div>
-        <div class="col-lg-9">
-            <div class="card " style="border: 0;">
-                <div class="card-body ml-3">
+        <div class="col-lg-9 ">
+            <div class="card">
+                <div class="card-body border-lg ml-3">
 
-                    <h5 class="card-title font-weight-bold">{{user.username | title}}</h5>
-                    <p class="card-text">First name: {{user.first_name }}</p>
-                    <p class="card-text">Last name: {{user.last_name }}</p>
-                    <p class="card-text">Email: {{user.profile.email | default_if_none:'-' }}</p>
-                    <p class="card-text">Location: {{user.profile.location | default_if_none:'-' }}</p>
+
+                    <h5 class="card-title font-weight-bold">{{user | title}}
+
+                        <a class="btn btn-light float-right font-weight-bold" href="{% url 'profile_update_view' %}">
+                            <i class="fa fa-pencil mr-1" aria-hidden="true"></i>Edit</a>
+                    </h5>
+                    <p class="card-text">First name: {{ user.profile.first_name | default_if_none:'-'}}</p>
+                    <p class="card-text">Last name: {{user.profile.last_name | default_if_none:'-'}}</p>
+                    <p class="card-text">Email: {{profile.email | default_if_none:'-' }}</p>
+                    <p class="card-text">Location: {{profile.location | default_if_none:'-' }}</p>
                     <p class="card-text">
                         Role:
                             {% if user.is_superuser %}

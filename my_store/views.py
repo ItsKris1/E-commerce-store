@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.models import User
 from .models import Product, Category, Profile
-from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm
+from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -29,23 +29,22 @@ class ProductsListView(ListView):
         category_id = self.request.GET.get('category', None)
         search = self.request.GET.get('search', None)
 
-
         if search is not None:
             products = products.filter(name__icontains=search)
 
         if category_id is not None:
             products = products.filter(category__id=int(category_id))
 
-
         return products
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data()
 
+        profiles = Profile.objects.all()
+        
         categories = Category.objects.all()
         context['categories'] = categories
 
-        profile_id = self.request.GET.get('profile', None)
         category_id = self.request.GET.get('category', None)
 
         try:
@@ -54,7 +53,6 @@ class ProductsListView(ListView):
             category_name = None
 
         context['category_name'] = category_name
-
 
         return context
 
@@ -139,6 +137,16 @@ class CategoryListView(ListView):
     template_name = 'category_list.html'
     context_object_name = 'categories'
 
+    def get_queryset(self):
+        categories = Category.objects.all()
+
+        search = self.request.GET.get('search')
+
+        if search is not None:
+            categories = categories.filter(name__icontains=search)
+
+        return categories
+
 
 class CreateCategoryView(CreateView, PermissionRequiredMixin):
     permission_required = ['my_store.create_category']
@@ -174,7 +182,6 @@ class Logout(LogoutView):
 
 def signup_view(request):
     if request.method == 'POST':
-
         form = SignUpForm(request.POST)
 
         if form.is_valid():
@@ -198,12 +205,45 @@ def signup_view(request):
 
     return render(request, 'registration/sign_up.html', {'form': form})
 
+
+def profile_update_view(request):
+
+    user = request.user
+    user_form = UserUpdateForm(request.POST or None,
+                               initial={'username': user.username}, instance=request.user)
+
+    user_profile_form = UserProfileUpdateForm(request.POST or None,
+                                              initial={'first_name': user.profile.first_name, 'last_name': user.profile.last_name,},
+                                              instance=request.user.profile)
+
+    if request.method == 'POST':
+
+        if user_form.is_valid() and user_profile_form.is_valid():
+            user.username = user_form.cleaned_data['username']
+            user.profile.first_name = user_profile_form.cleaned_data['first_name']
+            user.profile.last_name = user_profile_form.cleaned_data['last_name']
+            user.save()
+            user.profile.save()
+            return redirect('login')
+
+    context = {
+        'user_form': user_form,
+        'user_profile_form': user_profile_form
+    }
+
+    return render(request, 'user_profile_update_view.html', context)
+
 # PROFILE
 
 
 class UserProfileDetailsView(DetailView):
     template_name = 'user_profile_view.html'
-    model = User
-    context_object_name = 'user'
+    model = Profile
+    context_object_name = 'profile'
+
+
+
+
+
 
 
