@@ -26,27 +26,52 @@ class ProductsListView(ListView):
     def get_queryset(self):
         products = Product.objects.all()
 
-        category_id = self.request.GET.get('category', None)
-        search = self.request.GET.get('search', None)
+        # SORT BY PRICE
+        price = self.request.GET.get('price', None)
+
+        if price == 'asc':
+            products = products.order_by('-price')
+
+        if price == 'desc':
+            products = products.order_by('price')
+
+        # -- SORT BY PRICE END --
+
+        # SORT BY BRAND
         brand = self.request.GET.get('brand', None)
 
         if brand is not None:
             products = products.filter(brand__iexact=brand)
 
+        # -- SORT BY BRAND END --
+
+        # SORT BY SEARCH
+        search = self.request.GET.get('search', None)
+
         if search is not None:
             products = products.filter(name__icontains=search)
 
+        # -- SORT BY SEARCH END --
+
+        # -- SORT BY CATEGORY
+        category_id = self.request.GET.get('category', None)
+
         if category_id is not None:
             products = products.filter(category__id=int(category_id))
+
+        # -- SORT BY CATEGORY END --
 
         return products
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        
+
+        # CATEGORIES
         categories = Category.objects.all()
         context['categories'] = categories
+        # --
 
+        # CATEGORY NAME
         category_id = self.request.GET.get('category', None)
 
         try:
@@ -55,13 +80,16 @@ class ProductsListView(ListView):
             category_name = None
 
         context['category_name'] = category_name
+        # --
 
-        all_products = Product.objects.all()
-
+        # CATEGORY PRODUCTS
+        # Filtering products by category if in a category
         if category_name is not None:
-            all_products = Product.objects.filter(category__id=category_id)
-
-        context['all_products'] = all_products
+            category_products = Product.objects.filter(category__id=category_id)
+        else:
+            category_products = Product.objects.all()
+        context['category_products'] = category_products
+        # --
 
         return context
 
