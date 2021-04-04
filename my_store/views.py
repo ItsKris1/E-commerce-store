@@ -29,10 +29,10 @@ class ProductsListView(ListView):
         # SORT BY PRICE
         price = self.request.GET.get('price', None)
 
-        if price == 'asc':
+        if price == 'desc':
             products = products.order_by('-price')
 
-        if price == 'desc':
+        if price == 'asc':
             products = products.order_by('price')
 
         # -- SORT BY PRICE END --
@@ -82,6 +82,11 @@ class ProductsListView(ListView):
         context['category_name'] = category_name
         # --
 
+        brand_name = self.request.GET.get('brand')
+        context['brand_name'] = brand_name
+
+        price_sort_type = self.request.GET.get('price')
+        context['price_sort_type'] = price_sort_type
         # CATEGORY PRODUCTS
         # Filtering products by category if in a category
         if category_name is not None:
