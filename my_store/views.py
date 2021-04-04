@@ -28,6 +28,10 @@ class ProductsListView(ListView):
 
         category_id = self.request.GET.get('category', None)
         search = self.request.GET.get('search', None)
+        brand = self.request.GET.get('brand', None)
+
+        if brand is not None:
+            products = products.filter(brand__icontains=brand)
 
         if search is not None:
             products = products.filter(name__icontains=search)

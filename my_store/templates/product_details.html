@@ -22,8 +22,11 @@
                 <div class="card-body ml-3">
 
                     <h5 class="card-title font-weight-bold">{{products.name}}</h5>
+
                     <p class="card-text">{{products.description}}</p>
-                    <p class="card-text">${{products.price}}</p>
+                    <p class="card-text font-weight-bold">${{products.price}}</p>
+                    <p class="card-text ">Brand: {{products.brand}}</p>
+
                     <p class="card-text">In stock: {{products.quantity}}</p>
                     <p class="card-text"><a href="{% url 'products' %}?category= {{ products.category.id}}">{{products.category}}</a></p>
 

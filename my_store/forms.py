@@ -3,10 +3,12 @@ from .models import Product, Category, Profile
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
+
 class ProductCreateForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('name',
+                  'brand',
                   'quantity',
                   'price',
                   'description',
@@ -15,6 +17,7 @@ class ProductCreateForm(forms.ModelForm):
                   )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'brand': forms.TextInput(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
             'price': forms.NumberInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),

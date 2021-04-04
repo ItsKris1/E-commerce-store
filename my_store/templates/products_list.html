@@ -31,25 +31,25 @@ All products
 {% block content %}
 <div class="container-fluid">
     <div class="row  justify-content-center bg-light">
-        <div class="col-lg-3  mt-5">
+        <div class="col-lg-2  mt-5">
 
             {% if perms.create_product %}
-                <a class="btn btn-dark ml-3 px-4 mb-2 " href="{% url 'create_product' %}">
+                <a class="btn btn-secondary  px-4 mb-3 " href="{% url 'create_product' %}">
                     <i class="fa fa-plus mr-2" aria-hidden="true"></i>
                     Add product
                 </a>
             {% endif %}
-            <div class="shadow-sm p-3  mb-2 bg-white rounded">Sort by:<i class="fa fa-sort float-right" aria-hidden="true"></i></div>
+            <div class="shadow-sm p-3   bg-dark rounded text-white">Sort by:<i class="fa fa-sort float-right" aria-hidden="true"></i></div>
 
 
 
 
 
-
-            <ul class="list-group">
-                <li class="list-group-item ml-3"  type="button" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+            <div class="rounded-top ">
+                <ul class="list-group">
+                <li class="list-group-item mr-3 dropdown-toggle"  type="button" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
                     Price
-                    <div class="dropdown-menu" >
+                    <div class="dropdown-menu " >
                         <a class="dropdown-item" href="#">High to low</a>
                         <a class="dropdown-item" href="#">Low to high</a>
                     </div>
@@ -57,11 +57,21 @@ All products
             </ul>
 
             <ul class="list-group">
-                <li class="list-group-item ml-3">Brand</li>
+                <li class="list-group-item mr-3 dropdown-toggle" type="button" data-toggle="dropdown" id="BrandDropDown" aria-haspopup="true" aria-expanded="false">
+                    Brand
+
+
+                    <div class="dropdown-menu" aria-labelledby="BrandDropDown">
+                        {% for p in products %}
+                        <a class="dropdown-item" href="{% url 'products' %}?brand={{p.brand}}">{{p.brand}}</a>
+                        {% endfor %}
+                </div>
+
+                </li>
             </ul>
 
-            <ul class="list-group">
-                <li class="list-group-item ml-3"  type="button" data-toggle="dropdown" id="saabas" aria-haspopup="true" aria-expanded="false">
+            <ul class="list-group" >
+                <li class="list-group-item mr-3 dropdown-toggle" type="button" data-toggle="dropdown" id="saabas" aria-haspopup="true" aria-expanded="false">
                     Alphabetical order
                     <div class="dropdown-menu" aria-labelledby="saabas">
                         <a class="dropdown-item" href="#">A to Z</a>
@@ -69,6 +79,8 @@ All products
                     </div>
                 </li>
             </ul>
+            </div>
+
 
 
         </div>
@@ -92,8 +104,12 @@ All products
                                     <h5 class="card-title font-weight-bold">{{p.name}}</h5>
                                 </a>
                             </p>
+                            <div class="row justify-content-end">
+                                <p class="card-text shadow  px-1 rounded font-weight-bold">
+                                    ${{p.price}}
+                                </p>
+                            </div>
 
-                                <p class="card-text text-right">${{p.price}}</p>
                         </div>
                         </div>
                     </div>
