@@ -63,7 +63,7 @@ All products
 
                     <div class="dropdown-menu" aria-labelledby="BrandDropDown">
                         {% for p in products %}
-                        <a class="dropdown-item" href="{% url 'products' %}?brand={{p.brand}}">{{p.brand}}</a>
+                        <a class="dropdown-item" href="{% url 'products' %}?brand_name={{p.brand}}">{{p.brand}}</a>
                         {% endfor %}
                 </div>
 
