@@ -28,10 +28,10 @@ class ProductsListView(ListView):
 
         category_id = self.request.GET.get('category', None)
         search = self.request.GET.get('search', None)
-        brand_name = self.request.GET.get('brand', None)
+        brand = self.request.GET.get('brand', None)
 
-        if brand_name is not None:
-            products = products.filter(brand__iexact=str(brand_name))
+        if brand is not None:
+            products = products.filter(brand__iexact=brand)
 
         if search is not None:
             products = products.filter(name__icontains=search)
@@ -43,8 +43,6 @@ class ProductsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-
-        profiles = Profile.objects.all()
         
         categories = Category.objects.all()
         context['categories'] = categories
@@ -57,6 +55,13 @@ class ProductsListView(ListView):
             category_name = None
 
         context['category_name'] = category_name
+
+        all_products = Product.objects.all()
+
+        if category_name is not None:
+            all_products = Product.objects.filter(category__id=category_id)
+
+        context['all_products'] = all_products
 
         return context
 

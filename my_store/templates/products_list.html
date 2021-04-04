@@ -57,15 +57,23 @@ All products
             </ul>
 
             <ul class="list-group">
-                <li class="list-group-item mr-3 dropdown-toggle" type="button" data-toggle="dropdown" id="BrandDropDown" aria-haspopup="true" aria-expanded="false">
-                    Brand
+                <li class="list-group-item mr-3">
+                    <a class="dropdown-toggle text-dark" data-toggle="dropdown" href="#">
+                        Brand
+                    </a>
 
 
-                    <div class="dropdown-menu" aria-labelledby="BrandDropDown">
-                        {% for p in products %}
-                        <a class="dropdown-item" href="{% url 'products' %}?brand_name={{p.brand}}">{{p.brand}}</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="BrandDropDown">
+                        {% for p in all_products %}
+
+                        {% if category_name is None %}
+                            <li><a class="dropdown-item" href="{% url 'login' %}">{{p.brand}}</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="{% url 'products' %}?brand={{p.brand}}">{{p.brand}}</a></li>
+                        {% endif %}
+                        
                         {% endfor %}
-                </div>
+                </ul>
 
                 </li>
             </ul>
