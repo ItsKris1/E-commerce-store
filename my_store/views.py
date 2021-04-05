@@ -225,8 +225,9 @@ class Logout(LogoutView):
 
 
 def signup_view(request):
+
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = SignUpForm(data=request.POST, files=request.FILES)
 
         if form.is_valid():
             user = form.save()
@@ -236,6 +237,7 @@ def signup_view(request):
             user.profile.last_name = form.cleaned_data.get('last_name')
             user.profile.email = form.cleaned_data.get('email')
             user.profile.location = form.cleaned_data.get('location')
+            user.profile.image = form.cleaned_data.get('image')
             user.save()
 
             username = form.cleaned_data.get('username')
@@ -248,6 +250,7 @@ def signup_view(request):
         form = SignUpForm()
 
     return render(request, 'registration/sign_up.html', {'form': form})
+
 
 
 # PROFILE

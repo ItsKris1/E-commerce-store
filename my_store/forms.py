@@ -86,7 +86,7 @@ class SignUpForm(UserCreationForm):
         )
     )
 
-    email = forms.EmailField(
+    email = forms.EmailField(required=False,
         widget=forms.TextInput(
             attrs={'class': 'form-control', 'id': 'Email'}
         )
@@ -98,9 +98,18 @@ class SignUpForm(UserCreationForm):
         )
     )
 
+    image = forms.ImageField(required=False,
+        widget=forms.FileInput(
+            attrs={'class': 'form-control', 'id': 'Profile picture'}
+        )
+    )
+
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'location', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'location', 'password1', 'password2',
+                  'image')
+
+
 
 
 class UserUpdateForm(forms.ModelForm):
