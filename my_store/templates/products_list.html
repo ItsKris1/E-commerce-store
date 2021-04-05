@@ -102,37 +102,31 @@ All products
                         Brand
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="BrandDropDown">
-                        {% for p in category_products %}
+                        {% for name in brand_names %}
 
                             {% if category_name and price_sort_type %}
-                                <li><a class="dropdown-item" href="{% url 'products' %}?category={{p.category.id}}&price={{price_sort_type}}&brand={{p.brand | urlencode}}">{{p.brand}}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'products' %}?category={{category_name.id}}&price={{price_sort_type}}&brand={{name | urlencode}}">{{name}}</a></li>
 
                             {% elif category_name %}
-                                <li><a class="dropdown-item" href="{% url 'products' %}?category={{p.category.id}}&brand={{p.brand | urlencode}}">{{p.brand}}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'products' %}?category={{category_name.id}}&brand={{name | urlencode}}">{{name}}</a></li>
 
                             {% elif brand_name %}
-                                <li><a class="dropdown-item" href="{% url 'products' %}?brand={{p.brand}}&price={{price_sort_type}}">{{p.brand}}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'products' %}?brand={{name}}&price={{price_sort_type}}">{{name}}</a></li>
+
+                            {% elif price_sort_type %}
+                                <li><a class="dropdown-item" href="{% url 'products' %}?price={{price_sort_type}}&brand={{name}}">{{name}}</a></li>
 
                             {% else %}
-                                <li><a class="dropdown-item" href="{% url 'products' %}?brand={{p.brand}}">{{p.brand}}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'products' %}?brand={{name}}">{{ name }}</a></li>
                             {% endif %}
 
                         {% endfor %}
                     </ul>
                 </li>
             </ul>
-            <!-- BRAND SORT END-->
-
-                 <ul class="list-group" >
-                <li class="list-group-item mr-3 dropdown-toggle" type="button" data-toggle="dropdown" id="saabas" aria-haspopup="true" aria-expanded="false">
-                    Alphabetical order
-                    <div class="dropdown-menu" aria-labelledby="saabas">
-                        <a class="dropdown-item" href="#">A to Z</a>
-                        <a class="dropdown-item" href="#">Z to A</a>
-                    </div>
-                </li>
-            </ul>
         </div>
+        <!-- BRAND SORT END-->
+
     <div class="col-lg-8  mt-5">
         <div class="row row-cols-1 row-cols-md-4">
 

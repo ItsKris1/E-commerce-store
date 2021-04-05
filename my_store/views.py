@@ -73,13 +73,13 @@ class ProductsListView(ListView):
 
         # CATEGORY NAME
         category_id = self.request.GET.get('category', None)
-
         try:
             category_name = Category.objects.get(pk=category_id)
         except ObjectDoesNotExist:
             category_name = None
 
         context['category_name'] = category_name
+
         # --
 
         brand_name = self.request.GET.get('brand')
@@ -87,15 +87,17 @@ class ProductsListView(ListView):
 
         price_sort_type = self.request.GET.get('price')
         context['price_sort_type'] = price_sort_type
-        # CATEGORY PRODUCTS
-        # Filtering products by category if in a category
-        if category_name is not None:
-            category_products = Product.objects.filter(category__id=category_id)
-        else:
-            category_products = Product.objects.all()
-        context['category_products'] = category_products
+
         # --
 
+        product_brands = Product.objects.values_list('brand', flat=True).distinct()
+        # BRAND NAMES
+        if category_name is None:
+            brand_names = product_brands
+        else:
+            brand_names = product_brands.filter(category__id=category_id)
+
+        context['brand_names'] = brand_names
         return context
 
 

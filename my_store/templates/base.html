@@ -118,14 +118,36 @@
 
 
 
-<div class="jumbotron mb-0" style="text-align: center;">
+<div class="jumbotron mb-0 " style="text-align: center;">
 
         <div class="container">
 
             <h1 class="display-4">
 
                 {% block header %}{% endblock %}
+
             </h1>
+
+            {% if brand_name and price_sort_type == 'desc' %}
+            <p class="lead">
+                Sorting by: {{brand_name}}, Price: <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></p>
+
+            {% elif brand_name and price_sort_type == 'asc' %}
+            <p class="lead">
+                Sorting by: {{brand_name}}, Price: <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></p>
+
+            {% elif price_sort_type == 'desc' %}
+            <p class="lead">
+                Price: <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></p>
+
+            {% elif price_sort_type == 'asc' %}
+            <p class="lead">
+                Price: <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></p>
+
+            {% elif brand_name %}
+            <p class="lead">Sorting by: {{brand_name}}</p>
+
+            {% endif %}
         </div>
 </div>
 
