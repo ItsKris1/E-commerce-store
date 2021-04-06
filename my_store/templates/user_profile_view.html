@@ -4,7 +4,7 @@
 {% block header %} Profile details {% endblock %}
 {% block content %}
 <div class="container pt-5">
-    <div class="row no-gutters border-lg">
+    <div class="row no-gutters justify-content-center border-lg">
         <div class="col-lg-3 bg-light">
             {% if user.profile.image %}
             <img src="{{ user.profile.image.url }}" class="float-right"
@@ -16,15 +16,15 @@
 
 
         </div>
-        <div class="col-lg-9 ">
-            <div class="card">
-                <div class="card-body border-lg ml-3">
+        <div class="col-lg-7 ">
+
+                <div class="card-body bg-white border-lg ml-2" style="max-width: 600px;">
 
 
                     <h5 class="card-title font-weight-bold">{{user | title}}
 
                         <a class="btn btn-light float-right font-weight-bold" href="{% url 'profile_update_view' user.profile.id %}">
-                            <i class="fa fa-pencil mr-1" aria-hidden="true"></i>Edit</a>
+                            <i class="fa fa-pencil" aria-hidden="true"></i></a>
 
                     </h5>
                     <p class="card-text">First name: {{ user.profile.first_name | default_if_none:'-'}}</p>
