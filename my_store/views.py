@@ -252,12 +252,19 @@ def signup_view(request):
     return render(request, 'registration/sign_up.html', {'form': form})
 
 
-
 # PROFILE
+
 class UserProfileDetailsView(DetailView):
     template_name = 'user_profile_view.html'
     model = Profile
     context_object_name = 'profile'
+
+
+class UserProfileDeleteView(DeleteView):
+    model = User
+    template_name = 'profile_delete.html'
+    context_object_name = 'user'
+    success_url = reverse_lazy('products')
 
 
 def profile_update_view(request, pk):

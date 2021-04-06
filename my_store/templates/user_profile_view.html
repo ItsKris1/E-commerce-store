@@ -23,9 +23,10 @@
 
                     <h5 class="card-title font-weight-bold">{{user | title}}
 
-                        <a class="btn btn-light float-right font-weight-bold" href="{% url 'profile_update_view' user.profile.id %}">
+                        <a class="btn btn-secondary float-right " href="{% url 'profile_update_view' user.profile.id %}">
                             <i class="fa fa-pencil" aria-hidden="true"></i></a>
-
+                        <a class="btn btn-danger float-right mr-2" href="{% url 'profile_delete' user.id %}">
+                            <i class="fa fa-trash" aria-hidden="true"></i></a>
                     </h5>
                     <p class="card-text">First name: {{ user.profile.first_name | default_if_none:'-'}}</p>
                     <p class="card-text">Last name: {{user.profile.last_name | default_if_none:'-'}}</p>

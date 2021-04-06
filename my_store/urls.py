@@ -23,7 +23,9 @@ urlpatterns = [
         template_name="registration/login.html", authentication_form=UserLoginForm),
          name='login'),
     path('accounts/sign_up', views.signup_view, name='sign_up'),
+
     path('profile/<int:pk>', views.UserProfileDetailsView.as_view(), name='profile_view'),
     path('profile/edit/<int:pk>', views.profile_update_view, name='profile_update_view'),
+    path('profile/delete_user/<int:pk>', views.UserProfileDeleteView.as_view(), name='profile_delete')
 ]
 
