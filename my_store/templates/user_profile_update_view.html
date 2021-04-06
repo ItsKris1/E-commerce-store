@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 
-{% block header %} Change your profile{% endblock %}
+{% block header %} Your profile {% endblock %}
 {% block content %}
 <form method="post">{% csrf_token %}
 
-<div class="container mt-5">
+<div class="container pt-4">
         <div class="row justify-content-center">
-            <div class="col-lg-5 ">
-                <div class="form-group ">
+            <div class="col-lg-4 ">
+                    <div class="title">
+                        <h5 class="font-weight-bold border-bottom border-secondary pb-2 pt-2">Details<i class="fa fa-arrow-down float-right" aria-hidden="true"></i></h5>
+                    </div>
+                <div class="form-group  pt-2">
                     {{ user_form.username.label_tag }}
                     {{ user_form.username }}
 
                 </div>
 
                 {% for field in user_profile_form %}
-                    <div class="form-group">
+                    <div class="form-group ">
                         {{ field.label_tag }}
                         {{ field }}
                     </div>
@@ -24,7 +27,9 @@
 
 
 
-                <input type="submit" class="btn btn-dark" value="Save changes">
+                <div class="row justify-content-center pt-2 pb-4">
+            <input type="submit" class="btn btn-dark" value="Save changes">
+        </div>
 
             </div>
             </div>
