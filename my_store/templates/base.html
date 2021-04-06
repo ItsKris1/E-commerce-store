@@ -106,10 +106,14 @@
         {% endif %}
 
         <!-- SEARCH BAR -->
+        {% if price_sort_type or brand_name %}
+
+        {% else %}
 <form class="form-inline my-2 my-lg-0" method="get">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
       <button class="btn btn-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
     </form>
+        {% endif %}
 
 
     </div>
