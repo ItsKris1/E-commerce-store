@@ -9,7 +9,7 @@ class ProductCreateForm(forms.ModelForm):
         model = Product
         fields = ('name',
                   'brand',
-                  'quantity',
+                  'in_stock',
                   'price',
                   'description',
                   'category',
