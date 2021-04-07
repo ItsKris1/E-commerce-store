@@ -3,7 +3,7 @@ from django.views.generic import ListView, CreateView, DetailView, DeleteView, U
 from django.urls import reverse_lazy
 
 from django.contrib.auth.models import User
-from .models import Product, Category, Profile
+from .models import Product, Category, Profile, OrderItem, Order
 from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm
 
 from django.contrib.auth import login, authenticate
@@ -14,7 +14,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
 
-from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 # Products
@@ -290,11 +291,26 @@ def profile_update_view(request, pk):
     return render(request, 'user_profile_update_view.html', context)
 
 
+def add_to_cart(request, pk):
+    item = get_object_or_404(Product, pk=pk)
+    order_item, created = OrderItem.objects.get_or_create(
+        item=item,
+        user=request.user,
+        ordered=False,
+        )
 
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
 
+        if order.items.filter(item__pk=item.pk).exists():
+            order_item.quantity += 1
+            order_item.save()
+        else:
+            order.items.add(order_item)
+    else:
+        ordered_date = timezone.now()
+        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+        order.items.add(order_item)
 
-
-
-
-
-
+    return redirect('product_details', pk=pk)

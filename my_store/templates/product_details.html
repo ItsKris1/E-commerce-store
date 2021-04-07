@@ -45,7 +45,8 @@
 
 
                 {% if user.is_authenticated %}
-                <a class="btn btn-dark" href="{% url 'confirm_buy_product' products.id%}">Buy</a>
+                <a class="btn btn-dark" href="{% url 'confirm_buy_product' products.id %}">Buy</a>
+                    <a class="btn btn-dark" href="{% url 'add_to_cart' products.id %}">Add to cart</a>
                 {% endif %}
 
                 </div>
