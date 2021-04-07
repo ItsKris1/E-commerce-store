@@ -64,7 +64,7 @@
 
         <ul class="navbar-nav mr-3">
             <li class="nav-item">
-                <a class="text-white py-1 mr-2" href="#">
+                <a class="text-white py-1 mr-2" href="{% url 'order_summary' %}">
                     {{ request.user | cart_item_count }} Cart
                 </a>
             </li>

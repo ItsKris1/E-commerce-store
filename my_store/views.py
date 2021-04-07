@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView
+from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView, View
 from django.urls import reverse_lazy
 
 from django.contrib.auth.models import User
@@ -8,7 +8,8 @@ from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfil
 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.forms import UserCreationForm
 
@@ -292,6 +293,24 @@ def profile_update_view(request, pk):
     return render(request, 'user_profile_update_view.html', context)
 
 
+# Shopping Cart
+
+class OrderSummary(View, LoginRequiredMixin):
+    def get(self, *args, **kwargs):
+
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'order': order,
+            }
+            return render(self.request, 'order_summary.html', context)
+
+        except ObjectDoesNotExist:
+            messages.error(self.request, 'You dont have an order')
+            return redirect('products')
+
+
+@login_required
 def add_to_cart(request, pk):
     item = get_object_or_404(Product, pk=pk)
     order_item, created = OrderItem.objects.get_or_create(
@@ -320,6 +339,7 @@ def add_to_cart(request, pk):
     return redirect('product_details', pk=pk)
 
 
+@login_required
 def remove_from_cart(request, pk):
     item = get_object_or_404(Product, pk=pk)
     order_qs = Order.objects.filter(user=request.user, ordered=False)

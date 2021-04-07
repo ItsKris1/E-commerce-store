@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block header %}Order summary {% endblock %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <table class="table">
+
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total price</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for order_item in order.items.all %}
+                <tr>
+
+                    <th scope="row">1</th>
+                    <td>{{ order_item.item.name }}</td>
+                    <td>{{ order_item.quantity }}</td>
+                    <td>{{ order_item.item.price }}</td>
+                    <td>???</td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

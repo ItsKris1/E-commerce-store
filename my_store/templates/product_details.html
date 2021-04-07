@@ -13,7 +13,7 @@
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-        <li>{{ message }}</li>
+        <li> {{ message }}</li>
         {% endfor %}
     </ul>
 {% endif %}
@@ -53,10 +53,10 @@
 
                 {% if user.is_authenticated %}
                     <a class="btn btn-dark" href="{% url 'confirm_buy_product' products.id %}">Buy</a>
-                    <a class="btn btn-dark" href="{% url 'add_to_cart' products.id %}">Add to cart</a>
-                    <a class="btn btn-dark" href="{% url 'remove_from_cart' products.id %}">Remove from cart</a>
-                {% endif %}
 
+                {% endif %}
+                                        <a class="btn btn-dark" href="{% url 'add_to_cart' products.id %}">Add to cart</a>
+                    <a class="btn btn-dark" href="{% url 'remove_from_cart' products.id %}">Remove from cart</a>
                 </div>
 
             </div>
