@@ -22,8 +22,21 @@ class Product(models.Model):
         return self.name
 
 
+class OrderItem(models.Model):
+    item = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
 
 
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    items = models.ManyToManyField(OrderItem)
+    ordered = models.BooleanField(default=False)
+
+    start_date = models.DateTimeField(auto_now_add=True)
+    ordered_date = models.DateTimeField()
+
+    def __str__(self):
+        return self.user.username
 
 
 class Category(models.Model):
