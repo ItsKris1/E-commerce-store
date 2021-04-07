@@ -23,11 +23,11 @@
                 {% for order_item in order.items.all %}
                 <tr>
 
-                    <th scope="row">1</th>
+                    <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ order_item.item.name }}</td>
-                    <td>{{ order_item.quantity }}</td>
                     <td>{{ order_item.item.price }}</td>
-                    <td>???</td>
+                    <td>{{ order_item.quantity }}</td>
+                    <td>{{ order_item.get_total_price }}</td>
 
                 </tr>
                 {% endfor %}

@@ -32,6 +32,9 @@ class OrderItem(models.Model):
     def __str__(self):
         return f'{self.item.name} - {self.quantity}x'
 
+    def get_total_price(self):
+        return self.item.price * self.quantity
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -43,6 +46,8 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
 
 
 class Category(models.Model):

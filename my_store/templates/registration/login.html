@@ -103,7 +103,9 @@
 
                 </div>
 
-                <input type="submit" class="btn btn-dark" value="Log in">
+                <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+                <input type="submit" class="btn btn-dark" value="Log in"/>
+
             </div>
         </div>
     </div>

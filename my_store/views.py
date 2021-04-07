@@ -295,7 +295,7 @@ def profile_update_view(request, pk):
 
 # Shopping Cart
 
-class OrderSummary(View, LoginRequiredMixin):
+class OrderSummary(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
 
         try:
