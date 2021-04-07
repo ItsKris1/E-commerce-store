@@ -301,7 +301,7 @@ class OrderSummary(LoginRequiredMixin, View):
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
             context = {
-                'order': order,
+                'order': order
             }
             return render(self.request, 'order_summary.html', context)
 
@@ -327,6 +327,7 @@ def add_to_cart(request, pk):
             order_item.quantity += 1
             order_item.save()
             messages.info(request, 'The item quantity was updated')
+            return redirect('order_summary')
         else:
             order.items.add(order_item)
             messages.info(request, 'The item was added to the cart')
@@ -356,7 +357,41 @@ def remove_from_cart(request, pk):
             order.items.remove(order_item)
 
             messages.info(request, 'The item was removed from your cart')
+            return redirect('order_summary')
+
+        else:
+            messages.info(request, 'You dont have that item in your cart')
             return redirect('product_details', pk=pk)
+
+    else:
+        messages.info(request, 'You do not have an active order')
+        return redirect('product_details', pk=pk)
+
+
+@login_required
+def remove_single_item_from_cart(request, pk):
+    item = get_object_or_404(Product, pk=pk)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+
+    if order_qs.exists():
+        order = order_qs[0]
+
+        if order.items.filter(item__pk=item.pk).exists():
+            order_item = OrderItem.objects.filter(
+                item=item,
+                user=request.user,
+                ordered=False,
+            )[0]
+
+            if order_item.quantity > 1:
+                order_item.quantity -= 1
+                order_item.save()
+
+            else:
+                order.items.remove(order_item)
+
+            messages.info(request, 'This item quantity was updated.')
+            return redirect('order_summary')
 
         else:
             messages.info(request, 'You dont have that item in your cart')
