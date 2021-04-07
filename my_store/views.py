@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .models import Product, Category, Profile, OrderItem, Order
 from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm
 
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import LogoutView, LoginView
@@ -306,11 +307,41 @@ def add_to_cart(request, pk):
         if order.items.filter(item__pk=item.pk).exists():
             order_item.quantity += 1
             order_item.save()
+            messages.info(request, 'The item quantity was updated')
         else:
             order.items.add(order_item)
+            messages.info(request, 'The item was added to the cart')
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
+        messages.info(request, 'The item was added to the cart')
 
     return redirect('product_details', pk=pk)
+
+
+def remove_from_cart(request, pk):
+    item = get_object_or_404(Product, pk=pk)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+
+    if order_qs.exists():
+        order = order_qs[0]
+
+        if order.items.filter(item__pk=item.pk).exists():
+            order_item = OrderItem.objects.filter(
+                item=item,
+                user=request.user,
+                ordered=False,
+            )[0]
+            order.items.remove(order_item)
+
+            messages.info(request, 'The item was removed from your cart')
+            return redirect('product_details', pk=pk)
+
+        else:
+            messages.info(request, 'You dont have that item in your cart')
+            return redirect('product_details', pk=pk)
+
+    else:
+        messages.info(request, 'You do not have an active order')
+        return redirect('product_details', pk=pk)
