@@ -17,17 +17,9 @@ All products
 
 
 
-{% block searchbar %}
-<form class="form-inline my-2 my-lg-0" method="get" action="">
-      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</form>
-{% endblock %}
-
-
-
 
 {% block content %}
+
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -36,16 +28,24 @@ All products
     </ul>
 {% endif %}
 <div class="container-fluid">
+    <div class="row justify-content-center my-4">
+        <div class="col-lg-11">
+            <form class="form-inline float-right " method="get">
+                <input class="form-control text-left px-4" style="border: 1px solid #495057;" type="search" placeholder="Search product" aria-label="Search" name="search">
+                <button class="btn btn-dark" type="submit"><i class="fa fa-search " aria-hidden="true"></i></button>
+            </form>
+        </div>
+    </div>
 
     <div class="row  justify-content-center bg-light">
-        <div class="col-lg-2  mt-5">
+        <div class="col-lg-2 mb-5">
 
             {% if perms.create_product %}
                 <a class="btn btn-secondary  px-4 mb-3 " href="{% url 'create_product' %}">
                     <i class="fa fa-plus mr-2" aria-hidden="true"></i>Add product</a>
             {% endif %}
 
-            <div class="shadow-sm    bg-dark rounded text-white" style="padding: 12px;">Sort by:
+            <div class="shadow-sm bg-dark rounded text-white" style="padding: 12px;">Sort by:
                 <i class="fa fa-sort float-right" aria-hidden="true"></i></div>
 
             <!-- PRICE SORT -->
@@ -134,22 +134,19 @@ All products
         </div>
         <!-- BRAND SORT END-->
 
-    <div class="col-lg-8  mt-5">
+    <div class="col-lg-9">
         {% if price_sort_type or brand_name %}
 
         {% else %}
-        <div class="row row-cols-1 row-cols-md-4 justify-content-end pb-3">
 
-            <form class="form-inline" method="get">
-                <input class="form-control" type="search" placeholder="Search product" aria-label="Search" name="search">
-                <button class="btn btn-dark" type="submit"><i class="fa fa-search " aria-hidden="true"></i></button>
-            </form>
 
-        </div>
+
+
+
 
 
 {% endif %}
-        <div class="row row-cols-1 row-cols-md-4">
+        <div class="row row-cols-1 row-cols-md-5">
 
                 {% for p in products %}
                 <div class="col mb-4">
