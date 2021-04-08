@@ -41,13 +41,16 @@
     </button>
 
     <div class="navbar-collapse collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'products' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
 
+        <ul class="navbar-nav ">
+            <li class="nav-item active">
+                <a class="nav-link " href="{% url 'products' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Categories
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -62,11 +65,26 @@
             </li>
         </ul>
 
-        <ul class="navbar-nav mr-3">
-            <li class="nav-item">
-                <a class="text-white py-1 mr-2" href="{% url 'order_summary' %}">
-                    {{ request.user | cart_item_count }} Cart
-                </a>
+
+
+
+
+
+        <ul class="navbar-nav ">
+            <li class="nav-item ">
+
+                <div class="border-right">
+                    <a class="text-white mr-2" href="{% url 'order_summary' %}">
+                     <i class="fa fa-shopping-cart fa-lg mr-1 " aria-hidden="true"></i>Cart:
+                        <div class="font-weight-bold float-right mr-2">
+                            {{ request.user | cart_item_count }}
+                        </div>
+                    </a>
+
+                </div>
+
+
+
             </li>
         </ul>
 
@@ -77,9 +95,9 @@
 
 
         <ul class="navbar-nav">
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown ml-2 ">
                 <a class="nav-link text-white" href="#" id="UserDropdown" role="button" data-toggle="dropdown">
-                    <i class="fa fa-user mr-1" aria-hidden="true"></i>
+                    <i class="fa fa-user fa-lg mr-1" aria-hidden="true"></i>
                     {{ user | title }}
                 </a>
 
@@ -103,21 +121,17 @@
 
         {% else %}
         <ul class="navbar-nav ">
-            <li class="nav-item active">
-                        <a class="text-white py-1 px-3 " href="{% url 'login' %}">
-                            <i class="fa fa-sign-in mr-2" aria-hidden="true"></i>Login
+            <li class="nav-item active mr-2 ml-3">
+                        <a class="text-white" href="{% url 'login' %}">
+                            <i class="fa fa-sign-in fa-lg mr-1" aria-hidden="true"></i>Login
                         </a>
             </li>
         </ul>
 
-         <ul class="navbar-nav mr-3">
-            <li class="nav-item active">
-                        <a class="text-white" href="{% url 'sign_up' %}">
-                           <i class="fa fa-user mr-2" aria-hidden="true"></i>Sign up
-                        </a>
-            </li>
-        </ul>
+
         {% endif %}
+
+
 
         <!-- SEARCH BAR -->
 

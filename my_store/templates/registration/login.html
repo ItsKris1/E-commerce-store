@@ -103,10 +103,18 @@
 
                 </div>
 
+
                 <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-                <input type="submit" class="btn btn-dark" value="Log in"/>
+                <input type="submit" class="btn btn-dark pb-2" value="Log in"/>
+
+                <div class="row pl-3 pt-2">
+                    <p>Dont have an account?<a class=" ml-2" href="{% url 'sign_up'%}">Register here</a></p>
+
+
+                </div>
 
             </div>
+
         </div>
     </div>
 </form>
