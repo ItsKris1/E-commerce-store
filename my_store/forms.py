@@ -3,6 +3,9 @@ from .models import Product, Category, Profile
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
+from django_countries.fields import CountryField
+from django_countries.widgets import CountrySelectWidget
+
 
 class ProductCreateForm(forms.ModelForm):
     class Meta:
@@ -110,8 +113,6 @@ class SignUpForm(UserCreationForm):
                   'image')
 
 
-
-
 class UserUpdateForm(forms.ModelForm):
 
     username = forms.CharField(max_length=15,
@@ -140,4 +141,20 @@ class UserProfileUpdateForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
+
+
+class CheckoutForm(forms.Form):
+    street_address = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Main st 1234'}
+    ))
+    apartment_address = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Apartment, suite number'}
+    ))
+
+    zip = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control'}
+    ))
+
+    country = CountryField(blank_label='Select country').formfield(widget=forms.Select(attrs={'class': 'form-control'}))
+
 

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
+from django_countries.fields import CountryField
 # Create your models here.
 
 
@@ -36,12 +37,12 @@ class OrderItem(models.Model):
         return self.item.price * self.quantity
 
 
-
-
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     items = models.ManyToManyField(OrderItem)
     ordered = models.BooleanField(default=False)
+
+    billing_address = models.ForeignKey('BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
 
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
@@ -55,6 +56,17 @@ class Order(models.Model):
         for order_item in self.items.all():
             total = total + order_item.get_total_price()
         return total
+
+
+class BillingAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    street_address = models.CharField(max_length=100)
+    appartment_address = models.CharField(max_length=100)
+    zip = models.CharField(max_length=100)
+    country = CountryField(multiple=False)
+
+    def __str__(self):
+        return self.user.username
 
 
 class Category(models.Model):

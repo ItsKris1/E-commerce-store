@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.models import User
 from .models import Product, Category, Profile, OrderItem, Order
-from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm
+from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, CheckoutForm
 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
@@ -381,3 +381,23 @@ def add_single_item_to_cart(request, pk):
     order_item.save()
     messages.info(request, 'The item quantity was updated')
     return redirect('order_summary')
+
+
+class CheckoutView(View):
+
+    def get(self, *args, **kwargs):
+        form = CheckoutForm()
+        context = {
+            'form': form
+        }
+        return render(self.request, 'checkout.html', context)
+
+    def post(self, *args, **kwargs):
+        form = CheckoutForm(self.request.POST or None)
+
+        if form.is_valid():
+            print(form.cleaned_data)
+            return redirect('checkout')
+
+        messages.warning(self.request, 'Failed checkout')
+        return redirect('checkout')
