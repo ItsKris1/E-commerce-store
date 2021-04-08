@@ -25,9 +25,6 @@
      {% endif %}
 
 
-
-
-
     <div class="row justify-content-center no-gutters">
 
 
@@ -56,8 +53,10 @@
 
                     {% if not user.is_authenticated %}
 
-                    <button type="button" class="btn btn-dark" data-toggle="popover" data-trigger="focus"  data-content="You must be logged in to purchase products">Buy</button>
+                    <button type="button" class="btn btn-dark" data-toggle="popover" data-trigger="focus"  data-content="You must be logged in to purchase products">Add to cart</button>
 
+                    {% else %}
+                    <a class="btn btn-dark" href="{% url 'add_to_cart' products.id %}">Add to cart</a>
                     {% endif %}
 
                     {% if perms.my_store.update_product %}
@@ -65,10 +64,10 @@
                     <div class="btn-group float-right" role="group" aria-label="Basic example">
                     <a class="btn btn-dark" href="{% url 'delete_product' products.id %}">Delete</a>
                     <a class="btn btn-dark" href="{% url 'update_product' products.id %}">Update</a>
-                </div>
+                    </div>
                     {% endif %}
 
-                    <a class="btn btn-dark" href="{% url 'add_to_cart' products.id %}">Add to cart</a>
+
 
 
                 </div>

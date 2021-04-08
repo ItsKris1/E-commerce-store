@@ -76,26 +76,33 @@
         {% if user.is_authenticated %}
 
 
-        <ul class="navbar-nav mr-3">
-            <li class="nav-item">
-                <a class="text-white py-1 mr-2" href="{% url 'profile_view' user.profile.id %}">
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link text-white" href="#" id="UserDropdown" role="button" data-toggle="dropdown">
                     <i class="fa fa-user mr-1" aria-hidden="true"></i>
                     {{ user | title }}
                 </a>
+
+                <div class="dropdown-menu dropdown-menu-right" style="width: auto;" aria-labelledby="UserDropdown">
+                    <a class="dropdown-item text-black p-1 ml-2" href="{% url 'profile_view' user.profile.id %}">Details</a>
+
+                <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-black p-1 ml-2" href="{% url 'log_out' %}">
+                    Log out
+                </a>
+                </div>
+
             </li>
         </ul>
 
         <ul class="navbar-nav mr-3">
             <li class="nav-item">
-                <a class="text-white py-1 mr-2" href="{% url 'log_out' %}">
-                    <i class="fa fa-sign-in mr-1" aria-hidden="true"></i>
-                    Log out
-                </a>
+
             </li>
         </ul>
 
         {% else %}
-        <ul class="navbar-nav mr-3">
+        <ul class="navbar-nav ">
             <li class="nav-item active">
                         <a class="text-white py-1 px-3 " href="{% url 'login' %}">
                             <i class="fa fa-sign-in mr-2" aria-hidden="true"></i>Login
@@ -113,14 +120,7 @@
         {% endif %}
 
         <!-- SEARCH BAR -->
-        {% if price_sort_type or brand_name %}
 
-        {% else %}
-<form class="form-inline my-2 my-lg-0" method="get">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-    </form>
-        {% endif %}
 
 
     </div>
@@ -161,6 +161,8 @@
             {% endif %}
         </div>
 </div>
+
+
 
 
 
