@@ -15,7 +15,6 @@ urlpatterns = [
     path('add_single_item_to_cart/<int:pk>', views.add_single_item_to_cart, name='add_single_item_to_cart'),
     path('order_summary', views.OrderSummary.as_view(), name='order_summary'),
 
-    path('confirm_order/<int:pk>', views.ProductConfirmBuyView.as_view(), name='confirm_buy_product'),
 
     path('categories_list', views.CategoryListView.as_view(), name='categories'),
     path('create_category', views.CreateCategoryView.as_view(), name='create_category'),
