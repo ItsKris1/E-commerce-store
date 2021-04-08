@@ -3,7 +3,7 @@ from django.views.generic import ListView, CreateView, DetailView, DeleteView, U
 from django.urls import reverse_lazy
 
 from django.contrib.auth.models import User
-from .models import Product, Category, Profile, OrderItem, Order
+from .models import Product, Category, Profile, OrderItem, Order, BillingAddress
 from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, CheckoutForm
 
 from django.contrib import messages
@@ -394,10 +394,43 @@ class CheckoutView(View):
 
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
+        order_qs = Order.objects.filter(user=self.request.user, ordered=False)
+        if order_qs.exists():
+            order = order_qs[0]
 
-        if form.is_valid():
-            print(form.cleaned_data)
-            return redirect('checkout')
+            if form.is_valid():
+                street_address = form.cleaned_data.get('street_address')
+                appartment_address = form.cleaned_data.get('appartment_address')
+                zip = form.cleaned_data.get('zip')
+                country = form.cleaned_data.get('country')
+
+                billing_address = BillingAddress(
+                    user=self.request.user,
+                    street_address=street_address,
+                    appartment_address=appartment_address,
+                    zip=zip,
+                    country=country
+                )
+                billing_address.save()
+                order.billing_address = billing_address
+                order.save()
+
+                messages.info(self.request, 'Your checkout was successful!')
+                return redirect('checkout')
+
+        else:
+            messages.info(self.request, 'You dont have that an active order')
+            return redirect('order_summary')
 
         messages.warning(self.request, 'Failed checkout')
         return redirect('checkout')
+
+
+class ConfirmOrder(View):
+    def get(self, *args, **kwargs):
+        order = Order.objects.get(user=self.request.user, ordered=False)
+        context = {
+            'order': order,
+        }
+
+        return render(self.request, 'confirm_order.html', context)

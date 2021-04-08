@@ -147,7 +147,7 @@ class CheckoutForm(forms.Form):
     street_address = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Main st 1234'}
     ))
-    apartment_address = forms.CharField(required=False, widget=forms.TextInput(
+    appartment_address = forms.CharField(required=False, widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Apartment, suite number'}
     ))
 
