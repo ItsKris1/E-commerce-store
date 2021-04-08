@@ -148,18 +148,6 @@ class ProductUpdateView(UpdateView, PermissionRequiredMixin):
     context_object_name = 'products'
 
 
-class ProductBuyView(TemplateView):
-    template_name = 'bought_product.html'
-
-    def get_context_data(self, pk, **kwargs):
-        product = Product.objects.get(id=pk)
-        product.quantity = product.quantity - 1
-        product.save()
-
-        context = super().get_context_data(**kwargs)
-        context['product'] = product
-
-        return context
 
 
 class ProductConfirmBuyView(TemplateView):
@@ -327,7 +315,7 @@ def add_to_cart(request, pk):
             order_item.quantity += 1
             order_item.save()
             messages.info(request, 'The item quantity was updated')
-            return redirect('order_summary')
+            return redirect('product_details', pk=pk)
         else:
             order.items.add(order_item)
             messages.info(request, 'The item was added to the cart')
@@ -355,6 +343,7 @@ def remove_from_cart(request, pk):
                 ordered=False,
             )[0]
             order.items.remove(order_item)
+            order_item.delete()
 
             messages.info(request, 'The item was removed from your cart')
             return redirect('order_summary')
@@ -372,31 +361,41 @@ def remove_from_cart(request, pk):
 def remove_single_item_from_cart(request, pk):
     item = get_object_or_404(Product, pk=pk)
     order_qs = Order.objects.filter(user=request.user, ordered=False)
+    order = order_qs[0]
 
-    if order_qs.exists():
-        order = order_qs[0]
+    order_item = OrderItem.objects.filter(
+            item=item,
+            user=request.user,
+            ordered=False,
+        )[0]
 
-        if order.items.filter(item__pk=item.pk).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False,
-            )[0]
+    if order_item.quantity > 1:
+        order_item.quantity -= 1
+        order_item.save()
 
-            if order_item.quantity > 1:
-                order_item.quantity -= 1
-                order_item.save()
-
-            else:
-                order.items.remove(order_item)
-
-            messages.info(request, 'This item quantity was updated.')
-            return redirect('order_summary')
-
-        else:
-            messages.info(request, 'You dont have that item in your cart')
-            return redirect('product_details', pk=pk)
-
+        messages.info(request, 'This item quantity was updated.')
     else:
-        messages.info(request, 'You do not have an active order')
-        return redirect('product_details', pk=pk)
+        order.items.remove(order_item)
+        order_item.delete()
+
+        messages.info(request, 'The item was removed from your cart')
+
+    return redirect('order_summary')
+
+
+@login_required
+def add_single_item_to_cart(request, pk):
+    item = get_object_or_404(Product, pk=pk)
+    order_item, created = OrderItem.objects.get_or_create(
+        item=item,
+        user=request.user,
+        ordered=False,
+    )
+
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    order = order_qs[0]
+
+    order_item.quantity += 1
+    order_item.save()
+    messages.info(request, 'The item quantity was updated')
+    return redirect('order_summary')

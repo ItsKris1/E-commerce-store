@@ -10,14 +10,28 @@
 
 {% block content %}
 <div class="container pt-5">
+
     {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li> {{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    <div class="alert alert-info alert-dismissible fade show " role="alert">
+
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+     {% endif %}
+
+
+
+
+
     <div class="row justify-content-center no-gutters">
+
+
+
         <div class="col-lg-4 bg-light">
             {% if products.image %}
             <img src="{{ products.image.url }}" class="float-right bg-white"
@@ -39,28 +53,27 @@
                     <p class="card-text"><a href="{% url 'products' %}?category= {{ products.category.id}}">{{products.category}}</a></p>
 
 
-                {% if not user.is_authenticated %}
-                <button type="button" class="btn btn-dark" data-toggle="popover" data-trigger="focus"  data-content="You must be logged in to purchase products">Buy</button>
-                {% endif %}
-                {% if perms.my_store.update_product %}
-                <div class="btn-group float-right" role="group" aria-label="Basic example">
+
+                    {% if not user.is_authenticated %}
+
+                    <button type="button" class="btn btn-dark" data-toggle="popover" data-trigger="focus"  data-content="You must be logged in to purchase products">Buy</button>
+
+                    {% endif %}
+
+                    {% if perms.my_store.update_product %}
+
+                    <div class="btn-group float-right" role="group" aria-label="Basic example">
                     <a class="btn btn-dark" href="{% url 'delete_product' products.id %}">Delete</a>
                     <a class="btn btn-dark" href="{% url 'update_product' products.id %}">Update</a>
                 </div>
-                {% endif %}
+                    {% endif %}
+
+                    <a class="btn btn-dark" href="{% url 'add_to_cart' products.id %}">Add to cart</a>
 
 
-
-                {% if user.is_authenticated %}
-                    <a class="btn btn-dark" href="{% url 'confirm_buy_product' products.id %}">Buy</a>
-
-                {% endif %}
-                                        <a class="btn btn-dark" href="{% url 'add_to_cart' products.id %}">Add to cart</a>
-                    <a class="btn btn-dark" href="{% url 'remove_from_cart' products.id %}">Remove from cart</a>
                 </div>
-
             </div>
-    </div>
+        </div>
     </div>
 </div>
 

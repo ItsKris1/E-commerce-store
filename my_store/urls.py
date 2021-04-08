@@ -12,9 +12,9 @@ urlpatterns = [
     path('add_to_cart/<int:pk>', views.add_to_cart, name='add_to_cart'),
     path('remove_from_cart/<int:pk>', views.remove_from_cart, name='remove_from_cart'),
     path('remove_single_item_from_cart/<int:pk>', views.remove_single_item_from_cart, name='remove_single_item_from_cart'),
+    path('add_single_item_to_cart/<int:pk>', views.add_single_item_to_cart, name='add_single_item_to_cart'),
     path('order_summary', views.OrderSummary.as_view(), name='order_summary'),
 
-    path('bought_product/<int:pk>', views.ProductBuyView.as_view(), name='buy_product'),
     path('confirm_order/<int:pk>', views.ProductConfirmBuyView.as_view(), name='confirm_buy_product'),
 
     path('categories_list', views.CategoryListView.as_view(), name='categories'),
