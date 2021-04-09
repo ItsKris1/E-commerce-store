@@ -242,25 +242,28 @@ class UserProfileDeleteView(DeleteView):
 
 def profile_update_view(request, pk):
 
-    user = request.user
-    user_form = UserUpdateForm(request.POST or None, instance=request.user)
-
-    user_profile_form = UserProfileUpdateForm(request.POST or None, instance=request.user.profile)
-
     if request.method == 'POST':
+        user_profile_form = UserProfileUpdateForm(data=request.POST, files=request.FILES, instance=request.user.profile)
+        user_form = UserUpdateForm(data=request.POST, instance=request.user)
+
         if user_form.is_valid() and user_profile_form.is_valid():
+            uform = user_form.save()
+            upform = user_profile_form.save(commit=False)
 
-            user.save()
-            user.profile.save()
+            upform.user = uform
+            upform.save()
 
-            return redirect('profile_view', user.profile.id)
+            return redirect('profile_view', request.user.profile.id)
+    else:
+        user_profile_form = UserProfileUpdateForm(instance=request.user.profile)
+        user_form = UserUpdateForm(instance=request.user)
 
-    context = {
-        'user_form': user_form,
-        'user_profile_form': user_profile_form
-    }
+        context = {
+            'user_form': user_form,
+            'user_profile_form': user_profile_form
+        }
 
-    return render(request, 'user_profile_update_view.html', context)
+        return render(request, 'user_profile_update_view.html', context)
 
 
 # Shopping Cart
@@ -386,9 +389,14 @@ def add_single_item_to_cart(request, pk):
 class CheckoutView(View):
 
     def get(self, *args, **kwargs):
-        form = CheckoutForm()
-        order = Order.objects.get(user=self.request.user, ordered=False)
 
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+        except ObjectDoesNotExist:
+            messages.info(self.request, 'Something went wrong! (CHECKOUT)')
+            return redirect('products')
+
+        form = CheckoutForm()
         # check if user has billing address
         billing_address = BillingAddress.objects.get(user=self.request.user)
 
@@ -458,7 +466,11 @@ class ConfirmOrder(View):
 class FinishOrder(View):
 
     def get(self, *args, **kwargs):
-        order = Order.objects.get(user=self.request.user, ordered=False)
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+        except ObjectDoesNotExist:
+            messages.info(self.request, 'Order did not go through')
+            return redirect('products')
 
         for order_item in order.items.all():
             product_item = Product.objects.get(id=order_item.item.id)
@@ -468,7 +480,9 @@ class FinishOrder(View):
             order_item.ordered = True
             order_item.save()
 
-        order.ordered = True
-        order.save()
+            order.ordered = True
+            order.save()
 
-        return redirect('products')
+            messages.info(self.request, 'Order was succesful!')
+
+            return redirect('products')

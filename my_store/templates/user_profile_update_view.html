@@ -3,7 +3,7 @@
 {% block header %} Your profile {% endblock %}
 {% block title %} Change profile {% endblock %}
 {% block content %}
-<form method="post">{% csrf_token %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
 
 <div class="container pt-4">
         <div class="row justify-content-center">

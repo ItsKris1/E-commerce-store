@@ -133,6 +133,7 @@ class UserProfileUpdateForm(forms.ModelForm):
             'last_name',
             'location',
             'email',
+            'profile_picture'
         )
 
         widgets = {
@@ -140,6 +141,7 @@ class UserProfileUpdateForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'profile_picture': forms.FileInput(attrs={'class ': 'form-control-file'}),
         }
 
 

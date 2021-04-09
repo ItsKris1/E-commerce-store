@@ -7,8 +7,8 @@
 <div class="container pt-5">
     <div class="row no-gutters justify-content-center border-lg">
         <div class="col-lg-3 bg-light">
-            {% if user.profile.image %}
-            <img src="{{ user.profile.image.url }}" class="float-right"
+            {% if user.profile.profile_picture %}
+            <img src="{{ user.profile.profile_picture.url }}" class="float-right"
                  style="border: 1px solid rgba(0,0,0,.125); object-fit: contain; width: auto; max-height: 200px;">
             {% else %}
             <img src="{% static 'my_store/image/user_default_picture.jpg' %}" class="float-right"
@@ -19,7 +19,7 @@
         </div>
         <div class="col-lg-7 ">
 
-                <div class="card-body bg-white border-lg ml-2" style="max-width: 600px;">
+                <div class="card-body bg-white border" style="max-width: 600px;">
 
 
                     <h5 class="card-title font-weight-bold">{{user | title}}
