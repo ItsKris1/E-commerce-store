@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
 from django_countries.fields import CountryField
-from django_countries.widgets import CountrySelectWidget
+
 
 
 class ProductCreateForm(forms.ModelForm):

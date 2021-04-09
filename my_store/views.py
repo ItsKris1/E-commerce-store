@@ -1,19 +1,18 @@
-from django.shortcuts import render
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView, View
 from django.urls import reverse_lazy
 
-from django.contrib.auth.models import User
+
 from .models import Product, Category, Profile, OrderItem, Order, BillingAddress
 from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, CheckoutForm
 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.views import LogoutView, LoginView
-from django.contrib.auth.forms import UserCreationForm
 
-from django.contrib.messages.views import SuccessMessageMixin
+
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.utils import timezone

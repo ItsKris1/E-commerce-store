@@ -46,7 +46,7 @@
                     <p class="card-text font-weight-bold">${{products.price}}</p>
                     <p class="card-text ">Brand: {{products.brand}}</p>
 
-                    <p class="card-text">In stock: {{products.quantity}}</p>
+                    <p class="card-text">In stock: {{products.in_stock}}</p>
                     <p class="card-text"><a href="{% url 'products' %}?category= {{ products.category.id}}">{{products.category}}</a></p>
 
 

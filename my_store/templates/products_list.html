@@ -21,7 +21,7 @@ All products
 {% block content %}
 
 
-<div class="container-fluid">
+<div class="container-fluid bg-light" style="">
     {% if messages %}
             <div class="alert alert-info alert-dismissible fade show mb-0 mt-2" role="alert">
                 {% for message in messages %}
@@ -41,7 +41,7 @@ All products
         </div>
     </div>
 
-    <div class="row  justify-content-center bg-light">
+    <div class="row  justify-content-center ">
         <div class="col-lg-2 mb-5">
 
             {% if perms.create_product %}
@@ -139,39 +139,33 @@ All products
         <!-- BRAND SORT END-->
 
     <div class="col-lg-9">
-        {% if price_sort_type or brand_name %}
-
-        {% else %}
-
-
-
-
-
-
-
-{% endif %}
-        <div class="row row-cols-1 row-cols-md-5">
+        <div class="row row-cols-1 row-cols-lg-4">
 
                 {% for p in products %}
-                <div class="col mb-4">
-                    <div class="card">
+                <div class="col px-4 mb-4" style="">
+                    <div class="card border" style="">
                         <a  class="card-link" href="{% url 'product_details' p.id %}">
                             {% if p.image %}
                             <img src="{{ p.image.url }}" class="card-img-top" alt="..." style="padding: 10px; height: 200px; object-fit: contain;">
                             {% endif %}
                         </a>
 
-                        <div class="card-body">
-                            <p>
+
+                            <div class="card-footer" style="">
+                                <p>
                                 <a class="text-dark" href="{% url 'product_details' p.id %}">
-                                    <h5 class="card-title font-weight-bold">{{p.name}}</h5>
+                                    <h5 class="card-title font-weight-bold text-black">{{p.name}}</h5>
                                 </a>
                             </p>
                             <div class="row justify-content-end">
-                                <p class="card-text shadow  px-1 rounded font-weight-bold">
+                                <p class="card-text shadow   rounded font-weight-bold">
                                     ${{p.price}}
                                 </p>
                             </div>
+
+
+
+
                         </div>
                     </div>
                 </div>
