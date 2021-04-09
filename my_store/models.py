@@ -59,6 +59,7 @@ class Order(models.Model):
 
 
 class BillingAddress(models.Model):
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
     appartment_address = models.CharField(max_length=100)

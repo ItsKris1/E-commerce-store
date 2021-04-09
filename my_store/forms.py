@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 
 
-
 class ProductCreateForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -146,6 +145,10 @@ class UserProfileUpdateForm(forms.ModelForm):
 
 
 class CheckoutForm(forms.Form):
+    PAYMENT_OPTIONS = [
+        ('S', 'Stripe'),
+        ('P', 'Paypal'),
+    ]
     street_address = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Main st 1234'}
     ))
@@ -158,5 +161,7 @@ class CheckoutForm(forms.Form):
     ))
 
     country = CountryField(blank_label='Select country').formfield(widget=forms.Select(attrs={'class': 'form-control'}))
+
+    payment_options = forms.ChoiceField(widget=forms.RadioSelect(attrs={'class': 'form-check'}), choices=PAYMENT_OPTIONS)
 
 

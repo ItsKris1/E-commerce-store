@@ -411,15 +411,17 @@ class CheckoutView(View):
         order_qs = Order.objects.filter(user=self.request.user, ordered=False)
 
         # check if user has billing address
-        billing_address = BillingAddress.objects.get(user=self.request.user)
+        # billing_address = BillingAddress.objects.get(user=self.request.user)
 
         if order_qs.exists():
             order = order_qs[0]
 
-            if billing_address:
+            """
+                if billing_address:
                 order.billing_address = billing_address
                 order.save()
                 return redirect('confirm_order')
+            """
 
             if form.is_valid():
 
@@ -427,13 +429,15 @@ class CheckoutView(View):
                 appartment_address = form.cleaned_data.get('appartment_address')
                 zip = form.cleaned_data.get('zip')
                 country = form.cleaned_data.get('country')
+                payment_options = form.cleaned_data.get('payment_options')
 
                 billing_address = BillingAddress(
                     user=self.request.user,
                     street_address=street_address,
                     appartment_address=appartment_address,
                     zip=zip,
-                    country=country
+                    country=country,
+                    payment_options=payment_options
                 )
                 billing_address.save()
                 order.billing_address = billing_address
