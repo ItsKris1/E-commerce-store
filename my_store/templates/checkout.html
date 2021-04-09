@@ -2,10 +2,26 @@
 
 {% block header %}Checkout{% endblock %}
 {% block content %}
+
+
+
+
 <form method="post">
     {% csrf_token %}
     <div class="container pt-4">
         <div class="row justify-content-center">
+            {% if billing_address %}
+            <div class="col-lg-4">
+            <div class="title pb-3">
+                <h5 class="font-weight-bold border-bottom border-secondary pb-2 pt-2">You already have an billing address</h5>
+            </div>
+            <input type="submit" class="btn btn-dark" value="Continue">
+            <a class="btn btn-dark" href="#">I want to create a new one</a>
+        </div>
+    </div>
+    </div>
+            {% else %}
+
             <div class="col-lg-4 ">
                     <div class="title pb-3">
                         <h5 class="font-weight-bold border-bottom border-secondary pb-2 pt-2">Billing address<i class="fa fa-arrow-down float-right" aria-hidden="true"></i></h5>
@@ -21,10 +37,9 @@
 
                 <div class="row justify-content-center pt-2 pb-4">
             <input type="submit" class="btn btn-dark" value="Continue">
+                    {% endif %}
         </div>
 
             </div>
-            </div>
-        </div>
 </form>
 {% endblock %}

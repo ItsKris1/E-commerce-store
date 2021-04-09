@@ -277,7 +277,7 @@ class OrderSummary(LoginRequiredMixin, View):
 
         except ObjectDoesNotExist:
             messages.error(self.request, 'You dont have an order')
-            return redirect('products')
+            return render(self.request, 'order_summary.html', {})
 
 
 @login_required
@@ -387,18 +387,35 @@ class CheckoutView(View):
 
     def get(self, *args, **kwargs):
         form = CheckoutForm()
+        order = Order.objects.get(user=self.request.user, ordered=False)
+
+        # check if user has billing address
+        billing_address = BillingAddress.objects.get(user=self.request.user)
+
         context = {
-            'form': form
+            'form': form,
+            'order': order,
+            'billing_address': billing_address,
         }
         return render(self.request, 'checkout.html', context)
 
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
         order_qs = Order.objects.filter(user=self.request.user, ordered=False)
+
+        # check if user has billing address
+        billing_address = BillingAddress.objects.get(user=self.request.user)
+
         if order_qs.exists():
             order = order_qs[0]
 
+            if billing_address:
+                order.billing_address = billing_address
+                order.save()
+                return redirect('confirm_order')
+
             if form.is_valid():
+
                 street_address = form.cleaned_data.get('street_address')
                 appartment_address = form.cleaned_data.get('appartment_address')
                 zip = form.cleaned_data.get('zip')
@@ -416,7 +433,7 @@ class CheckoutView(View):
                 order.save()
 
                 messages.info(self.request, 'Your checkout was successful!')
-                return redirect('checkout')
+                return redirect('confirm_order')
 
         else:
             messages.info(self.request, 'You dont have that an active order')
@@ -429,8 +446,29 @@ class CheckoutView(View):
 class ConfirmOrder(View):
     def get(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, ordered=False)
+        billing_address = BillingAddress.objects.get(user=self.request.user)
         context = {
             'order': order,
+            'billing_address': billing_address,
         }
 
         return render(self.request, 'confirm_order.html', context)
+
+
+class FinishOrder(View):
+
+    def get(self, *args, **kwargs):
+        order = Order.objects.get(user=self.request.user, ordered=False)
+
+        for order_item in order.items.all():
+            product_item = Product.objects.get(id=order_item.item.id)
+            product_item.in_stock -= order_item.quantity
+            product_item.save()
+
+            order_item.ordered = True
+            order_item.save()
+
+        order.ordered = True
+        order.save()
+
+        return redirect('products')
