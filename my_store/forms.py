@@ -162,6 +162,5 @@ class CheckoutForm(forms.Form):
 
     country = CountryField(blank_label='Select country').formfield(widget=forms.Select(attrs={'class': 'form-control'}))
 
-    payment_options = forms.ChoiceField(widget=forms.RadioSelect(attrs={'class': 'form-check'}), choices=PAYMENT_OPTIONS)
 
 

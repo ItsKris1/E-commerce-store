@@ -25,7 +25,7 @@ SECRET_KEY = 'opsu7dg7gl=mo&+0eh!6(n31f0o59!-liphahm1rgfd0)55h)a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['c11df4d71fba.ngrok.io',]
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'my_store',
     'django_countries',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = '/products_list'
 LOGOUT_REDIRECT_URL = '/products_list'
+
+PAYPAL_RECEIVER_EMAIL = 'sb-zpf3o5830270@business.example.com'
+PAYPAL_TEST = True

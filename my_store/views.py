@@ -1,23 +1,24 @@
-from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView, View
+from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView, View, FormView
 from django.urls import reverse_lazy
-
+from django.conf import settings
 
 from .models import Product, Category, Profile, OrderItem, Order, BillingAddress
 from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, CheckoutForm
-
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.views import LogoutView, LoginView
-
-
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 
+from paypal.standard.forms import PayPalPaymentsForm
 
 # Products
 class ProductsListView(ListView):
@@ -396,13 +397,10 @@ class CheckoutView(View):
             return redirect('products')
 
         form = CheckoutForm()
-        # check if user has billing address
-        billing_address = BillingAddress.objects.get(user=self.request.user)
 
         context = {
             'form': form,
             'order': order,
-            'billing_address': billing_address,
         }
         return render(self.request, 'checkout.html', context)
 
@@ -443,7 +441,7 @@ class CheckoutView(View):
                 order.save()
 
                 messages.info(self.request, 'Your checkout was successful!')
-                return redirect('payment')
+                return redirect('products')
 
         else:
             messages.info(self.request, 'You dont have that an active order')
@@ -452,15 +450,39 @@ class CheckoutView(View):
         messages.warning(self.request, 'Failed checkout')
         return redirect('checkout')
 
+# PROCESS PAYMENT
 
-class PaymentView(View):
-    def get(self, *args, **kwargs):
-        order = Order.objects.get(user=self.request.user, ordered=False)
-        context = {
-            'order': order,
-        }
 
-        return render(self.request, 'payment.html', context)
+"""
+@csrf_exempt
+def payment_done(request):
+    return render(request, 'payment_done.html')
+"""
+
+""""
+@csrf_exempt
+def payment_canceled(request):
+    return render(request, 'payment_cancelled.html')
+"""
+
+
+def process_payment(request):
+
+    paypal_dict = {
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        # '%.2f' % 5,
+        'amount': 150,
+        'item_name': 'Someitem',
+        'invoice': str(9),
+        'currency_code': 'USD',
+
+        'notify_url': request.build_absolute_uri(reverse('paypal-ipn')),
+        'return_url': request.build_absolute_uri(reverse('products')),
+        'cancel_return': request.build_absolute_uri(reverse('products')),
+    }
+
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    return render(request, 'payment.html', {'form': form})
 
 
 class FinishOrder(View):

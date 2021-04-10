@@ -17,26 +17,14 @@
 
                 {% for field in form %}
 
-                    {% if forloop.last %}
-                <div class="title pb-2">
-                        <h5 class="font-weight-bold border-bottom border-secondary  pb-2 pt-3">Payment method<i class="fa fa-arrow-down float-right" aria-hidden="true"></i></h5>
-                    </div>
-                    {% for radio in form.payment_options %}
-                    <div class="form-check py-1">
 
-                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                        <label class="form-check-label" for="exampleRadios2">
-                        {{ radio.choice_label }}
-                        </label>
-                    </div>
-                    {% endfor %}
 
-                    {% else %}
+
                         <div class="form-group ">
                             {{ field.label_tag }}
                             {{ field }}
                         </div>
-                    {% endif %}
+
                 {% endfor %}
             </div>
         </div>

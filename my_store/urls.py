@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
 from .forms import UserLoginForm
@@ -16,8 +16,11 @@ urlpatterns = [
 
     path('order_summary', views.OrderSummary.as_view(), name='order_summary'),
     path('checkout', views.CheckoutView.as_view(), name='checkout'),
-    path('payment/<payment_option>', views.PaymentView.as_view(), name='payment_option'),
     path('finished_order', views.FinishOrder.as_view(), name='finished_order'),
+
+    path('process_payment', views.process_payment, name='payment_form'),
+    # path('payment_done', views.payment_done, name='payment_done'),
+    # path('paypal_return', views.payment_canceled, name='payment_cancelled'),
 
 
     path('categories_list', views.CategoryListView.as_view(), name='categories'),
