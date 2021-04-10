@@ -437,14 +437,13 @@ class CheckoutView(View):
                     appartment_address=appartment_address,
                     zip=zip,
                     country=country,
-                    payment_options=payment_options
                 )
                 billing_address.save()
                 order.billing_address = billing_address
                 order.save()
 
                 messages.info(self.request, 'Your checkout was successful!')
-                return redirect('confirm_order')
+                return redirect('payment')
 
         else:
             messages.info(self.request, 'You dont have that an active order')
@@ -454,16 +453,14 @@ class CheckoutView(View):
         return redirect('checkout')
 
 
-class ConfirmOrder(View):
+class PaymentView(View):
     def get(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, ordered=False)
-        billing_address = BillingAddress.objects.get(user=self.request.user)
         context = {
             'order': order,
-            'billing_address': billing_address,
         }
 
-        return render(self.request, 'confirm_order.html', context)
+        return render(self.request, 'payment.html', context)
 
 
 class FinishOrder(View):
