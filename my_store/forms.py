@@ -1,5 +1,6 @@
 from django import forms
 from .models import Product, Category, Profile, ShippingAddress
+
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
@@ -37,6 +38,9 @@ class CategoryCreateForm(forms.ModelForm):
         }
 
 
+"""AUTHENTICATION"""
+
+
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(UserLoginForm, self).__init__(*args, **kwargs)
@@ -58,53 +62,36 @@ class SignUpForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
 
-    username = forms.CharField(max_length=15,
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'Username'}
-        )
-    )
+    #
+    username = forms.CharField(max_length=15,widget=forms.TextInput(
+        attrs={'class': 'form-control', 'id': 'Username'}))
+    #
+    password1 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'type': 'password', 'id': 'Password'}))
 
-    password1 = forms.CharField(
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'type': 'password', 'id': 'Password'}
-        )
-    )
+    #
+    password2 = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'type': 'password', 'id': 'Retype password'}))
 
-    password2 = forms.CharField(
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'type': 'password', 'id': 'Retype password'}
-        )
-    )
+    #
+    first_name = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'id': 'First name'}))
 
-    first_name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'First name'}
-        )
-    )
+    #
+    last_name = forms.CharField(widget=forms.TextInput(
+            attrs={'class': 'form-control', 'id': 'Last name'}))
 
-    last_name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'Last name'}
-        )
-    )
+    #
+    email = forms.EmailField(required=False, widget=forms.TextInput(
+            attrs={'class': 'form-control', 'id': 'Email'}))
 
-    email = forms.EmailField(required=False,
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'Email'}
-        )
-    )
+    #
+    location = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'id': 'Location'}))
 
-    location = forms.CharField(required=False,
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'Location'}
-        )
-    )
-
-    image = forms.ImageField(required=False,
-        widget=forms.FileInput(
-            attrs={'class': 'form-control', 'id': 'Profile picture'}
-        )
-    )
+    #
+    image = forms.ImageField(required=False, widget=forms.FileInput(
+            attrs={'class': 'form-control', 'id': 'Profile picture'}))
 
     class Meta:
         model = User
@@ -112,8 +99,13 @@ class SignUpForm(UserCreationForm):
                   'image')
 
 
-class UserUpdateForm(forms.ModelForm):
+""""""
 
+
+"""USER & PROFILE"""
+
+
+class UserUpdateForm(forms.ModelForm):
     username = forms.CharField(max_length=15,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'Username'}))
 
@@ -123,7 +115,6 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class UserProfileUpdateForm(forms.ModelForm):
-
     class Meta:
         model = Profile
         fields = (
@@ -144,20 +135,24 @@ class UserProfileUpdateForm(forms.ModelForm):
         }
 
 
+""""""
+
+"""BILLING & SHIPPING"""
+
+
 class BillingForm(forms.Form):
 
     street_address = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Main st 1234'}
-    ))
+        attrs={'class': 'form-control', 'placeholder': 'Main st 1234'}))
+
     appartment_address = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Apartment, suite number'}
-    ))
+        attrs={'class': 'form-control', 'placeholder': 'Apartment, suite number'}))
 
     zip = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control' ,'placeholder': 'Postal code'}
-    ))
+        attrs={'class': 'form-control', 'placeholder': 'Postal code'}))
 
-    country = CountryField(blank_label='Select country').formfield(widget=forms.Select(attrs={'class': 'form-control'}))
+    country = CountryField(blank_label='Select country').formfield(widget=forms.Select(
+        attrs={'class': 'form-control'}))
 
 
 class ShippingForm(forms.ModelForm):
@@ -172,3 +167,5 @@ class ShippingForm(forms.ModelForm):
             'country': forms.Select(attrs={'class': 'form-control'}),
         }
 
+
+""""""

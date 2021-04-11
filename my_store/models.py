@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.exceptions import ObjectDoesNotExist
+
 from django_countries.fields import CountryField
-# Create your models here.
 
 
 class Product(models.Model):
@@ -21,6 +21,41 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=60)
+
+    def __str__(self):
+        return self.name
+
+
+"""PROFILE"""
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
+    location = models.CharField(max_length=300, blank=True, null=True)
+    email = models.EmailField(max_length=250, blank=True, null=True)
+    profile_picture = models.ImageField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+        instance.profile.save()
+
+
+""""""
+
+
+"""ORDER SYSTEM"""
 
 
 class OrderItem(models.Model):
@@ -59,6 +94,12 @@ class Order(models.Model):
         return total
 
 
+""""""
+
+
+"""BILLING & SHIPPING"""
+
+
 class BillingAddress(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -82,28 +123,8 @@ class ShippingAddress(models.Model):
         return self.user.username
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=60)
-
-    def __str__(self):
-        return self.name
+""""""
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=30, blank=True, null=True)
-    last_name = models.CharField(max_length=30, blank=True, null=True)
-    location = models.CharField(max_length=300, blank=True, null=True)
-    email = models.EmailField(max_length=250, blank=True, null=True)
-    profile_picture = models.ImageField(blank=True, null=True)
 
-    def __str__(self):
-        return self.user.username
-
-
-@receiver(post_save, sender=User)
-def update_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
 
