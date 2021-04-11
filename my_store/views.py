@@ -1,9 +1,11 @@
+
+from .models import Product, Category, Profile, OrderItem, Order, BillingAddress, ShippingAddress
+from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, BillingForm, ShippingForm
+
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView, View, FormView
 from django.urls import reverse_lazy
 from django.conf import settings
 
-from .models import Product, Category, Profile, OrderItem, Order, BillingAddress, ShippingAddress
-from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, BillingForm, ShippingForm
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
@@ -20,59 +22,54 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from paypal.standard.forms import PayPalPaymentsForm
 
-# Products
+
+"""PRODUCTS 1"""
+
+
 class ProductsListView(ListView):
     model = Product
     template_name = 'products_list.html'
     context_object_name = 'products'
 
+    """QUERYSETS"""
     def get_queryset(self):
         products = Product.objects.all()
 
         # SORT BY PRICE
         price = self.request.GET.get('price', None)
-
         if price == 'desc':
             products = products.order_by('-price')
 
         if price == 'asc':
             products = products.order_by('price')
 
-        # -- SORT BY PRICE END --
-
         # SORT BY BRAND
         brand = self.request.GET.get('brand', None)
-
         if brand is not None:
             products = products.filter(brand__iexact=brand)
-
-        # -- SORT BY BRAND END --
+        #
 
         # SORT BY SEARCH
         search = self.request.GET.get('search', None)
-
         if search is not None:
             products = products.filter(name__icontains=search)
+        #
 
-        # -- SORT BY SEARCH END --
-
-        # -- SORT BY CATEGORY
+        # SORT BY CATEGORY
         category_id = self.request.GET.get('category', None)
-
         if category_id is not None:
             products = products.filter(category__id=int(category_id))
-
-        # -- SORT BY CATEGORY END --
+        #
 
         return products
 
+    """CONTEXT"""
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
 
         # CATEGORIES
         categories = Category.objects.all()
         context['categories'] = categories
-        # --
 
         # CATEGORY NAME
         category_id = self.request.GET.get('category', None)
@@ -83,25 +80,31 @@ class ProductsListView(ListView):
 
         context['category_name'] = category_name
 
-        # --
-
+        # BRAND NAME FROM URL
         brand_name = self.request.GET.get('brand')
         context['brand_name'] = brand_name
 
+        # PRICE SORT TYPE
         price_sort_type = self.request.GET.get('price')
         context['price_sort_type'] = price_sort_type
+        #
 
-        # --
-
+        # ALL BRAND NAMES ON - ALL PRODUCTS or CATEGORIES
         product_brands = Product.objects.values_list('brand', flat=True).distinct()
-        # BRAND NAMES
+
         if category_name is None:
             brand_names = product_brands
         else:
             brand_names = product_brands.filter(category__id=category_id)
 
         context['brand_names'] = brand_names
+
         return context
+
+
+""""""
+#
+"""PRODUCTS 2"""
 
 
 class CreateProductView(CreateView, PermissionRequiredMixin):
@@ -109,7 +112,6 @@ class CreateProductView(CreateView, PermissionRequiredMixin):
     template_name = 'create_product.html'
     form_class = ProductCreateForm
     model = Product
-    # fields = '__all__'
     success_url = reverse_lazy('products')
 
 
@@ -148,7 +150,11 @@ class ProductUpdateView(UpdateView, PermissionRequiredMixin):
     context_object_name = 'products'
 
 
-# Categories
+""""""
+#
+"""CATEGORIES"""
+
+
 class CategoryListView(ListView):
     model = Category
     template_name = 'category_list.html'
@@ -192,7 +198,11 @@ class CategoryUpdateView(UpdateView):
     success_url = reverse_lazy('categories')
 
 
-# AUTHENTICATION
+""""""
+#
+"""AUTHENTICATION"""
+
+
 class Logout(LogoutView):
     next_page = 'products'
 
@@ -225,7 +235,10 @@ def signup_view(request):
     return render(request, 'registration/sign_up.html', {'form': form})
 
 
-# PROFILE
+""""""
+#
+"""USER & PROFILE"""
+
 
 class UserProfileDetailsView(DetailView):
     template_name = 'user_profile_view.html'
@@ -266,21 +279,9 @@ def profile_update_view(request, pk):
         return render(request, 'user_profile_update_view.html', context)
 
 
-# Shopping Cart
-
-class ShoppingCart(LoginRequiredMixin, View):
-    def get(self, *args, **kwargs):
-
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-            context = {
-                'order': order
-            }
-            return render(self.request, 'shopping_cart.html', context)
-
-        except ObjectDoesNotExist:
-            messages.error(self.request, 'You dont have an order')
-            return render(self.request, 'shopping_cart.html', {})
+""""""
+#
+"""BILLING & SHIPPING"""
 
 
 class BillingShippingView(View):
@@ -302,15 +303,17 @@ class BillingShippingView(View):
         }
         return render(self.request, 'billing_shipping.html', context)
 
+    #
     def post(self, *args, **kwargs):
         b_form = BillingForm(self.request.POST or None)
         s_form = ShippingForm(self.request.POST or None)
         order_qs = Order.objects.filter(user=self.request.user, ordered=False)
 
+        #
         if order_qs.exists():
             order = order_qs[0]
             if b_form.is_valid() and s_form.is_valid():
-                # BILLING FORM
+                # HANDELING BILLING FORM
                 b_street_address = b_form.cleaned_data.get('street_address')
                 b_appartment_address = b_form.cleaned_data.get('appartment_address')
                 b_zip = b_form.cleaned_data.get('zip')
@@ -326,8 +329,9 @@ class BillingShippingView(View):
                 billing_address.save()
                 order.billing_address = billing_address
                 order.save()
+                #
 
-                # SHIPPING FORM
+                # HANDELING SHIPPING FORM
                 s_street_address = s_form.cleaned_data.get('street_address')
                 s_appartment_address = s_form.cleaned_data.get('appartment_address')
                 s_zip = s_form.cleaned_data.get('zip')
@@ -343,13 +347,17 @@ class BillingShippingView(View):
                 shipping_address.save()
                 order.shipping_address = shipping_address
                 order.save()
+                #
 
                 messages.info(self.request, 'Your checkout was successful!')
                 return redirect('products')
 
 
+""""""
+
 
 # PROCESS PAYMENT
+
 """
 @csrf_exempt
 def payment_done(request):
@@ -381,6 +389,7 @@ def process_payment(request):
     form = PayPalPaymentsForm(initial=paypal_dict)
     return render(request, 'payment.html', {'form': form})
 """
+#
 
 
 class FinishOrder(View):
@@ -406,6 +415,25 @@ class FinishOrder(View):
             messages.info(self.request, 'Order was succesful!')
 
             return redirect('products')
+
+
+"""SHOPPING CART"""
+
+
+class ShoppingCart(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'order': order
+            }
+            return render(self.request, 'shopping_cart.html', context)
+
+        except ObjectDoesNotExist:
+            messages.error(self.request, 'You dont have an order')
+            return render(self.request, 'shopping_cart.html', {})
+
 
 @login_required
 def add_to_cart(request, pk):
@@ -508,3 +536,6 @@ def add_single_item_to_cart(request, pk):
     order_item.save()
     messages.info(request, 'The item quantity was updated')
     return redirect('shopping_cart')
+
+
+""""""
