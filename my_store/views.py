@@ -28,7 +28,7 @@ from paypal.standard.forms import PayPalPaymentsForm
 
 class ProductsListView(ListView):
     model = Product
-    template_name = 'products_list.html'
+    template_name = 'products/products_list.html'
     context_object_name = 'products'
 
     """QUERYSETS"""
@@ -109,14 +109,14 @@ class ProductsListView(ListView):
 
 class CreateProductView(CreateView, PermissionRequiredMixin):
     permission_required = ['my_store.add_product']
-    template_name = 'create_product.html'
+    template_name = 'products/create_product.html'
     form_class = ProductCreateForm
     model = Product
     success_url = reverse_lazy('products')
 
 
 class ProductDetailsView(DetailView):
-    template_name = 'product_details.html'
+    template_name = 'products/product_details.html'
     model = Product
     context_object_name = 'products'
 
@@ -132,7 +132,7 @@ class ProductDetailsView(DetailView):
 class ProductDeleteView(DeleteView, PermissionRequiredMixin):
     permission_required = ['my_store.delete_product']
 
-    template_name = 'product_confirm_delete.html'
+    template_name = 'products/product_confirm_delete.html'
     model = Product
     success_url = reverse_lazy('products')
     context_object_name = 'products'
@@ -144,7 +144,7 @@ class ProductUpdateView(UpdateView, PermissionRequiredMixin):
     def get_success_url(self):
         return reverse_lazy('product_details', args=(self.object.id,))
 
-    template_name = 'update_product.html'
+    template_name = 'products/update_product.html'
     model = Product
     form_class = ProductCreateForm
     context_object_name = 'products'
@@ -157,7 +157,7 @@ class ProductUpdateView(UpdateView, PermissionRequiredMixin):
 
 class CategoryListView(ListView):
     model = Category
-    template_name = 'category_list.html'
+    template_name = 'category/category_list.html'
     context_object_name = 'categories'
 
     def get_queryset(self):
@@ -174,7 +174,7 @@ class CategoryListView(ListView):
 class CreateCategoryView(CreateView, PermissionRequiredMixin):
     permission_required = ['my_store.create_category']
 
-    template_name = 'create_category.html'
+    template_name = 'category/create_category.html'
     form_class = CategoryCreateForm
     model = Category
     # fields = '__all__'
@@ -184,14 +184,14 @@ class CreateCategoryView(CreateView, PermissionRequiredMixin):
 class CategoryDeleteView(DeleteView, PermissionRequiredMixin):
     permission_required = ['my_store.delete_category']
 
-    template_name = 'category_confirm_delete.html'
+    template_name = 'category/category_confirm_delete.html'
     model = Category
     success_url = reverse_lazy('categories')
     context_object_name = 'categories1'
 
 
 class CategoryUpdateView(UpdateView):
-    template_name = 'update_category.html'
+    template_name = 'category/update_category.html'
     model = Category
     context_object_name = 'categories1'
     fields = '__all__'
@@ -241,14 +241,14 @@ def signup_view(request):
 
 
 class UserProfileDetailsView(DetailView):
-    template_name = 'user_profile_view.html'
+    template_name = 'profile/user_profile_view.html'
     model = Profile
     context_object_name = 'profile'
 
 
 class UserProfileDeleteView(DeleteView):
     model = User
-    template_name = 'profile_delete.html'
+    template_name = 'profile/profile_delete.html'
     context_object_name = 'user'
     success_url = reverse_lazy('products')
 
@@ -276,7 +276,7 @@ def profile_update_view(request, pk):
             'user_profile_form': user_profile_form
         }
 
-        return render(request, 'user_profile_update_view.html', context)
+        return render(request, 'profile/user_profile_update_view.html', context)
 
 
 """"""
