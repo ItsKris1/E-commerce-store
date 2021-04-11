@@ -280,6 +280,12 @@ def profile_update_view(request, pk):
 
 
 """"""
+
+
+def payment_view(request):
+    return render(request, 'payment.html', {})
+
+
 #
 """BILLING & SHIPPING"""
 
@@ -349,47 +355,11 @@ class BillingShippingView(View):
                 order.save()
                 #
 
-                messages.info(self.request, 'Your checkout was successful!')
-                return redirect('products')
+                messages.info(self.request, 'TODO!')
+                return redirect('payment')
 
 
 """"""
-
-
-# PROCESS PAYMENT
-
-"""
-@csrf_exempt
-def payment_done(request):
-    return render(request, 'payment_done.html')
-"""
-
-""""
-@csrf_exempt
-def payment_canceled(request):
-    return render(request, 'payment_cancelled.html')
-"""
-
-"""
-def process_payment(request):
-    order = Order.objects.get(user=request.user, ordered=False)
-
-    paypal_dict = {
-        'business': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': order.get_total(),
-        'item_name': 'Someitem',
-        'invoice': f'Order {order.id}',
-        'currency_code': 'EUR',
-
-        'notify_url': request.build_absolute_uri(reverse('paypal-ipn')),
-        'return_url': request.build_absolute_uri(reverse('products')),
-        'cancel_return': request.build_absolute_uri(reverse('products')),
-    }
-
-    form = PayPalPaymentsForm(initial=paypal_dict)
-    return render(request, 'payment.html', {'form': form})
-"""
-#
 
 
 class FinishOrder(View):
@@ -417,6 +387,8 @@ class FinishOrder(View):
             return redirect('products')
 
 
+""""""
+#
 """SHOPPING CART"""
 
 
@@ -539,3 +511,39 @@ def add_single_item_to_cart(request, pk):
 
 
 """"""
+
+# PROCESS PAYMENT
+
+"""
+@csrf_exempt
+def payment_done(request):
+    return render(request, 'payment_done.html')
+
+
+@csrf_exempt
+def payment_canceled(request):
+    return render(request, 'payment_cancelled.html')
+
+"""
+"""
+def payment_view(request):
+    order = Order.objects.get(user=request.user, ordered=False)
+
+    paypal_dict = {
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': order.get_total(),
+        'invoice': f'Order {order.id}',
+        'currency_code': 'EUR',
+        'item_name': 'Hello',
+
+
+        'notify_url': request.build_absolute_uri(reverse('paypal-ipn')),
+        'return_url': request.build_absolute_uri(reverse('payment_done')),
+        'cancel_return': request.build_absolute_uri(reverse('payment_cancelled')),
+    }
+
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    return render(request, 'payment.html', {'form': form})
+
+"""
+#
