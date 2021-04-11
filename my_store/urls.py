@@ -14,11 +14,10 @@ urlpatterns = [
     path('remove_single_item_from_cart/<int:pk>', views.remove_single_item_from_cart, name='remove_single_item_from_cart'),
     path('add_single_item_to_cart/<int:pk>', views.add_single_item_to_cart, name='add_single_item_to_cart'),
 
-    path('order_summary', views.OrderSummary.as_view(), name='order_summary'),
-    path('checkout', views.CheckoutView.as_view(), name='checkout'),
+    path('shopping_cart', views.ShoppingCart.as_view(), name='shopping_cart'),
+    path('checkout', views.BillingShippingView.as_view(), name='billing_shipping'),
     path('finished_order', views.FinishOrder.as_view(), name='finished_order'),
 
-    path('process_payment', views.process_payment, name='payment_form'),
     # path('payment_done', views.payment_done, name='payment_done'),
     # path('paypal_return', views.payment_canceled, name='payment_cancelled'),
 

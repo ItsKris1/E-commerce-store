@@ -2,8 +2,8 @@ from django.views.generic import ListView, CreateView, DetailView, DeleteView, U
 from django.urls import reverse_lazy
 from django.conf import settings
 
-from .models import Product, Category, Profile, OrderItem, Order, BillingAddress
-from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, CheckoutForm
+from .models import Product, Category, Profile, OrderItem, Order, BillingAddress, ShippingAddress
+from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, BillingForm, ShippingForm
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
@@ -268,7 +268,7 @@ def profile_update_view(request, pk):
 
 # Shopping Cart
 
-class OrderSummary(LoginRequiredMixin, View):
+class ShoppingCart(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
 
         try:
@@ -276,12 +276,136 @@ class OrderSummary(LoginRequiredMixin, View):
             context = {
                 'order': order
             }
-            return render(self.request, 'order_summary.html', context)
+            return render(self.request, 'shopping_cart.html', context)
 
         except ObjectDoesNotExist:
             messages.error(self.request, 'You dont have an order')
-            return render(self.request, 'order_summary.html', {})
+            return render(self.request, 'shopping_cart.html', {})
 
+
+class BillingShippingView(View):
+
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+        except ObjectDoesNotExist:
+            messages.info(self.request, 'Something went wrong! (CHECKOUT)')
+            return redirect('products')
+
+        b_form = BillingForm()
+        s_form = ShippingForm()
+        context = {
+
+            'b_form': b_form,
+            's_form': s_form,
+            'order': order,
+        }
+        return render(self.request, 'billing_shipping.html', context)
+
+    def post(self, *args, **kwargs):
+        b_form = BillingForm(self.request.POST or None)
+        s_form = ShippingForm(self.request.POST or None)
+        order_qs = Order.objects.filter(user=self.request.user, ordered=False)
+
+        if order_qs.exists():
+            order = order_qs[0]
+            if b_form.is_valid() and s_form.is_valid():
+                # BILLING FORM
+                b_street_address = b_form.cleaned_data.get('street_address')
+                b_appartment_address = b_form.cleaned_data.get('appartment_address')
+                b_zip = b_form.cleaned_data.get('zip')
+                b_country = b_form.cleaned_data.get('country')
+
+                billing_address = BillingAddress(
+                    user=self.request.user,
+                    street_address=b_street_address,
+                    appartment_address=b_appartment_address,
+                    zip=b_zip,
+                    country=b_country,
+                )
+                billing_address.save()
+                order.billing_address = billing_address
+                order.save()
+
+                # SHIPPING FORM
+                s_street_address = s_form.cleaned_data.get('street_address')
+                s_appartment_address = s_form.cleaned_data.get('appartment_address')
+                s_zip = s_form.cleaned_data.get('zip')
+                s_country = s_form.cleaned_data.get('country')
+
+                shipping_address = ShippingAddress(
+                    user=self.request.user,
+                    street_address=s_street_address,
+                    appartment_address=s_appartment_address,
+                    zip=s_zip,
+                    country=s_country,
+                )
+                shipping_address.save()
+                order.shipping_address = shipping_address
+                order.save()
+
+                messages.info(self.request, 'Your checkout was successful!')
+                return redirect('products')
+
+
+
+# PROCESS PAYMENT
+"""
+@csrf_exempt
+def payment_done(request):
+    return render(request, 'payment_done.html')
+"""
+
+""""
+@csrf_exempt
+def payment_canceled(request):
+    return render(request, 'payment_cancelled.html')
+"""
+
+"""
+def process_payment(request):
+    order = Order.objects.get(user=request.user, ordered=False)
+
+    paypal_dict = {
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': order.get_total(),
+        'item_name': 'Someitem',
+        'invoice': f'Order {order.id}',
+        'currency_code': 'EUR',
+
+        'notify_url': request.build_absolute_uri(reverse('paypal-ipn')),
+        'return_url': request.build_absolute_uri(reverse('products')),
+        'cancel_return': request.build_absolute_uri(reverse('products')),
+    }
+
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    return render(request, 'payment.html', {'form': form})
+"""
+
+
+class FinishOrder(View):
+
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+        except ObjectDoesNotExist:
+            messages.info(self.request, 'Order did not go through')
+            return redirect('products')
+
+        for order_item in order.items.all():
+            product_item = Product.objects.get(id=order_item.item.id)
+            product_item.in_stock -= order_item.quantity
+            product_item.save()
+
+            order_item.ordered = True
+            order_item.save()
+
+            order.ordered = True
+            order.save()
+
+            messages.info(self.request, 'Order was succesful!')
+
+            return redirect('products')
 
 @login_required
 def add_to_cart(request, pk):
@@ -331,7 +455,7 @@ def remove_from_cart(request, pk):
             order_item.delete()
 
             messages.info(request, 'The item was removed from your cart')
-            return redirect('order_summary')
+            return redirect('shopping_cart')
 
         else:
             messages.info(request, 'You dont have that item in your cart')
@@ -365,7 +489,7 @@ def remove_single_item_from_cart(request, pk):
 
         messages.info(request, 'The item was removed from your cart')
 
-    return redirect('order_summary')
+    return redirect('shopping_cart')
 
 
 @login_required
@@ -383,128 +507,4 @@ def add_single_item_to_cart(request, pk):
     order_item.quantity += 1
     order_item.save()
     messages.info(request, 'The item quantity was updated')
-    return redirect('order_summary')
-
-
-class CheckoutView(View):
-
-    def get(self, *args, **kwargs):
-
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-        except ObjectDoesNotExist:
-            messages.info(self.request, 'Something went wrong! (CHECKOUT)')
-            return redirect('products')
-
-        form = CheckoutForm()
-
-        context = {
-            'form': form,
-            'order': order,
-        }
-        return render(self.request, 'checkout.html', context)
-
-    def post(self, *args, **kwargs):
-        form = CheckoutForm(self.request.POST or None)
-        order_qs = Order.objects.filter(user=self.request.user, ordered=False)
-
-        # check if user has billing address
-        # billing_address = BillingAddress.objects.get(user=self.request.user)
-
-        if order_qs.exists():
-            order = order_qs[0]
-
-            """
-                if billing_address:
-                order.billing_address = billing_address
-                order.save()
-                return redirect('confirm_order')
-            """
-
-            if form.is_valid():
-
-                street_address = form.cleaned_data.get('street_address')
-                appartment_address = form.cleaned_data.get('appartment_address')
-                zip = form.cleaned_data.get('zip')
-                country = form.cleaned_data.get('country')
-                payment_options = form.cleaned_data.get('payment_options')
-
-                billing_address = BillingAddress(
-                    user=self.request.user,
-                    street_address=street_address,
-                    appartment_address=appartment_address,
-                    zip=zip,
-                    country=country,
-                )
-                billing_address.save()
-                order.billing_address = billing_address
-                order.save()
-
-                messages.info(self.request, 'Your checkout was successful!')
-                return redirect('products')
-
-        else:
-            messages.info(self.request, 'You dont have that an active order')
-            return redirect('order_summary')
-
-        messages.warning(self.request, 'Failed checkout')
-        return redirect('checkout')
-
-# PROCESS PAYMENT
-
-
-"""
-@csrf_exempt
-def payment_done(request):
-    return render(request, 'payment_done.html')
-"""
-
-""""
-@csrf_exempt
-def payment_canceled(request):
-    return render(request, 'payment_cancelled.html')
-"""
-
-
-def process_payment(request):
-
-    paypal_dict = {
-        'business': settings.PAYPAL_RECEIVER_EMAIL,
-        # '%.2f' % 5,
-        'amount': 150,
-        'item_name': 'Someitem',
-        'invoice': str(9),
-        'currency_code': 'USD',
-
-        'notify_url': request.build_absolute_uri(reverse('paypal-ipn')),
-        'return_url': request.build_absolute_uri(reverse('products')),
-        'cancel_return': request.build_absolute_uri(reverse('products')),
-    }
-
-    form = PayPalPaymentsForm(initial=paypal_dict)
-    return render(request, 'payment.html', {'form': form})
-
-
-class FinishOrder(View):
-
-    def get(self, *args, **kwargs):
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-        except ObjectDoesNotExist:
-            messages.info(self.request, 'Order did not go through')
-            return redirect('products')
-
-        for order_item in order.items.all():
-            product_item = Product.objects.get(id=order_item.item.id)
-            product_item.in_stock -= order_item.quantity
-            product_item.save()
-
-            order_item.ordered = True
-            order_item.save()
-
-            order.ordered = True
-            order.save()
-
-            messages.info(self.request, 'Order was succesful!')
-
-            return redirect('products')
+    return redirect('shopping_cart')

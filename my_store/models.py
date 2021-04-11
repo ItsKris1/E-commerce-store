@@ -43,6 +43,7 @@ class Order(models.Model):
     ordered = models.BooleanField(default=False)
 
     billing_address = models.ForeignKey('BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
+    shipping_address = models.ForeignKey('ShippingAddress', on_delete=models.SET_NULL, blank=True, null=True)
 
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
@@ -60,6 +61,17 @@ class Order(models.Model):
 
 class BillingAddress(models.Model):
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    street_address = models.CharField(max_length=100)
+    appartment_address = models.CharField(max_length=100)
+    zip = models.CharField(max_length=100)
+    country = CountryField(multiple=False)
+
+    def __str__(self):
+        return self.user.username
+
+
+class ShippingAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
     appartment_address = models.CharField(max_length=100)

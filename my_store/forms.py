@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Category, Profile
+from .models import Product, Category, Profile, ShippingAddress
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
@@ -144,23 +144,31 @@ class UserProfileUpdateForm(forms.ModelForm):
         }
 
 
-class CheckoutForm(forms.Form):
-    PAYMENT_OPTIONS = [
-        ('S', 'Stripe'),
-        ('P', 'Paypal'),
-    ]
+class BillingForm(forms.Form):
+
     street_address = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Main st 1234'}
     ))
-    appartment_address = forms.CharField(required=False, widget=forms.TextInput(
+    appartment_address = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Apartment, suite number'}
     ))
 
     zip = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control'}
+        attrs={'class': 'form-control' ,'placeholder': 'Postal code'}
     ))
 
     country = CountryField(blank_label='Select country').formfield(widget=forms.Select(attrs={'class': 'form-control'}))
 
 
+class ShippingForm(forms.ModelForm):
+    class Meta:
+        model = ShippingAddress
+        fields = ('street_address', 'appartment_address', 'zip', 'country')
+
+        widgets = {
+            'street_address': forms.TextInput(attrs={'class': 'form-control'}),
+            'appartment_address':  forms.TextInput(attrs={'class': 'form-control'}),
+            'zip': forms.TextInput(attrs={'class': 'form-control'}),
+            'country': forms.Select(attrs={'class': 'form-control'}),
+        }
 
