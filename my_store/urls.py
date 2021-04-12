@@ -29,7 +29,7 @@ urlpatterns = [
 
     # path('finished_order', views.FinishOrder.as_view(), name='finished_order'),
     path('payment', views.payment_view, name='payment'),
-    # path('payment_done', views.payment_done, name='payment_done'),
+    path('payment_done', views.payment_done, name='payment_done'),
     # path('payment_cancelled', views.payment_canceled, name='payment_cancelled'),
 
 

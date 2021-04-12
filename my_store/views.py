@@ -1,6 +1,9 @@
 
 from .models import Product, Category, Profile, OrderItem, Order, BillingAddress, ShippingAddress
 from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, BillingForm, ShippingForm
+import requests
+import json
+from django.http import JsonResponse
 
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView, View, FormView
 from django.urls import reverse_lazy
@@ -20,7 +23,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 
-from paypal.standard.forms import PayPalPaymentsForm
+
 
 
 """PRODUCTS 1"""
@@ -283,7 +286,15 @@ def profile_update_view(request, pk):
 
 
 def payment_view(request):
-    return render(request, 'payment.html', {})
+    order = Order.objects.get(user=request.user, ordered=False)
+    context = {
+        'order': order,
+    }
+    return render(request, 'payment.html', context)
+
+
+def payment_done(request):
+    return render(request, 'payment_done.html', {})
 
 
 #
