@@ -7,8 +7,81 @@
 <script
         src="https://www.paypal.com/sdk/js?client-id=AavoJJ07MoUh01aLcV3eXCWvIMPgPxnbPWE7dV5uo3XlUHswvopxZKyOkTlZex65CjCQIsqS3UPDNJ8O">
 </script>
+<div class="container-fluid">
+    <div class="row justify-content-center">
 
-<div id="paypal-button-container"></div>
+
+
+        <div class="col-lg-6">
+            <table class="table">
+
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total price</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for order_item in order.items.all %}
+                <tr>
+
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ order_item.item.name }}</td>
+                    <td>{{ order_item.item.price }}</td>
+                    <td>{{ order_item.quantity }}</td>
+                    <td>{{ order_item.get_total_price }}</td>
+
+
+                </tr>
+
+                {% endfor %}
+
+                <tr>
+                    <td colspan="4" class="font-weight-bold">Order total:</td>
+                    <td class="font-weight-bold">{{order.get_total}}</td>
+                </tr>
+
+
+
+
+
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="card text-dark bg-light" style="width: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">Shipping address</h5>
+                    <p class="card-text">Street address: {{ shipping_address.street_address }}</p>
+                    <p class="card-text">Appartment address: {{ shipping_address.appartment_address }}</p>
+                    <p class="card-text">Zip: {{ shipping_address.zip }}</p>
+                    <p class="card-text">Country: {{ shipping_address.country.name }}</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="row justify-content-center">
+             <div class="col-lg-3">
+                 <div class="title pb-3">
+                        <h5 class="font-weight-bold border-bottom border-secondary pb-2 pt-2">Payment<i class="fa fa-arrow-down float-right" aria-hidden="true"></i></h5>
+                    </div>
+                <div id="paypal-button-container"></div>
+            </div>
+
+            <div class="col-lg-6">
+
+            </div>
+        </div>
+    </div>
+
+
 
  <script>
       function getCookie(name) {
@@ -29,14 +102,15 @@
 
       const csrftoken = getCookie('csrftoken');
       var orderID = "{{ order.id }}"
-      var url = "{% url 'payment_done' %}"
+      var url = "{% url 'payment_data' %}"
+      var total = "{{ order.get_total }}"
 
       paypal.Buttons({
         createOrder: function(data, actions) {
           return actions.order.create({
             purchase_units: [{
               amount: {
-                value: '0.01'
+                value: total
               }
             }]
           });
@@ -52,10 +126,13 @@
                         "Content-type": "application/json",
                         "X-CSRFToken": csrftoken
                     },
-                    body: JSON.stringify({'orderID': orderID}),
+                    body: JSON.stringify({'orderID': orderID, 'payID': details.id}),
+                }).then(function () {
+                window.location.href = "{% url 'payment_succesful' %}";
                 })
             }
-            alert('Transaction completed by ' + details.payer.name.given_name);
+
+
           });
         }
       }).render('#paypal-button-container'); // Display payment options on your web page

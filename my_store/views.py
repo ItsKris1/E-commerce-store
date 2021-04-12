@@ -5,6 +5,7 @@ import requests
 import json
 from django.http import JsonResponse
 
+from paypalrestsdk import Payment
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView, View, FormView
 from django.urls import reverse_lazy
 from django.conf import settings
@@ -288,16 +289,24 @@ class PaymentView(View):
     def get(self, *args, **kwargs):
 
         order = Order.objects.get(user=self.request.user, ordered=False)
+        shipping_address = order.shipping_address
         context = {
             'order': order,
+            'shipping_address': shipping_address,
         }
         return render(self.request, 'payment.html', context)
 
 
-def payment_done(request):
+class PaymentSuccessful(View):
+    def get(self, *args, **kwargs):
+        return render(self.request, 'payment_succesful.html', {})
+
+
+def payment_data(request):
+
     body = json.loads(request.body)
     print('body -->', body)
-    return redirect('payment')
+    return redirect('products')
 
 
 #

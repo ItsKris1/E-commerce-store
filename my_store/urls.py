@@ -29,7 +29,8 @@ urlpatterns = [
 
     # path('finished_order', views.FinishOrder.as_view(), name='finished_order'),
     path('payment', views.PaymentView.as_view(), name='payment'),
-    path('payment_done', views.payment_done, name='payment_done'),
+    path('payment_data', views.payment_data, name='payment_data'),
+    path('payment_succesful', views.PaymentSuccessful.as_view(), name='payment_succesful'),
     # path('payment_cancelled', views.payment_canceled, name='payment_cancelled'),
 
 
