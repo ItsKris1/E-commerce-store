@@ -1,15 +1,3 @@
-{% extends 'base.html' %}
-
-{% block header %}Order summary{% endblock %}
-
-
-{% block content %}
-<script
-        src="https://www.paypal.com/sdk/js?client-id=AavoJJ07MoUh01aLcV3eXCWvIMPgPxnbPWE7dV5uo3XlUHswvopxZKyOkTlZex65CjCQIsqS3UPDNJ8O">
-</script>
-
-<div id="paypal-button-container"></div>
-
  <script>
       function getCookie(name) {
         let cookieValue = null;
@@ -44,15 +32,14 @@
         onApprove: function(data, actions) {
           return actions.order.capture().then(function(details) {
             console.log(details)
-            sendData()
             function sendData(){
                 fetch(url, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json",
                         "X-CSRFToken": csrftoken
-                    },
-                    body: JSON.stringify({'orderID': orderID}),
+                    }
+                    body: JSON.stringify({'orderID':orderID, 'payID': details.id})
                 })
             }
             alert('Transaction completed by ' + details.payer.name.given_name);
@@ -60,4 +47,3 @@
         }
       }).render('#paypal-button-container'); // Display payment options on your web page
     </script>
-{% endblock %}

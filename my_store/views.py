@@ -24,8 +24,6 @@ from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 
 
-
-
 """PRODUCTS 1"""
 
 
@@ -285,16 +283,21 @@ def profile_update_view(request, pk):
 """"""
 
 
-def payment_view(request):
-    order = Order.objects.get(user=request.user, ordered=False)
-    context = {
-        'order': order,
-    }
-    return render(request, 'payment.html', context)
+class PaymentView(View):
+
+    def get(self, *args, **kwargs):
+
+        order = Order.objects.get(user=self.request.user, ordered=False)
+        context = {
+            'order': order,
+        }
+        return render(self.request, 'payment.html', context)
 
 
 def payment_done(request):
-    return render(request, 'payment_done.html', {})
+    body = json.loads(request.body)
+    print('body -->', body)
+    return redirect('payment')
 
 
 #
