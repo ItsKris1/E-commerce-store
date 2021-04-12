@@ -290,15 +290,37 @@ class PaymentView(View):
 
         order = Order.objects.get(user=self.request.user, ordered=False)
         shipping_address = order.shipping_address
+        billing_address = order.billing_address
         context = {
             'order': order,
             'shipping_address': shipping_address,
+            'billing_address': billing_address,
+
         }
         return render(self.request, 'payment.html', context)
 
 
 class PaymentSuccessful(View):
     def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+        except ObjectDoesNotExist:
+            messages.info(self.request, 'Order did not go through')
+            return redirect('products')
+
+        for order_item in order.items.all():
+            product_item = Product.objects.get(id=order_item.item.id)
+            product_item.in_stock -= order_item.quantity
+            product_item.save()
+
+            order_item.ordered = True
+            order_item.save()
+
+            order.ordered = True
+            order.save()
+
+            messages.info(self.request, 'Order was succesful!')
+
         return render(self.request, 'payment_succesful.html', {})
 
 
@@ -322,10 +344,12 @@ class BillingShippingView(View):
             messages.info(self.request, 'Something went wrong! (CHECKOUT)')
             return redirect('products')
 
+        ordered_order = Order.objects.get(user=self.request.user, ordered=True)
+
         b_form = BillingForm()
         s_form = ShippingForm()
         context = {
-
+            'ordered_order': ordered_order,
             'b_form': b_form,
             's_form': s_form,
             'order': order,
@@ -385,31 +409,6 @@ class BillingShippingView(View):
 """"""
 
 
-class FinishOrder(View):
-
-    def get(self, *args, **kwargs):
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-        except ObjectDoesNotExist:
-            messages.info(self.request, 'Order did not go through')
-            return redirect('products')
-
-        for order_item in order.items.all():
-            product_item = Product.objects.get(id=order_item.item.id)
-            product_item.in_stock -= order_item.quantity
-            product_item.save()
-
-            order_item.ordered = True
-            order_item.save()
-
-            order.ordered = True
-            order.save()
-
-            messages.info(self.request, 'Order was succesful!')
-
-            return redirect('products')
-
-
 """"""
 #
 """SHOPPING CART"""
@@ -427,7 +426,7 @@ class ShoppingCart(LoginRequiredMixin, View):
 
         except ObjectDoesNotExist:
             messages.error(self.request, 'You dont have an order')
-            return render(self.request, 'shopping_cart.html', {})
+            return redirect('products')
 
 
 @login_required
@@ -537,36 +536,3 @@ def add_single_item_to_cart(request, pk):
 
 # PROCESS PAYMENT
 
-"""
-@csrf_exempt
-def payment_done(request):
-    return render(request, 'payment_done.html')
-
-
-@csrf_exempt
-def payment_canceled(request):
-    return render(request, 'payment_cancelled.html')
-
-"""
-"""
-def payment_view(request):
-    order = Order.objects.get(user=request.user, ordered=False)
-
-    paypal_dict = {
-        'business': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': order.get_total(),
-        'invoice': f'Order {order.id}',
-        'currency_code': 'EUR',
-        'item_name': 'Hello',
-
-
-        'notify_url': request.build_absolute_uri(reverse('paypal-ipn')),
-        'return_url': request.build_absolute_uri(reverse('payment_done')),
-        'cancel_return': request.build_absolute_uri(reverse('payment_cancelled')),
-    }
-
-    form = PayPalPaymentsForm(initial=paypal_dict)
-    return render(request, 'payment.html', {'form': form})
-
-"""
-#

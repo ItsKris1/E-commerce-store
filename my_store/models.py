@@ -84,7 +84,7 @@ class Order(models.Model):
     ordered_date = models.DateTimeField()
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.username} - {self.id}'
 
     def get_total(self):
         total = 0

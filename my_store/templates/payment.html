@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
-{% block header %}Order summary{% endblock %}
+{% block header %}Order summary
+ {% endblock %}
 
 
 {% block content %}
@@ -68,18 +69,28 @@
         </div>
     </div>
         <div class="row justify-content-center">
-             <div class="col-lg-3">
-                 <div class="title pb-3">
-                        <h5 class="font-weight-bold border-bottom border-secondary pb-2 pt-2">Payment<i class="fa fa-arrow-down float-right" aria-hidden="true"></i></h5>
+             <div class="col-lg-6 mx-left">
+
+                <div id="paypal-button-container" class="mx-auto w-50">
+                    <div class="title pb-3">
+                        <h5 class="font-weight-bold text-center border-bottom border-secondary pb-2 pt-2">Payment options</h5>
                     </div>
-                <div id="paypal-button-container"></div>
+                </div>
             </div>
 
-            <div class="col-lg-6">
-
+            <div class="col-lg-3">
+                <div class="card text-dark bg-light" style="width: auto;">
+                    <div class="card-body">
+                        <h5 class="card-title">Billing address</h5>
+                        <p class="card-text">Street address: {{ billing_address.street_address }}</p>
+                        <p class="card-text">Appartment address: {{ billing_address.appartment_address }}</p>
+                        <p class="card-text">Zip: {{ billing_address.zip }}</p>
+                        <p class="card-text">Country: {{ billing_address.country.name }}</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+</div>
 
 
 
@@ -106,6 +117,8 @@
       var total = "{{ order.get_total }}"
 
       paypal.Buttons({
+
+
         createOrder: function(data, actions) {
           return actions.order.create({
             purchase_units: [{

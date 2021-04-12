@@ -20,7 +20,7 @@
                 {% endfor %}
             </div>
 
-                <div class="col-lg-4 mx-5">
+                <div class="col-lg-4 mx-5 pb-4">
                     <div class="title pb-3">
                         <h5 class="font-weight-bold border-bottom border-secondary pb-2 pt-2">Shipping address<i class="fa fa-arrow-down float-right" aria-hidden="true"></i></h5>
                     </div>
@@ -31,12 +31,15 @@
                             {{ field }}
                         </div>
                     {% endfor %}
-
-                    <div class="row justify-content-end py-4">
-                        <input type="submit" class="btn btn-dark" value="Continue to payment">
-                    </div>
                 </div>
         </div>
+            <div class="row justify-content-center pb-4">
+                <div class="col-lg-9">
+                    <input type="submit" class="btn btn-dark  float-right" value="Continue to payment">
+                <a class="btn btn-secondary float-right mr-3" href="{% url 'products' %}">Continue shopping</a>
+                </div>
+
+            </div>
     </div>
 </form>
 
