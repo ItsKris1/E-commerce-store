@@ -77,8 +77,8 @@ class Order(models.Model):
     items = models.ManyToManyField(OrderItem)
     ordered = models.BooleanField(default=False)
 
-    billing_address = models.ForeignKey('BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
-    shipping_address = models.ForeignKey('ShippingAddress', on_delete=models.SET_NULL, blank=True, null=True)
+    billing_address = models.ForeignKey('Address', related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
+    shipping_address = models.ForeignKey('Address', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
 
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
@@ -100,24 +100,19 @@ class Order(models.Model):
 """BILLING & SHIPPING"""
 
 
-class BillingAddress(models.Model):
+class Address(models.Model):
+    ADDRESS_TYPES =[
+        ('S', 'Shipping address'),
+        ('B', 'Billing address'),
+    ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
     appartment_address = models.CharField(max_length=100)
     zip = models.CharField(max_length=100)
     country = CountryField(multiple=False)
-
-    def __str__(self):
-        return self.user.username
-
-
-class ShippingAddress(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    street_address = models.CharField(max_length=100)
-    appartment_address = models.CharField(max_length=100)
-    zip = models.CharField(max_length=100)
-    country = CountryField(multiple=False)
+    address_type = models.CharField(blank=True, null=True, choices=ADDRESS_TYPES, max_length=1)
+    default_address = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

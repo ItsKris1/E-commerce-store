@@ -6,7 +6,7 @@
 
 {% block content %}
 <script
-        src="https://www.paypal.com/sdk/js?client-id=AavoJJ07MoUh01aLcV3eXCWvIMPgPxnbPWE7dV5uo3XlUHswvopxZKyOkTlZex65CjCQIsqS3UPDNJ8O">
+        src="https://www.paypal.com/sdk/js?client-id=AavoJJ07MoUh01aLcV3eXCWvIMPgPxnbPWE7dV5uo3XlUHswvopxZKyOkTlZex65CjCQIsqS3UPDNJ8O&disable-funding=card">
 </script>
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -55,18 +55,6 @@
             </table>
         </div>
 
-        <div class="col-lg-3">
-            <div class="card text-dark bg-light" style="width: auto;">
-                <div class="card-body">
-                    <h5 class="card-title">Shipping address</h5>
-                    <p class="card-text">Street address: {{ shipping_address.street_address }}</p>
-                    <p class="card-text">Appartment address: {{ shipping_address.appartment_address }}</p>
-                    <p class="card-text">Zip: {{ shipping_address.zip }}</p>
-                    <p class="card-text">Country: {{ shipping_address.country.name }}</p>
-
-                </div>
-            </div>
-        </div>
     </div>
         <div class="row justify-content-center">
              <div class="col-lg-6 mx-left">
@@ -78,17 +66,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3">
-                <div class="card text-dark bg-light" style="width: auto;">
-                    <div class="card-body">
-                        <h5 class="card-title">Billing address</h5>
-                        <p class="card-text">Street address: {{ billing_address.street_address }}</p>
-                        <p class="card-text">Appartment address: {{ billing_address.appartment_address }}</p>
-                        <p class="card-text">Zip: {{ billing_address.zip }}</p>
-                        <p class="card-text">Country: {{ billing_address.country.name }}</p>
-                    </div>
-                </div>
-            </div>
+
         </div>
 </div>
 

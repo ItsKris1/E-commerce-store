@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Category, Profile, ShippingAddress
+from .models import Product, Category, Profile
 
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
@@ -140,32 +140,35 @@ class UserProfileUpdateForm(forms.ModelForm):
 """BILLING & SHIPPING"""
 
 
-class BillingForm(forms.Form):
+class AddressForm(forms.Form):
+    # SHIPPING
+    shipping_address1 = forms.CharField(required=False)
 
-    street_address = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Main st 1234'}))
+    shipping_address2 = forms.CharField(required=False)
 
-    appartment_address = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Apartment, suite number'}))
+    shipping_zip = forms.CharField(required=False)
 
-    zip = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Postal code'}))
+    shipping_country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
+        attrs={'class': 'form-control', 'id': 'Country'}))
 
-    country = CountryField(blank_label='Select country').formfield(widget=forms.Select(
-        attrs={'class': 'form-control'}))
+    # BILLING
 
+    billing_address1 = forms.CharField(required=False)
 
-class ShippingForm(forms.ModelForm):
-    class Meta:
-        model = ShippingAddress
-        fields = ('street_address', 'appartment_address', 'zip', 'country')
+    billing_address2 = forms.CharField(required=False)
 
-        widgets = {
-            'street_address': forms.TextInput(attrs={'class': 'form-control'}),
-            'appartment_address':  forms.TextInput(attrs={'class': 'form-control'}),
-            'zip': forms.TextInput(attrs={'class': 'form-control'}),
-            'country': forms.Select(attrs={'class': 'form-control'}),
-        }
+    billing_zip = forms.CharField(required=False)
+
+    billing_country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
+        attrs={'class': 'form-control', 'id': 'Country'}))
+
+    same_billing_address = forms.BooleanField(required=False)
+    set_default_shipping = forms.BooleanField(required=False)
+    use_default_shipping = forms.BooleanField(required=False)
+
+    set_default_billing = forms.BooleanField(required=False)
+
+    use_default_billing = forms.BooleanField(required=False)
 
 
 """"""

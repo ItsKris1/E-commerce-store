@@ -1,6 +1,6 @@
 
-from .models import Product, Category, Profile, OrderItem, Order, BillingAddress, ShippingAddress
-from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, BillingForm, ShippingForm
+from .models import Product, Category, Profile, OrderItem, Order, Address
+from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, AddressForm
 import requests
 import json
 from django.http import JsonResponse
@@ -344,61 +344,52 @@ class BillingShippingView(View):
             messages.info(self.request, 'Something went wrong! (CHECKOUT)')
             return redirect('products')
 
-        ordered_order = Order.objects.get(user=self.request.user, ordered=True)
-
-        b_form = BillingForm()
-        s_form = ShippingForm()
+        form = AddressForm()
         context = {
-            'ordered_order': ordered_order,
-            'b_form': b_form,
-            's_form': s_form,
+            'form': form,
             'order': order,
         }
         return render(self.request, 'billing_shipping.html', context)
 
     #
     def post(self, *args, **kwargs):
-        b_form = BillingForm(self.request.POST or None)
-        s_form = ShippingForm(self.request.POST or None)
+        form = AddressForm(self.request.POST or None)
         order_qs = Order.objects.filter(user=self.request.user, ordered=False)
 
         #
         if order_qs.exists():
             order = order_qs[0]
-            if b_form.is_valid() and s_form.is_valid():
+            if form.is_valid():
                 # HANDELING BILLING FORM
-                b_street_address = b_form.cleaned_data.get('street_address')
-                b_appartment_address = b_form.cleaned_data.get('appartment_address')
-                b_zip = b_form.cleaned_data.get('zip')
-                b_country = b_form.cleaned_data.get('country')
+                street_address = form.cleaned_data.get('street_address')
+                appartment_address = form.cleaned_data.get('appartment_address')
+                zip = form.cleaned_data.get('zip')
+                country = form.cleaned_data.get('country')
 
-                billing_address = BillingAddress(
+                billing_address = Address(
                     user=self.request.user,
-                    street_address=b_street_address,
-                    appartment_address=b_appartment_address,
-                    zip=b_zip,
-                    country=b_country,
+                    street_address=street_address,
+                    appartment_address=appartment_address,
+                    zip=zip,
+                    country=country,
+                    address_type='B'
                 )
+
                 billing_address.save()
                 order.billing_address = billing_address
                 order.save()
-                #
 
-                # HANDELING SHIPPING FORM
-                s_street_address = s_form.cleaned_data.get('street_address')
-                s_appartment_address = s_form.cleaned_data.get('appartment_address')
-                s_zip = s_form.cleaned_data.get('zip')
-                s_country = s_form.cleaned_data.get('country')
-
-                shipping_address = ShippingAddress(
+                shipping_address = Address(
                     user=self.request.user,
-                    street_address=s_street_address,
-                    appartment_address=s_appartment_address,
-                    zip=s_zip,
-                    country=s_country,
+                    street_address=street_address,
+                    appartment_address=appartment_address,
+                    zip=zip,
+                    country=country,
+                    address_type='S'
                 )
+
                 shipping_address.save()
-                order.shipping_address = shipping_address
+                order.shipping_address = billing_address
                 order.save()
                 #
 
@@ -406,13 +397,9 @@ class BillingShippingView(View):
                 return redirect('payment')
 
 
-""""""
 
-
-""""""
 #
 """SHOPPING CART"""
-
 
 class ShoppingCart(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
