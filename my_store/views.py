@@ -360,42 +360,69 @@ class BillingShippingView(View):
         if order_qs.exists():
             order = order_qs[0]
             if form.is_valid():
-                # HANDELING BILLING FORM
-                street_address = form.cleaned_data.get('street_address')
-                appartment_address = form.cleaned_data.get('appartment_address')
-                zip = form.cleaned_data.get('zip')
-                country = form.cleaned_data.get('country')
+                use_default_shipping = form.cleaned_data.get('use_default_shipping')
 
-                billing_address = Address(
+                if use_default_shipping:
+                    address_qs = Address.objects.filter(user=self.request.user, default_address=True)
+                    if address_qs.exists():
+                        shipping_address = address_qs[0]
+                        order.shipping_address = shipping_address
+                        order.save()
+                    else:
+                        messages.info(self.request, 'You dont have default shipping address!')
+                        return redirect('billing_shipping')
+
+                shipping_address1 = form.cleaned_data.get('shipping_address1')
+                shipping_address2 = form.cleaned_data.get('shipping_address2')
+                shipping_zip = form.cleaned_data.get('shipping_zip')
+                shipping_country = form.cleaned_data.get('shipping_country')
+
+                shipping_address = Address(
                     user=self.request.user,
-                    street_address=street_address,
-                    appartment_address=appartment_address,
-                    zip=zip,
-                    country=country,
-                    address_type='B'
+                    street_address=shipping_address1,
+                    appartment_address=shipping_address2,
+                    zip=shipping_zip,
+                    country=shipping_country,
+                    address_type='S'
                 )
+
+                shipping_address.save()
+                order.shipping_address = shipping_address
+                order.save()
+
+                same_billing_address = form.cleaned_data.get('same_billing_address')
+                if same_billing_address:
+                    billing_address = Address(
+                        user=self.request.user,
+                        street_address=shipping_address1,
+                        appartment_address=shipping_address2,
+                        zip=shipping_zip,
+                        country=shipping_country,
+                        address_type='B'
+                    )
+
+                else:
+                    # HANDELING BILLING FORM
+                    billing_address1 = form.cleaned_data.get('billing_address1')
+                    billing_address2 = form.cleaned_data.get('billing_address2')
+                    billing_zip = form.cleaned_data.get('billing_zip')
+                    billing_country = form.cleaned_data.get('billing_country')
+
+                    billing_address = Address(
+                        user=self.request.user,
+                        street_address=billing_address1,
+                        appartment_address=billing_address2,
+                        zip=billing_zip,
+                        country=billing_country,
+                        address_type='B'
+                    )
 
                 billing_address.save()
                 order.billing_address = billing_address
                 order.save()
 
-                shipping_address = Address(
-                    user=self.request.user,
-                    street_address=street_address,
-                    appartment_address=appartment_address,
-                    zip=zip,
-                    country=country,
-                    address_type='S'
-                )
-
-                shipping_address.save()
-                order.shipping_address = billing_address
-                order.save()
-                #
-
-                messages.info(self.request, 'TODO!')
-                return redirect('payment')
-
+                messages.info(self.request, 'Addresses were entered succesfully!')
+                return redirect('products')
 
 
 #
