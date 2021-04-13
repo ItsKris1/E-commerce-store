@@ -101,7 +101,7 @@ class Order(models.Model):
 
 
 class Address(models.Model):
-    ADDRESS_TYPES =[
+    ADDRESS_TYPES = [
         ('S', 'Shipping address'),
         ('B', 'Billing address'),
     ]
@@ -115,7 +115,7 @@ class Address(models.Model):
     default_address = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.username}, {self.address_type} - {self.id}'
 
 
 """"""

@@ -282,6 +282,8 @@ def profile_update_view(request, pk):
 
 
 """"""
+#
+"""PAYMENT"""
 
 
 class PaymentView(View):
@@ -331,6 +333,7 @@ def payment_data(request):
     return redirect('products')
 
 
+""""""
 #
 """BILLING & SHIPPING"""
 
@@ -338,95 +341,149 @@ def payment_data(request):
 class BillingShippingView(View):
 
     def get(self, *args, **kwargs):
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-        except ObjectDoesNotExist:
-            messages.info(self.request, 'Something went wrong! (CHECKOUT)')
-            return redirect('products')
-
         form = AddressForm()
+
         context = {
             'form': form,
-            'order': order,
         }
+
+        address_qs = Address.objects.filter(
+            user=self.request.user,
+            address_type='S',
+            default_address=True)
+
+        if address_qs.exists():
+            context.update(
+                {'default_shipping_address': address_qs[0]}
+            )
+
         return render(self.request, 'billing_shipping.html', context)
 
     #
     def post(self, *args, **kwargs):
         form = AddressForm(self.request.POST or None)
-        order_qs = Order.objects.filter(user=self.request.user, ordered=False)
-
-        #
-        if order_qs.exists():
-            order = order_qs[0]
+        try:
+            # Just in case checking if user has an active order
+            order = Order.objects.get(user=self.request.user, ordered=False)
             if form.is_valid():
+                # Gets user input on what he wants to do
+                same_billing_address = form.cleaned_data.get('same_billing_address')
                 use_default_shipping = form.cleaned_data.get('use_default_shipping')
+                set_default_shipping = form.cleaned_data.get('set_default_shipping')
 
+                # If user wants to use default shipping address
                 if use_default_shipping:
-                    address_qs = Address.objects.filter(user=self.request.user, default_address=True)
+                    address_qs = Address.objects.filter(user=self.request.user, default_address=True, address_type='S')
                     if address_qs.exists():
                         shipping_address = address_qs[0]
-                        order.shipping_address = shipping_address
-                        order.save()
                     else:
-                        messages.info(self.request, 'You dont have default shipping address!')
+                        messages.info(self.request, 'No default shipping address available!')
                         return redirect('billing_shipping')
 
-                shipping_address1 = form.cleaned_data.get('shipping_address1')
-                shipping_address2 = form.cleaned_data.get('shipping_address2')
-                shipping_zip = form.cleaned_data.get('shipping_zip')
-                shipping_country = form.cleaned_data.get('shipping_country')
+                # Else..
+                else:
+                    shipping_address1 = form.cleaned_data.get('shipping_address1')
+                    shipping_address2 = form.cleaned_data.get('shipping_address2')
+                    shipping_zip = form.cleaned_data.get('shipping_zip')
+                    shipping_country = form.cleaned_data.get('shipping_country')
 
-                shipping_address = Address(
-                    user=self.request.user,
-                    street_address=shipping_address1,
-                    appartment_address=shipping_address2,
-                    zip=shipping_zip,
-                    country=shipping_country,
-                    address_type='S'
-                )
-
-                shipping_address.save()
-                order.shipping_address = shipping_address
-                order.save()
-
-                same_billing_address = form.cleaned_data.get('same_billing_address')
-                if same_billing_address:
-                    billing_address = Address(
+                    shipping_address = Address(
                         user=self.request.user,
                         street_address=shipping_address1,
                         appartment_address=shipping_address2,
                         zip=shipping_zip,
                         country=shipping_country,
-                        address_type='B'
+                        address_type='S'
                     )
 
-                else:
-                    # HANDELING BILLING FORM
-                    billing_address1 = form.cleaned_data.get('billing_address1')
-                    billing_address2 = form.cleaned_data.get('billing_address2')
-                    billing_zip = form.cleaned_data.get('billing_zip')
-                    billing_country = form.cleaned_data.get('billing_country')
+                    # If user wants to make added shipping address as a Default
+                    if set_default_shipping:
+                        address_qs = Address.objects.filter(user=self.request.user, default_address=True,
+                                                            address_type='S')
+                        old_default_address = address_qs[0]
 
+                        old_default_address.default_address = False
+                        old_default_address.save()
+
+                        shipping_address.default_address = True
+
+                # After the conditions on filling the shipping address, we check whether
+                # billing address and shipping address are the same
+                if same_billing_address:
                     billing_address = Address(
                         user=self.request.user,
-                        street_address=billing_address1,
-                        appartment_address=billing_address2,
-                        zip=billing_zip,
-                        country=billing_country,
+                        street_address=shipping_address.street_address,
+                        appartment_address=shipping_address.appartment_address,
+                        zip=shipping_address.zip,
+                        country=shipping_address.country,
+
                         address_type='B'
                     )
+                # If billing address and shipping address are not the same...
+                else:
 
+                    # Getting user input
+                    use_default_billing = form.cleaned_data.get('use_default_billing')
+
+                    # If user has chosen Default billing address
+                    if use_default_billing:
+                        address_qs = Address.objects.filter(user=self.request.user, default_address=True,
+                                                            address_type='B')
+                        if address_qs.exists():
+                            billing_address = address_qs[0]
+
+                        else:
+                            messages.info(self.request, 'No default shipping address available!')
+                            return redirect('billing_shipping')
+                    # Else... we just take user address
+                    else:
+
+                        # HANDELING BILLING FORM
+                        billing_address1 = form.cleaned_data.get('billing_address1')
+                        billing_address2 = form.cleaned_data.get('billing_address2')
+                        billing_zip = form.cleaned_data.get('billing_zip')
+                        billing_country = form.cleaned_data.get('billing_country')
+
+                        billing_address = Address(
+                            user=self.request.user,
+                            street_address=billing_address1,
+                            appartment_address=billing_address2,
+                            zip=billing_zip,
+
+                            address_type='B'
+                        )
+                        # If user wants to make added address Default address
+                        if set_default_shipping:
+                            address_qs = Address.objects.filter(user=self.request.user, default_address=True,
+                                                                address_type='B')
+                            old_default_address = address_qs[0]
+
+                            old_default_address.default_address = False
+                            old_default_address.save()
+
+                            billing_address.default_address = True
+
+                # Now we are saving all the addresses after going through conditions
                 billing_address.save()
                 order.billing_address = billing_address
+                order.save()
+
+                shipping_address.save()
+                order.shipping_address = shipping_address
                 order.save()
 
                 messages.info(self.request, 'Addresses were entered succesfully!')
                 return redirect('products')
 
+        # If for some reason user does not have an active order
+        except ObjectDoesNotExist:
+            messages.error(self.request, 'You dont have an active order!')
+            return redirect('products')
+
 
 #
 """SHOPPING CART"""
+
 
 class ShoppingCart(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
@@ -548,5 +605,4 @@ def add_single_item_to_cart(request, pk):
 
 """"""
 
-# PROCESS PAYMENT
 
