@@ -212,8 +212,8 @@ class Logout(LogoutView):
 def signup_view(request):
 
     if request.method == 'POST':
-        user_form = SignUpForm(data=request.POST, files=request.FILES)
-        profile_form = ProfileSignUpForm(data=request.POST)
+        user_form = SignUpForm(data=request.POST)
+        profile_form = ProfileSignUpForm(data=request.POST, files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.refresh_from_db()
@@ -221,8 +221,8 @@ def signup_view(request):
             user.profile.first_name = user_form.cleaned_data.get('first_name')
             user.profile.last_name = user_form.cleaned_data.get('last_name')
             user.profile.email = user_form.cleaned_data.get('email')
-            user.profile.location = profile_form.cleaned_data.get('location')
-            user.profile.image = profile_form.cleaned_data.get('image')
+            user.profile.country = profile_form.cleaned_data.get('country')
+            user.profile.profile_picture = profile_form.cleaned_data.get('profile_picture')
             user.save()
             user.profile.save()
 
@@ -235,8 +235,6 @@ def signup_view(request):
     else:
         user_form = SignUpForm()
         profile_form = ProfileSignUpForm()
-        print('error')
-        messages.info(request, 'sd')
 
     return render(request, 'registration/sign_up.html', {'user_form': user_form, 'profile_form': profile_form})
 

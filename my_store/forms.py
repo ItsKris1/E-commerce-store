@@ -74,11 +74,11 @@ class SignUpForm(UserCreationForm):
         attrs={'class': 'form-control', 'type': 'password', 'id': 'Retype password'}))
 
     first_name = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={'class': 'form-control', 'id': 'First name'}))
+        attrs={'class': 'form-control', 'id': 'First name', 'placeholder': 'optional'}))
 
     #
     last_name = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={'class': 'form-control', 'id': 'Last name'}))
+        attrs={'class': 'form-control', 'id': 'Last name', 'placeholder': 'optional'}))
 
     #
     email = forms.EmailField(widget=forms.TextInput(
@@ -92,16 +92,16 @@ class SignUpForm(UserCreationForm):
 class ProfileSignUpForm(forms.ModelForm):
 
     #
-    location = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'id': 'Location'}))
+    country = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'id': 'Country'}))
 
     #
-    image = forms.ImageField(required=False, widget=forms.FileInput(
+    profile_picture = forms.ImageField(required=False, widget=forms.FileInput(
         attrs={'class': 'form-control', 'id': 'Profile picture'}))
 
     class Meta:
         model = Profile
-        fields = ('location', 'image')
+        fields = ('country', 'profile_picture')
 
 """"""
 
@@ -113,28 +113,32 @@ class UserUpdateForm(forms.ModelForm):
     username = forms.CharField(max_length=15,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'Username'}))
 
+    first_name = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'id': 'First name'}))
+
+    #
+    last_name = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'id': 'Last name'}))
+
+    #
+    email = forms.EmailField(required=False, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'id': 'Email'}))
+
     class Meta:
         model = User
-        fields = ('username',)
+        fields = ('username', 'first_name', 'last_name', 'email')
 
 
 class UserProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = (
-
-            'first_name',
-            'last_name',
-            'location',
-            'email',
+            'country',
             'profile_picture'
         )
 
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'location': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'country': forms.TextInput(attrs={'class': 'form-control'}),
             'profile_picture': forms.FileInput(attrs={'class ': 'form-control-file'}),
         }
 
