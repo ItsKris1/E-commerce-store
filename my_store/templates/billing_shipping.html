@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block header %}Billing & Shipping{% endblock %}
 {% block content %}
 
@@ -24,7 +24,7 @@
                     <h5 class="font-weight-bold border-bottom border-secondary pb-2 pt-2">Shipping address<i class="fa fa-arrow-down float-right" aria-hidden="true"></i></h5>
                 </div>
 
-                <div class="hideable_shipping_address">
+                <div class="hideable_shipping_form">
                     <div class="form-group">
                         <label for="shipping_address1" class="">Address</label>
                         <input type="text" placeholder="1234 Main St" id="shipping_address1" name="shipping_address1" class="form-control">
@@ -39,27 +39,33 @@
                         <label for="shipping_zip" class="">Zip</label>
                         <input type="text" placeholder="Postal code" id="shipping_zip" name="shipping_zip" class="form-control">
 
-                        <input type="checkbox" class="form-check" name="same_billing_address" id="same_billing_address">
-                        <label class="" for="same_billing_address">Billing address is the same</label>
+
 
 
                         <input type="checkbox" class="form-check" name="set_default_shipping" id="set_default_shipping">
                         <label class="" for="set_default_shipping">Save as default shipping address</label>
 
 
+
+
                     </div>
                 </div>
+
                 {% if default_shipping_address %}
                 <input type="checkbox" class="form-check" name="use_default_shipping" id="use_default_shipping">
                 <label class="" for="use_default_shipping">Use default shipping address</label>
                 {% endif %}
+
+                <input type="checkbox" class="form-check" name="same_billing_address" id="same_billing_address">
+                        <label class="" for="same_billing_address">Billing address is the same</label>
+
 
 
                 <div class="title pb-3">
                     <h5 class="font-weight-bold border-bottom border-secondary pb-2 pt-2">Billing address<i class="fa fa-arrow-down float-right" aria-hidden="true"></i></h5>
                 </div>
 
-                <div class="hideable_billing_address">
+                <div class="hideable_billing_form">
                     <div class="form-group">
                         <label for="billing_address1" class="">Address</label>
                         <input type="text" placeholder="1234 Main St" id="billing_address1" name="billing_address1" class="form-control">
@@ -75,16 +81,18 @@
                         <input type="text" placeholder="Postal code" id="billing_zip" name="billing_zip" class="form-control">
 
 
-                        <input type="checkbox" class="form-check" name="set_default_billing" id="set_default_billing">
+                        <input type="checkbox" class="" name="set_default_billing" id="set_default_billing">
                         <label class="" for="set_default_billing">Save as default billing address</label>
+
+
 
 
                     </div>
                 </div>
+                <input type="checkbox" class="" name="use_default_billing" id="use_default_billing">
+                        <label class="" for="use_default_billing">Use default billing address</label>
 
 
-                 <input type="checkbox" class="form-check" name="use_default_billing" id="use_default_billing">
-                <label class="" for="use_default_billing">Use default billing address</label>
 
 
 
@@ -98,4 +106,53 @@
 </form>
 
 
+
 {% endblock %}
+
+
+{% block extra_scripts %}
+
+<script type="text/javascript" src="{% static 'my_store/jquery-3.6.0.min.js' %}"></script>
+<script>
+var hideable_billing_form = $('.hideable_billing_form');
+var hideable_shipping_form = $('.hideable_shipping_form');
+
+
+var use_default_billing = document.querySelector("input[name=use_default_billing]");
+var use_default_shipping = document.querySelector("input[name=use_default_shipping]");
+var same_billing_address = document.querySelector("input[name=same_billing_address]");
+
+
+same_billing_address.addEventListener('change', function() {
+    if (this.checked) {
+    hideable_billing_form.hide();
+    $('input[id="use_default_billing"]').hide();
+    $('label[for="use_default_billing"]').hide();
+    } else {
+    hideable_billing_form.show();
+     $('input[id="use_default_billing"]').show();
+    $('label[for="use_default_billing"]').show();
+    }
+})
+
+
+
+use_default_shipping.addEventListener('change', function() {
+if (this.checked) {
+   hideable_shipping_form.hide();
+
+    } else {
+   hideable_shipping_form.show();
+
+    }
+   })
+
+use_default_billing.addEventListener('change', function() {
+   if (this.checked) {
+      hideable_billing_form.hide();
+    } else {
+      hideable_billing_form.show();
+    }
+   })
+    </script>
+{% endblock extra_scripts %}
