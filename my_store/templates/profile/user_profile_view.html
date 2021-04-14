@@ -32,7 +32,7 @@
                     <p class="card-text">First name: {{ user.profile.first_name | default_if_none:'-'}}</p>
                     <p class="card-text">Last name: {{ user.profile.last_name | default_if_none:'-'}}</p>
                     <p class="card-text">Email: {{user.profile.email | default_if_none:'-' }}</p>
-                    <p class="card-text">Country: {{profile.country | default_if_none:'-' }}</p>
+                    <p class="card-text">Country: {{profile.country.name | default_if_none:'-' }}</p>
                     <p class="card-text">
                         Role:
                             {% if user.is_superuser %}

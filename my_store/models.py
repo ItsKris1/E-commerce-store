@@ -39,7 +39,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
-    country = models.CharField(max_length=300, blank=True, null=True)
+    country = CountryField(multiple=False, blank=True, null=True)
     email = models.EmailField(max_length=250, default='-')
     profile_picture = models.ImageField(blank=True, null=True)
 

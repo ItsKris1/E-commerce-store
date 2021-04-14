@@ -95,8 +95,8 @@ class SignUpForm(UserCreationForm):
 class ProfileSignUpForm(forms.ModelForm):
 
     #
-    country = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'id': 'Country'}))
+    country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
+        attrs={'class': 'form-control mb-3', 'id': 'Country'}))
 
     #
     profile_picture = forms.ImageField(required=False, widget=forms.FileInput(
@@ -133,6 +133,9 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class UserProfileUpdateForm(forms.ModelForm):
+    country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
+        attrs={'class': 'form-control mb-3', 'id': 'Country'}))
+
     class Meta:
         model = Profile
         fields = (
@@ -141,7 +144,6 @@ class UserProfileUpdateForm(forms.ModelForm):
         )
 
         widgets = {
-            'country': forms.TextInput(attrs={'class': 'form-control'}),
             'profile_picture': forms.FileInput(attrs={'class ': 'form-control-file'}),
         }
 
