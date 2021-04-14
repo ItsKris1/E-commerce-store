@@ -503,7 +503,7 @@ class ShoppingCart(LoginRequiredMixin, View):
             return render(self.request, 'shopping_cart.html', context)
 
         except ObjectDoesNotExist:
-            messages.error(self.request, 'You dont have an order')
+            messages.error(self.request, 'Your shopping cart is empty.')
             return redirect('products')
 
 
