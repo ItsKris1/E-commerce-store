@@ -16,7 +16,9 @@ class Product(models.Model):
     brand = models.CharField(max_length=50, blank=True, null=True)
     category = models.ForeignKey(
         'Category',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
     )
 
     def __str__(self):

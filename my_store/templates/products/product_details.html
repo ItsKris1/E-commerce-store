@@ -33,6 +33,9 @@
             {% if products.image %}
             <img src="{{ products.image.url }}" class="float-right bg-white"
                  style="object-fit: contain; width: 100%; max-height: 400px;">
+            {% else %}
+            <img src="{% static 'my_store/image/default_product_picture.jpg' %}" class="float-right bg-light"
+                 style="object-fit: contain; width: 100%; height: auto;">
             {% endif %}
 
         </div>
@@ -47,8 +50,9 @@
                     <p class="card-text ">Brand: {{products.brand}}</p>
 
                     <p class="card-text">In stock: {{products.in_stock}}</p>
+                    {% if products.category %}
                     <p class="card-text"><a href="{% url 'products' %}?category= {{ products.category.id}}">{{products.category}}</a></p>
-
+                    {% endif %}
 
 
                     {% if not user.is_authenticated %}

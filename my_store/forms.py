@@ -8,6 +8,8 @@ from django_countries.fields import CountryField
 
 
 class ProductCreateForm(forms.ModelForm):
+
+
     class Meta:
         model = Product
         fields = ('name',
@@ -17,14 +19,15 @@ class ProductCreateForm(forms.ModelForm):
                   'description',
                   'category',
                   'image',
+
                   )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'brand': forms.TextInput(attrs={'class': 'form-control'}),
             'in_stock': forms.NumberInput(attrs={'class': 'form-control'}),
             'price': forms.NumberInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
             'image': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
