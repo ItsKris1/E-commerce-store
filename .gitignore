@@ -159,4 +159,6 @@ Thumbs.db
 
 # custom
 .idea
+Scripts
+Lib
 # End of https://www.toptal.com/developers/gitignore/api/django
