@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Bought product {% endblock %}
+
+{% block header %} You have succesfully bought the product!{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5 mt-3">
+            <img src="{% static 'my_store/image/succesfully_bought_product.png' %}" style="padding: 10px; height: 400px; object-fit: contain;">
+
+        </div>
+
+        <div class="col-lg-5">
+            <a href="{% url 'products' %}" class="btn btn-dark btn-block py-3 mt-5">Back to store<i class="fa fa-arrow-right ml-2" aria-hidden="true"></i></a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block header %}Shopping Cart {% endblock %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            {% if messages %}
+            <div class="alert alert-info alert-dismissible fade show mb-0 mt-2" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+
+
+            <table class="table">
+
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total price</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for order_item in order.items.all %}
+                <tr>
+
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ order_item.item.name }}</td>
+                    <td>{{ order_item.item.price }}</td>
+
+                    <td>
+                        <a href="{% url 'remove_single_item_from_cart' order_item.item.pk %}"><i class="fa fa-minus mr-1" style="color: black;" aria-hidden="true"></i></a>
+                        {{ order_item.quantity }}
+                        <a href="{% url 'add_single_item_to_cart' order_item.item.pk %}"><i class="fa fa-plus ml-2" style="color: black;" aria-hidden="true"></i></a>
+
+                    </td>
+                    <td>{{ order_item.get_total_price }}<a class="float-right" href="{% url 'remove_from_cart' order_item.item.pk %}"><i class="fa fa-trash" style="color: red;" aria-hidden="true"></i></a></td>
+
+
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="5">Your cart is empty</td>
+                </tr>
+
+                <tr>
+                    <td colspan="5">
+                        <a class="btn btn-secondary float-right" href="{% url 'products' %}">Continue shopping</a>
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+                {% if order.get_total %}
+                <tr>
+                    <td colspan="4" class="font-weight-bold">Order total:</td>
+                    <td class="font-weight-bold">{{order.get_total}}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="5">
+                        <a class="btn btn-dark float-right ml-2" href="{% url 'billing_shipping' %}">Proceed to checkout</a>
+                        <a class="btn btn-secondary float-right" href="{% url 'products' %}">Continue shopping</a>
+                    </td>
+                </tr>
+                {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
