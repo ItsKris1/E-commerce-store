@@ -9,7 +9,7 @@ from django_countries.fields import CountryField
 
 class Product(models.Model):
     name = models.CharField(max_length=120)
-    in_stock = models.IntegerField(null=True, blank=True)
+    in_stock = models.PositiveIntegerField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(blank=True, null=True)
