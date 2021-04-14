@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
-{% block header %} Order confirmed {% endblock %}
+{% block header %} Thank you! {% endblock %}
+{% load static %}
+
 {% block content %}
-<h1>Payment was succesful! </h1>
-<h2>Your order is on the way.</h2>
+<div class="container pt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="float-right">Your order is on the way<img src="{% static 'my_store/image/1200px-Checkmark.png' %}"
+            style="max-height: 200px; width:auto; object-fit:contain;"></h1>
+
+            <a href="{% url 'products' %}" class="btn btn-dark w-25 my-5 float-right">Back to store<i class="fa fa-arrow-right ml-2" aria-hidden="true"></i></a>
+        </div>
+
+
+    </div>
+</div>
+
 {% endblock %}

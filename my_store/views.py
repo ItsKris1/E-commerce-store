@@ -303,27 +303,31 @@ class PaymentView(View):
 
 
 class PaymentSuccessful(View):
+
     def get(self, *args, **kwargs):
+
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
+
+            for order_item in order.items.all():
+                product_item = Product.objects.get(id=order_item.item.id)
+                product_item.in_stock -= order_item.quantity
+                product_item.save()
+
+                order_item.ordered = True
+                order_item.save()
+
+                order.ordered = True
+                order.save()
+
+                messages.info(self.request, 'Order was succesful!')
+                return render(self.request, 'payment_succesful.html', {})
+
         except ObjectDoesNotExist:
             messages.info(self.request, 'Order did not go through')
             return redirect('products')
 
-        for order_item in order.items.all():
-            product_item = Product.objects.get(id=order_item.item.id)
-            product_item.in_stock -= order_item.quantity
-            product_item.save()
 
-            order_item.ordered = True
-            order_item.save()
-
-            order.ordered = True
-            order.save()
-
-            messages.info(self.request, 'Order was succesful!')
-
-        return render(self.request, 'payment_succesful.html', {})
 
 
 def payment_data(request):
@@ -400,12 +404,13 @@ class BillingShippingView(View):
                     if set_default_shipping:
                         address_qs = Address.objects.filter(user=self.request.user, default_address=True,
                                                             address_type='S')
-                        old_default_address = address_qs[0]
+                        if address_qs.exists():
+                            old_default_address = address_qs[0]
+                            old_default_address.default_address = False
+                            old_default_address.save()
+                        else:
 
-                        old_default_address.default_address = False
-                        old_default_address.save()
-
-                        shipping_address.default_address = True
+                            shipping_address.default_address = True
 
                 # After the conditions on filling the shipping address, we check whether
                 # billing address and shipping address are the same
@@ -453,15 +458,17 @@ class BillingShippingView(View):
                             address_type='B'
                         )
                         # If user wants to make added address Default address
-                        if set_default_shipping:
+                        set_default_billing = form.cleaned_data.get('set_default_billing')
+                        if set_default_billing:
                             address_qs = Address.objects.filter(user=self.request.user, default_address=True,
                                                                 address_type='B')
-                            old_default_address = address_qs[0]
+                            if address_qs.exists():
+                                old_default_address = address_qs[0]
+                                old_default_address.default_address = False
+                                old_default_address.save()
+                            else:
 
-                            old_default_address.default_address = False
-                            old_default_address.save()
-
-                            billing_address.default_address = True
+                                billing_address.default_address = True
 
                 # Now we are saving all the addresses after going through conditions
                 billing_address.save()
@@ -473,7 +480,7 @@ class BillingShippingView(View):
                 order.save()
 
                 messages.info(self.request, 'Addresses were entered succesfully!')
-                return redirect('products')
+                return redirect('payment')
 
         # If for some reason user does not have an active order
         except ObjectDoesNotExist:

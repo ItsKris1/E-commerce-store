@@ -149,7 +149,7 @@ class AddressForm(forms.Form):
     shipping_zip = forms.CharField(required=False)
 
     shipping_country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
-        attrs={'class': 'form-control', 'id': 'Country'}))
+        attrs={'class': 'form-control mt-2 mb-3', 'id': 'Country'}))
 
     # BILLING
 
@@ -160,7 +160,7 @@ class AddressForm(forms.Form):
     billing_zip = forms.CharField(required=False)
 
     billing_country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
-        attrs={'class': 'form-control', 'id': 'Country'}))
+        attrs={'class': 'form-control mt-2 mb-3', 'id': 'Country'}))
 
     same_billing_address = forms.BooleanField(required=False)
 
