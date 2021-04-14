@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Profile {% endblock %}
+{% block header %} Profile details {% endblock %}
+{% block content %}
+<div class="container pt-5">
+    <div class="row no-gutters justify-content-center border-lg">
+        <div class="col-lg-3 bg-light">
+            {% if user.profile.profile_picture %}
+            <img src="{{ user.profile.profile_picture.url }}" class="float-right"
+                 style="border: 1px solid rgba(0,0,0,.125); object-fit: contain; width: auto; max-height: 200px;">
+            {% else %}
+            <img src="{% static 'my_store/image/user_default_picture.jpg' %}" class="float-right"
+                 style="border: 1px solid rgba(0,0,0,.125); object-fit: contain;  width: auto;max-height: 200px;">
+            {% endif %}
+
+
+        </div>
+        <div class="col-lg-7 ">
+
+                <div class="card-body bg-white border" style="max-width: 600px;">
+
+
+                    <h5 class="card-title font-weight-bold">{{user | title}}
+
+                        <a class="btn btn-secondary float-right " href="{% url 'profile_update_view' user.profile.id %}">
+                            <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a class="btn btn-danger float-right mr-2" href="{% url 'profile_delete' user.id %}">
+                            <i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </h5>
+                    <p class="card-text">First name: {{ user.profile.first_name | default_if_none:'-'}}</p>
+                    <p class="card-text">Last name: {{user.profile.last_name | default_if_none:'-'}}</p>
+                    <p class="card-text">Email: {{profile.email | default_if_none:'-' }}</p>
+                    <p class="card-text">Location: {{profile.location | default_if_none:'-' }}</p>
+                    <p class="card-text">
+                        Role:
+                            {% if user.is_superuser %}
+                            Superuser
+                            {% elif user.is_staff %}
+                            Staff
+                            {% else %}
+                            User
+                            {% endif %}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
