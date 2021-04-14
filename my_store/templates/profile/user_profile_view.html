@@ -29,8 +29,8 @@
                         <a class="btn btn-danger float-right mr-2" href="{% url 'profile_delete' user.id %}">
                             <i class="fa fa-trash" aria-hidden="true"></i></a>
                     </h5>
-                    <p class="card-text">First name: {{ user.profile.first_name | default_if_none:'-'}}</p>
-                    <p class="card-text">Last name: {{user.profile.last_name | default_if_none:'-'}}</p>
+                    <p class="card-text">First name: {{ profile.first_name | default_if_none:'-'}}</p>
+                    <p class="card-text">Last name: {{profile.last_name | default_if_none:'-'}}</p>
                     <p class="card-text">Email: {{profile.email | default_if_none:'-' }}</p>
                     <p class="card-text">Location: {{profile.location | default_if_none:'-' }}</p>
                     <p class="card-text">

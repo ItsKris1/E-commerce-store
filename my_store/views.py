@@ -1,6 +1,6 @@
 
 from .models import Product, Category, Profile, OrderItem, Order, Address
-from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, AddressForm
+from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, AddressForm, ProfileSignUpForm
 import requests
 import json
 from django.http import JsonResponse
@@ -212,29 +212,33 @@ class Logout(LogoutView):
 def signup_view(request):
 
     if request.method == 'POST':
-        form = SignUpForm(data=request.POST, files=request.FILES)
-
-        if form.is_valid():
-            user = form.save()
+        user_form = SignUpForm(data=request.POST, files=request.FILES)
+        profile_form = ProfileSignUpForm(data=request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
             user.refresh_from_db()
 
-            user.profile.first_name = form.cleaned_data.get('first_name')
-            user.profile.last_name = form.cleaned_data.get('last_name')
-            user.profile.email = form.cleaned_data.get('email')
-            user.profile.location = form.cleaned_data.get('location')
-            user.profile.image = form.cleaned_data.get('image')
+            user.profile.first_name = user_form.cleaned_data.get('first_name')
+            user.profile.last_name = user_form.cleaned_data.get('last_name')
+            user.profile.email = user_form.cleaned_data.get('email')
+            user.profile.location = profile_form.cleaned_data.get('location')
+            user.profile.image = profile_form.cleaned_data.get('image')
             user.save()
+            user.profile.save()
 
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-
-            login(request, user)
+            username = user_form.cleaned_data.get('username')
+            raw_password = user_form.cleaned_data.get('password1')
+            authenticate(username=username, password=raw_password)
+            messages.info(request, 'User registered succesfully!')
+            # login(request, user)
             return redirect('login')
     else:
-        form = SignUpForm()
+        user_form = SignUpForm()
+        profile_form = ProfileSignUpForm()
+        print('error')
+        messages.info(request, 'sd')
 
-    return render(request, 'registration/sign_up.html', {'form': form})
+    return render(request, 'registration/sign_up.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
 """"""

@@ -73,31 +73,35 @@ class SignUpForm(UserCreationForm):
     password2 = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'type': 'password', 'id': 'Retype password'}))
 
-    #
-    first_name = forms.CharField(widget=forms.TextInput(
+    first_name = forms.CharField(required=False, widget=forms.TextInput(
         attrs={'class': 'form-control', 'id': 'First name'}))
 
     #
-    last_name = forms.CharField(widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'Last name'}))
+    last_name = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'id': 'Last name'}))
 
     #
-    email = forms.EmailField(required=False, widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'Email'}))
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'id': 'Email'}))
+
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'email')
+
+
+class ProfileSignUpForm(forms.ModelForm):
 
     #
-    location = forms.CharField(required=False, widget=forms.TextInput(
+    location = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'id': 'Location'}))
 
     #
     image = forms.ImageField(required=False, widget=forms.FileInput(
-            attrs={'class': 'form-control', 'id': 'Profile picture'}))
+        attrs={'class': 'form-control', 'id': 'Profile picture'}))
 
     class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'location', 'password1', 'password2',
-                  'image')
-
+        model = Profile
+        fields = ('location', 'image')
 
 """"""
 
