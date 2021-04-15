@@ -1,7 +1,7 @@
-# Brief Introduction
+# Introduction
 My first major project developed mainly developed with Django and Bootstrap.
 
-## Features
+#### Features
 
 ### Shopping Cart
 1. User can add, subtract or remove products.
