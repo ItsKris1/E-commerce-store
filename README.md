@@ -22,7 +22,7 @@
 
 
 
-### User and profile as UserProfile<br><br>
+### User and profile as UserProfile
 - Create, delete, view, modify your UserProfile<br><br>
 
 ### Payment
