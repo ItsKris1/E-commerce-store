@@ -264,11 +264,16 @@ def profile_update_view(request, pk):
         user_form = UserUpdateForm(data=request.POST, instance=request.user)
 
         if user_form.is_valid() and user_profile_form.is_valid():
-            uform = user_form.save()
-            upform = user_profile_form.save(commit=False)
+            user = user_form.save()
+            user.refresh_from_db()
 
-            upform.user = uform
-            upform.save()
+            user.profile.first_name = user_form.cleaned_data.get('first_name')
+            user.profile.last_name = user_form.cleaned_data.get('last_name')
+            user.profile.email = user_form.cleaned_data.get('email')
+            user.profile.country = user_profile_form.cleaned_data.get('country')
+            user.profile.profile_picture = user_profile_form.cleaned_data.get('profile_picture')
+            user.save()
+            user.profile.save()
 
             return redirect('profile_view', request.user.profile.id)
     else:

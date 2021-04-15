@@ -29,10 +29,10 @@
                         <a class="btn btn-danger float-right mr-2" href="{% url 'profile_delete' user.id %}">
                             <i class="fa fa-trash" aria-hidden="true"></i></a>
                     </h5>
-                    <p class="card-text">First name: {{ user.profile.first_name | default_if_none:'-'}}</p>
-                    <p class="card-text">Last name: {{ user.profile.last_name | default_if_none:'-'}}</p>
-                    <p class="card-text">Email: {{user.profile.email | default_if_none:'-' }}</p>
-                    <p class="card-text">Country: {{profile.country.name | default_if_none:'-' }}</p>
+                    <p class="card-text">First name: {{ profile.first_name | default:'-' }}</p>
+                    <p class="card-text">Last name: {{ profile.last_name | default:'-'}}</p>
+                    <p class="card-text">Email: {{ profile.user.email | default:'-' }}</p>
+                    <p class="card-text">Country: {{profile.country.name | default:'-' }}</p>
                     <p class="card-text">
                         Role:
                             {% if user.is_superuser %}
