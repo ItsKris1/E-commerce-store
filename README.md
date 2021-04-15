@@ -1,23 +1,26 @@
 # Desription
 My first major project developed mainly developed with Django and Bootstrap.
 
-## Features
+# Features
 #### User and Admin have different privileges.
 ### Shopping Cart
-1. Add, subtract or remove products
+- Add, subtract or remove products
 
 
 
 ### Products and categories
-1. Update, delete, view or add them
-2. Sort by price, category or brand
+- Update, delete, view or add them
+- Sort by price, category or brand
 
 
 
 
 ### User and profile as UserProfile
-2. Create, delete, view, modify your UserProfile
+- Create, delete, view, modify your UserProfile
 
+### Payment
+- Integration with PayPal Sandbox.
+Not live version. For testing purposes you can go through the whole checkout process by just clicking the button "Continue for now"
 
 
 
@@ -30,6 +33,3 @@ Option to use or save default and billing address
 
 
 
-### Payment
-1. Integration with PayPal Sandbox.
-Not live version. For testing purposes you can go through the whole checkout process by just clicking the button "Continue for now"
