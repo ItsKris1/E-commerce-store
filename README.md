@@ -1,12 +1,11 @@
-# Instruction to test the project
+# Instructions
 1. Download the ZIP file and extract it
 2. Open the project 
 3. In the terminal ``` py manage.py migrate ```
 4. Create superuser and follow the instructions in the terminal ``` py manage.py createsuperuser ```
 5. Run the server ``` py manage.py runserver ```
 6. Done! 
-7. Make sure to use Superuser for all the features
-
+7. Make sure to use Superuser for all the features<br><br>
 # Features
 #### User and Admin have different privileges.<br><br>
 
