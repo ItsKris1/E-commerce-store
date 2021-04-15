@@ -3,8 +3,10 @@
 2. Open the project 
 3. In the terminal ``` py manage.py migrate ```
 4. Create superuser and follow the instructions in the terminal ``` py manage.py createsuperuser ```
-5. Run it on your local server ``` py manage.py runserver ```
-Now the project is up and running. Home page is localhost:8000/products_list and be sure to use your freshly created Superuser to have access all the features.
+5. Run the server ``` py manage.py runserver ```
+6. Done! 
+7. Make sure to use Superuser for all the features
+8. 
 # Features
 #### User and Admin have different privileges.
 ### Shopping Cart
