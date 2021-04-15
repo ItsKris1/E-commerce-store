@@ -1,6 +1,10 @@
-# Desription
-My first major project developed mainly developed with Django and Bootstrap.
-
+# Instruction to test the project
+1. Download the ZIP file and extract it
+2. Open the project 
+3. In the terminal ``` py manage.py migrate ```
+4. Create superuser and follow the instructions in the terminal ``` py manage.py createsuperuser ```
+5. Run it on your local server ``` py manage.py runserver ```
+Now the project is up and running. Home page is localhost:8000/products_list and be sure to use your freshly created Superuser to have access all the features.
 # Features
 #### User and Admin have different privileges.
 ### Shopping Cart
