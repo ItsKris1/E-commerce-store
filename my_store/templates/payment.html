@@ -9,10 +9,24 @@
         src="https://www.paypal.com/sdk/js?client-id=AavoJJ07MoUh01aLcV3eXCWvIMPgPxnbPWE7dV5uo3XlUHswvopxZKyOkTlZex65CjCQIsqS3UPDNJ8O&disable-funding=card">
 </script>
 <div class="container-fluid">
+
     <div class="row justify-content-center">
 
 
         <div class="col-lg-7">
+            {% if messages %}
+        <div class="messages">
+
+            <div class="alert alert-info alert-dismissible fade show mb-0 mt-2" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        {% endif %}
             <table class="table">
 
                 <thead>
@@ -52,6 +66,10 @@
                     <h5 class="font-weight-bold border-bottom border-secondary pb-2 pt-3">Payment<i class="fa fa-arrow-down float-right" aria-hidden="true"></i></h5>
                 </div>
             <div id="paypal-button-container" class=""></div>
+
+
+                <a href="{% url 'payment_succesful' %}" class="btn btn-dark w-100 ">Continue for now<i class="fa fa-arrow-right ml-2" aria-hidden="true"></i></a>
+
         </div>
 
  <script>

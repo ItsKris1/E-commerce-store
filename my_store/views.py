@@ -312,6 +312,14 @@ class PaymentView(View):
 class PaymentSuccessful(View):
 
     def get(self, *args, **kwargs):
+        order = Order.objects.get(user=self.request.user, ordered=False)
+
+        context = {
+            'order': order,
+        }
+        return render(self.request, 'payment_succesful.html', context)
+    """
+     def get(self, *args, **kwargs):
 
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
@@ -331,8 +339,10 @@ class PaymentSuccessful(View):
                 return render(self.request, 'payment_succesful.html', {})
 
         except ObjectDoesNotExist:
-            messages.info(self.request, 'Order did not go through')
+            messages.info(self.request, 'You dont have an existing order.')
             return redirect('products')
+    """
+
 
 
 

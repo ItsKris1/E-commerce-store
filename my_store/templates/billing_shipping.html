@@ -45,10 +45,7 @@
                         <label for="shipping_zip" class="">Zip</label>
                         <input type="text" placeholder="Postal code" id="shipping_zip" name="shipping_zip" class="form-control mb-3">
 
-                        <div class="form-check pt-2">
-                            <input type="checkbox" class="form-check-input" name="same_billing_address" id="same_billing_address">
-                            <label class="form-check-label" for="same_billing_address">Billing address is the same</label>
-                        </div>
+
 
                         <div class="form-check pt-1 pb-1 border-bottom border-secondary">
                             <input type="checkbox" class="form-check-input" name="set_default_shipping" id="set_default_shipping">
@@ -68,6 +65,10 @@
 
                 </div>
                 {% endif %}
+                 <div class="form-check pt-2">
+                            <input type="checkbox" class="form-check-input" name="same_billing_address" id="same_billing_address">
+                            <label class="form-check-label" for="same_billing_address">Billing address is the same</label>
+                        </div>
 
 
 
