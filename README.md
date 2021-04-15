@@ -6,25 +6,26 @@
 5. Run the server ``` py manage.py runserver ```
 6. Done! 
 7. Make sure to use Superuser for all the features
-8. 
-# Features<br><br>
-#### User and Admin have different privileges.
-### Shopping Cart
+
+# Features
+#### User and Admin have different privileges.<br><br>
+
+### Shopping Cart<br><br>
 - Add, subtract or remove products
 
 
 
-### Products and categories
+### Products and categories<br><br>
 - Update, delete, view or add them
 - Sort by price, category or brand
 
 
 
 
-### User and profile as UserProfile
+### User and profile as UserProfile<br><br>
 - Create, delete, view, modify your UserProfile
 
-### Payment
+### Payment<br><br>
 - Integration with PayPal Sandbox.
 Not live version. For testing purposes you can go through the whole checkout process by just clicking the button "Continue for now"
 
