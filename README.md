@@ -11,23 +11,23 @@
 #### User and Admin have different privileges.<br><br>
 
 ### Shopping Cart<br><br>
-- Add, subtract or remove products
+- Add, subtract or remove products<br><br>
 
 
 
-### Products and categories<br><br>
+### Products and categories
 - Update, delete, view or add them
-- Sort by price, category or brand
+- Sort by price, category or brand<br><br>
 
 
 
 
 ### User and profile as UserProfile<br><br>
-- Create, delete, view, modify your UserProfile
+- Create, delete, view, modify your UserProfile<br><br>
 
 ### Payment<br><br>
 - Integration with PayPal Sandbox.
-Not live version. For testing purposes you can go through the whole checkout process by just clicking the button "Continue for now"
+Not live version. For testing purposes you can go through the whole checkout process by just clicking the button "Continue for now"<br><br>
 
 
 
