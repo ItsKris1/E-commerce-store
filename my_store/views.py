@@ -310,16 +310,7 @@ class PaymentView(View):
 
 
 class PaymentSuccessful(View):
-
     def get(self, *args, **kwargs):
-        order = Order.objects.get(user=self.request.user, ordered=False)
-
-        context = {
-            'order': order,
-        }
-        return render(self.request, 'payment_succesful.html', context)
-    """
-     def get(self, *args, **kwargs):
 
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
@@ -341,12 +332,9 @@ class PaymentSuccessful(View):
         except ObjectDoesNotExist:
             messages.info(self.request, 'You dont have an existing order.')
             return redirect('products')
-    """
 
 
-
-
-
+# For getting data through PayPal
 def payment_data(request):
 
     body = json.loads(request.body)

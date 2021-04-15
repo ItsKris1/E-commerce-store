@@ -9,7 +9,6 @@ from django_countries.fields import CountryField
 
 class ProductCreateForm(forms.ModelForm):
 
-
     class Meta:
         model = Product
         fields = ('name',
