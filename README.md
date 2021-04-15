@@ -7,7 +7,7 @@
 6. Done! 
 7. Make sure to use Superuser for all the features
 8. 
-# Features
+# Features<br><br>
 #### User and Admin have different privileges.
 ### Shopping Cart
 - Add, subtract or remove products
