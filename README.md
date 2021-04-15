@@ -10,7 +10,7 @@
 # Features
 #### User and Admin have different privileges.<br><br>
 
-### Shopping Cart<br><br>
+### Shopping Cart
 - Add, subtract or remove products<br><br>
 
 
@@ -25,7 +25,7 @@
 ### User and profile as UserProfile<br><br>
 - Create, delete, view, modify your UserProfile<br><br>
 
-### Payment<br><br>
+### Payment
 - Integration with PayPal Sandbox.
 Not live version. For testing purposes you can go through the whole checkout process by just clicking the button "Continue for now"<br><br>
 
