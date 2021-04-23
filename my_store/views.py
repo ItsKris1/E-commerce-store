@@ -350,14 +350,6 @@ class PaymentSuccessful(View):
             return redirect('products')
 
 
-# For getting data through PayPal
-def payment_data(request):
-
-    body = json.loads(request.body)
-    print('body -->', body)
-    return redirect('products')
-
-
 """"""
 #
 """BILLING & SHIPPING"""
