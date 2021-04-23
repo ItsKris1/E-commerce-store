@@ -464,15 +464,16 @@ class BillingShippingView(View):
                 # After the conditions on filling the shipping address, we check whether
                 # billing address and shipping address are the same
                 if same_billing_address:
-                    billing_address = Address(
-                        user=self.request.user,
-                        street_address=shipping_address.street_address,
-                        appartment_address=shipping_address.appartment_address,
-                        zip=shipping_address.zip,
-                        country=shipping_address.country,
 
-                        address_type='B'
-                    )
+                    # Takes shipping address form fields and creates new addres
+                    billing_address = shipping_address
+                    # We set primary key to None, to create new object
+                    billing_address.pk = None
+                    billing_address.save()
+                    # We make the shipping address to billing with asssigning adress type 'B' to it
+                    billing_address.address_type = 'B'
+                    billing_address.save()
+
                 # If billing address and shipping address are not the same...
                 else:
 

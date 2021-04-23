@@ -32,8 +32,13 @@
                 <div class="hideable_shipping_form">
 
                     <div class="form-group">
-
-                        <label for="shipping_address1" class="">Address</label>
+                        
+                            <label for="shipping_address1" class="">Address</label>
+                            <p class="d-inline float-right mb-0 font-weight-bold text-danger">*</p>
+                        
+                            
+                       
+                       
                         <input type="text" placeholder="1234 Main St" id="shipping_address1" name="shipping_address1" class="form-control mb-3">
 
 
@@ -42,9 +47,11 @@
 
 
                         {{ form.shipping_country.id_for_label }}
+                        <p class="d-inline float-right mb-0 font-weight-bold text-danger">*</p>
                         {{ form.shipping_country }}
 
                         <label for="shipping_zip" class="">Zip</label>
+                        <p class="d-inline float-right mb-0 font-weight-bold text-danger">*</p>
                         <input type="text" placeholder="Postal code" id="shipping_zip" name="shipping_zip" class="form-control mb-3">
 
 
@@ -87,6 +94,7 @@
                 <div class="hideable_billing_form">
                     <div class="form-group">
                         <label for="billing_address1" class="">Address</label>
+                        <p class="d-inline float-right mb-0 font-weight-bold text-danger">*</p>
                         <input type="text" placeholder="1234 Main St" id="billing_address1" name="billing_address1" class="form-control mb-3">
 
                         <label for="billing_address2" class="">Address 2(optional)</label>
@@ -94,9 +102,11 @@
 
 
                         {{ form.billing_country.id_for_label }}
+                        <p class="d-inline float-right mb-0 font-weight-bold text-danger">*</p>
                         {{ form.billing_country }}
 
                         <label for="billing_zip" class="">Zip</label>
+                        <p class="d-inline float-right mb-0 font-weight-bold text-danger">*</p>
                         <input type="text" placeholder="Postal code" id="billing_zip" name="billing_zip" class="form-control mb-3">
 
                         <div class="form-check pt-1 pb-1 border-bottom border-secondary">
