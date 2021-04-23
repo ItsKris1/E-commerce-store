@@ -25,18 +25,14 @@
 ### User and profile as UserProfile
 - Create, delete, view, modify your UserProfile<br><br>
 
-### Payment
-- Integration with PayPal Sandbox.
-Not live version. For testing purposes you can go through the whole checkout process by just clicking the button "Continue for now"<br><br>
-
 
 
 ### Checkout 
 1. Fill your shopping cart
 2. Enter your shipping and billing details
 Option to use or save default and billing address
-4. Your order summary and payment
-5. On succesful payment, order goes through and user will be redirected to final page
+4. Your order summary
+5. If order goes through and user will be redirected to final page
 
 
 
