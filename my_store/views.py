@@ -362,6 +362,16 @@ def payment_data(request):
 #
 """BILLING & SHIPPING"""
 
+# checking if user has entered required fields for forms
+
+
+def is_valid(values):
+    valid = True
+    for i in values:
+        if i == '':
+            valid = False
+    return valid
+
 
 class BillingShippingView(View):
 
@@ -387,9 +397,11 @@ class BillingShippingView(View):
     #
     def post(self, *args, **kwargs):
         form = AddressForm(self.request.POST or None)
+
         try:
             # Just in case checking if user has an active order
             order = Order.objects.get(user=self.request.user, ordered=False)
+
             if form.is_valid():
                 # Gets user input on what he wants to do
                 same_billing_address = form.cleaned_data.get(
@@ -403,8 +415,10 @@ class BillingShippingView(View):
                 if use_default_shipping:
                     address_qs = Address.objects.filter(
                         user=self.request.user, default_address=True, address_type='S')
+
                     if address_qs.exists():
                         shipping_address = address_qs[0]
+
                     else:
                         messages.info(
                             self.request, 'No default shipping address available!')
@@ -420,14 +434,20 @@ class BillingShippingView(View):
                     shipping_country = form.cleaned_data.get(
                         'shipping_country')
 
-                    shipping_address = Address(
-                        user=self.request.user,
-                        street_address=shipping_address1,
-                        appartment_address=shipping_address2,
-                        zip=shipping_zip,
-                        country=shipping_country,
-                        address_type='S'
-                    )
+                    if is_valid([shipping_address1, shipping_zip, shipping_country]):
+
+                        shipping_address = Address(
+                            user=self.request.user,
+                            street_address=shipping_address1,
+                            appartment_address=shipping_address2,
+                            zip=shipping_zip,
+                            country=shipping_country,
+                            address_type='S'
+                        )
+                    else:
+                        messages.info(
+                            self.request, 'Please enter required address fields')
+                        return redirect('billing_shipping')
 
                     # If user wants to make added shipping address as a Default
                     if set_default_shipping:
@@ -471,7 +491,7 @@ class BillingShippingView(View):
                             messages.info(
                                 self.request, 'No default shipping address available!')
                             return redirect('billing_shipping')
-                    # Else... we just take user address
+                    # Else... we just take user billing address
                     else:
 
                         # HANDELING BILLING FORM
@@ -483,14 +503,21 @@ class BillingShippingView(View):
                         billing_country = form.cleaned_data.get(
                             'billing_country')
 
-                        billing_address = Address(
-                            user=self.request.user,
-                            street_address=billing_address1,
-                            appartment_address=billing_address2,
-                            zip=billing_zip,
+                        if is_valid([billing_address1, billing_zip, billing_country]):
 
-                            address_type='B'
-                        )
+                            billing_address = Address(
+                                user=self.request.user,
+                                street_address=billing_address1,
+                                appartment_address=billing_address2,
+                                zip=billing_zip,
+
+                                address_type='B'
+                            )
+                        else:
+                            messages.info(
+                                self.request, 'Please enter required address fields')
+                            return redirect('billing_shipping')
+
                         # If user wants to make added address Default address
                         set_default_billing = form.cleaned_data.get(
                             'set_default_billing')

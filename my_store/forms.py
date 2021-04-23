@@ -65,7 +65,7 @@ class SignUpForm(UserCreationForm):
         super(SignUpForm, self).__init__(*args, **kwargs)
 
     #
-    username = forms.CharField(max_length=15,widget=forms.TextInput(
+    username = forms.CharField(max_length=15, widget=forms.TextInput(
         attrs={'class': 'form-control', 'id': 'Username'}))
     #
     password1 = forms.CharField(widget=forms.TextInput(
@@ -88,7 +88,8 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'email')
+        fields = ('username', 'password1', 'password2',
+                  'first_name', 'last_name', 'email')
 
 
 class ProfileSignUpForm(forms.ModelForm):
@@ -104,6 +105,7 @@ class ProfileSignUpForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('country', 'profile_picture')
+
 
 """"""
 
