@@ -34,6 +34,7 @@ class ProductsListView(ListView):
     context_object_name = 'products'
 
     """QUERYSETS"""
+
     def get_queryset(self):
         products = Product.objects.all()
 
@@ -66,6 +67,7 @@ class ProductsListView(ListView):
         return products
 
     """CONTEXT"""
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
 
@@ -92,7 +94,8 @@ class ProductsListView(ListView):
         #
 
         # ALL BRAND NAMES ON - ALL PRODUCTS or CATEGORIES
-        product_brands = Product.objects.values_list('brand', flat=True).distinct()
+        product_brands = Product.objects.values_list(
+            'brand', flat=True).distinct()
 
         if category_name is None:
             brand_names = product_brands
@@ -213,7 +216,8 @@ def signup_view(request):
 
     if request.method == 'POST':
         user_form = SignUpForm(data=request.POST)
-        profile_form = ProfileSignUpForm(data=request.POST, files=request.FILES)
+        profile_form = ProfileSignUpForm(
+            data=request.POST, files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.refresh_from_db()
@@ -222,7 +226,8 @@ def signup_view(request):
             user.profile.last_name = user_form.cleaned_data.get('last_name')
             user.profile.email = user_form.cleaned_data.get('email')
             user.profile.country = profile_form.cleaned_data.get('country')
-            user.profile.profile_picture = profile_form.cleaned_data.get('profile_picture')
+            user.profile.profile_picture = profile_form.cleaned_data.get(
+                'profile_picture')
             user.save()
             user.profile.save()
 
@@ -260,7 +265,8 @@ class UserProfileDeleteView(DeleteView):
 def profile_update_view(request, pk):
 
     if request.method == 'POST':
-        user_profile_form = UserProfileUpdateForm(data=request.POST, files=request.FILES, instance=request.user.profile)
+        user_profile_form = UserProfileUpdateForm(
+            data=request.POST, files=request.FILES, instance=request.user.profile)
         user_form = UserUpdateForm(data=request.POST, instance=request.user)
 
         if user_form.is_valid() and user_profile_form.is_valid():
@@ -270,14 +276,17 @@ def profile_update_view(request, pk):
             user.profile.first_name = user_form.cleaned_data.get('first_name')
             user.profile.last_name = user_form.cleaned_data.get('last_name')
             user.profile.email = user_form.cleaned_data.get('email')
-            user.profile.country = user_profile_form.cleaned_data.get('country')
-            user.profile.profile_picture = user_profile_form.cleaned_data.get('profile_picture')
+            user.profile.country = user_profile_form.cleaned_data.get(
+                'country')
+            user.profile.profile_picture = user_profile_form.cleaned_data.get(
+                'profile_picture')
             user.save()
             user.profile.save()
 
             return redirect('profile_view', request.user.profile.id)
     else:
-        user_profile_form = UserProfileUpdateForm(instance=request.user.profile)
+        user_profile_form = UserProfileUpdateForm(
+            instance=request.user.profile)
         user_form = UserUpdateForm(instance=request.user)
 
         context = {
@@ -314,7 +323,7 @@ class PaymentSuccessful(View):
 
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
-
+            id = order.id
             for order_item in order.items.all():
                 product_item = Product.objects.get(id=order_item.item.id)
                 product_item.in_stock -= order_item.quantity
@@ -326,8 +335,15 @@ class PaymentSuccessful(View):
                 order.ordered = True
                 order.save()
 
-                messages.info(self.request, 'Order was succesful!')
-                return render(self.request, 'payment_succesful.html', {})
+            order_num = Order.objects.get(
+                user=self.request.user, ordered=True, id=id)
+            print(order_num)
+            context = {
+                'id': id,
+            }
+
+            messages.info(self.request, 'Order was succesful!')
+            return render(self.request, 'payment_succesful.html', context)
 
         except ObjectDoesNotExist:
             messages.info(self.request, 'You dont have an existing order.')
@@ -376,25 +392,33 @@ class BillingShippingView(View):
             order = Order.objects.get(user=self.request.user, ordered=False)
             if form.is_valid():
                 # Gets user input on what he wants to do
-                same_billing_address = form.cleaned_data.get('same_billing_address')
-                use_default_shipping = form.cleaned_data.get('use_default_shipping')
-                set_default_shipping = form.cleaned_data.get('set_default_shipping')
+                same_billing_address = form.cleaned_data.get(
+                    'same_billing_address')
+                use_default_shipping = form.cleaned_data.get(
+                    'use_default_shipping')
+                set_default_shipping = form.cleaned_data.get(
+                    'set_default_shipping')
 
                 # If user wants to use default shipping address
                 if use_default_shipping:
-                    address_qs = Address.objects.filter(user=self.request.user, default_address=True, address_type='S')
+                    address_qs = Address.objects.filter(
+                        user=self.request.user, default_address=True, address_type='S')
                     if address_qs.exists():
                         shipping_address = address_qs[0]
                     else:
-                        messages.info(self.request, 'No default shipping address available!')
+                        messages.info(
+                            self.request, 'No default shipping address available!')
                         return redirect('billing_shipping')
 
                 # Else..
                 else:
-                    shipping_address1 = form.cleaned_data.get('shipping_address1')
-                    shipping_address2 = form.cleaned_data.get('shipping_address2')
+                    shipping_address1 = form.cleaned_data.get(
+                        'shipping_address1')
+                    shipping_address2 = form.cleaned_data.get(
+                        'shipping_address2')
                     shipping_zip = form.cleaned_data.get('shipping_zip')
-                    shipping_country = form.cleaned_data.get('shipping_country')
+                    shipping_country = form.cleaned_data.get(
+                        'shipping_country')
 
                     shipping_address = Address(
                         user=self.request.user,
@@ -433,7 +457,8 @@ class BillingShippingView(View):
                 else:
 
                     # Getting user input
-                    use_default_billing = form.cleaned_data.get('use_default_billing')
+                    use_default_billing = form.cleaned_data.get(
+                        'use_default_billing')
 
                     # If user has chosen Default billing address
                     if use_default_billing:
@@ -443,16 +468,20 @@ class BillingShippingView(View):
                             billing_address = address_qs[0]
 
                         else:
-                            messages.info(self.request, 'No default shipping address available!')
+                            messages.info(
+                                self.request, 'No default shipping address available!')
                             return redirect('billing_shipping')
                     # Else... we just take user address
                     else:
 
                         # HANDELING BILLING FORM
-                        billing_address1 = form.cleaned_data.get('billing_address1')
-                        billing_address2 = form.cleaned_data.get('billing_address2')
+                        billing_address1 = form.cleaned_data.get(
+                            'billing_address1')
+                        billing_address2 = form.cleaned_data.get(
+                            'billing_address2')
                         billing_zip = form.cleaned_data.get('billing_zip')
-                        billing_country = form.cleaned_data.get('billing_country')
+                        billing_country = form.cleaned_data.get(
+                            'billing_country')
 
                         billing_address = Address(
                             user=self.request.user,
@@ -463,7 +492,8 @@ class BillingShippingView(View):
                             address_type='B'
                         )
                         # If user wants to make added address Default address
-                        set_default_billing = form.cleaned_data.get('set_default_billing')
+                        set_default_billing = form.cleaned_data.get(
+                            'set_default_billing')
                         if set_default_billing:
                             address_qs = Address.objects.filter(user=self.request.user, default_address=True,
                                                                 address_type='B')
@@ -484,7 +514,8 @@ class BillingShippingView(View):
                 order.shipping_address = shipping_address
                 order.save()
 
-                messages.info(self.request, 'Addresses were entered succesfully!')
+                messages.info(
+                    self.request, 'Addresses were entered succesfully!')
                 return redirect('payment')
 
         # If for some reason user does not have an active order
@@ -519,7 +550,7 @@ def add_to_cart(request, pk):
         item=item,
         user=request.user,
         ordered=False,
-        )
+    )
 
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
@@ -535,7 +566,8 @@ def add_to_cart(request, pk):
             messages.info(request, 'The item was added to the cart')
     else:
         ordered_date = timezone.now()
-        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+        order = Order.objects.create(
+            user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
         messages.info(request, 'The item was added to the cart')
 
@@ -578,10 +610,10 @@ def remove_single_item_from_cart(request, pk):
     order = order_qs[0]
 
     order_item = OrderItem.objects.filter(
-            item=item,
-            user=request.user,
-            ordered=False,
-        )[0]
+        item=item,
+        user=request.user,
+        ordered=False,
+    )[0]
 
     if order_item.quantity > 1:
         order_item.quantity -= 1
@@ -616,5 +648,3 @@ def add_single_item_to_cart(request, pk):
 
 
 """"""
-
-

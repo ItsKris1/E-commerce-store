@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
-{% block header %} Order: {{ order.id }} {% endblock %}
+{% block header %} Order: {{ id }} {% endblock %}
 {% load static %}
 
 {% block content %}
 <div class="container pt-3">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-
             <h2 class="text-center pb-3">Purchase was successful<img src="{% static 'my_store/image/1200px-Checkmark.png' %}"
             style="max-height: 100px; width:auto; object-fit:contain;"></h2>
 
 
-            <div class="row pt-3">
+            <div class="row pt-5">
                 <h5>Thank you for choosing our store.</h5>
             </div>
 
