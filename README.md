@@ -1,3 +1,6 @@
+# Brief Introduction
+I gave my best to develop an e-commerce store, what would fit standards. I focused on back and front-end equally. Before the project I had a really small experience with front-end development compared to back-end. I tried to implement the CRUD(create, read, update, delete) feature everywhere where it would be reasonable. 
+
 # Instructions to run the project with Django
 1. Download the ZIP file and extract it
 2. Open the project 
