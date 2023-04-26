@@ -5,7 +5,6 @@ import requests
 import json
 from django.http import JsonResponse
 
-from paypalrestsdk import Payment
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, TemplateView, View, FormView
 from django.urls import reverse_lazy
 from django.conf import settings
@@ -237,6 +236,10 @@ def signup_view(request):
             messages.info(request, 'User registered succesfully!')
             # login(request, user)
             return redirect('login')
+
+        else:
+            print("Invalid")
+            print(user_form.errors)
     else:
         user_form = SignUpForm()
         profile_form = ProfileSignUpForm()
