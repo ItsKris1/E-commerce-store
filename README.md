@@ -4,7 +4,7 @@
 Website where you can buy products as an user and manage them with superuser.
 
 #### Shopping Cart
-Add, subtract or remove products<br><br>
+Add, subtract or remove products<
 
 #### Products and categories
 Update, delete, add - admin
@@ -12,7 +12,7 @@ View - user
 Sort by price, category or brand - user
 
 #### User profile
-Create, delete, view, modify your profile<br><br>
+Create, delete, view, modify your profile
 
 #### Checkout 
 1. Fill your shopping cart
@@ -21,13 +21,12 @@ Create, delete, view, modify your profile<br><br>
 5. Buy!
 
 ## Run the project
+1. Navigate to the project root folder
+2. ``` py manage.py migrate ```
+3. ``` py manage.py runserver ```
 
-1. ``` py manage.py migrate ```
-2. ``` py manage.py runserver ```
+You can create an admin user with:  ``` py manage.py createsuperuser ```
 
-If you want to create an admin
-Create superuser and follow the instructions in the terminal ``` py manage.py createsuperuser ```
-<br>
 ## Stack
 
 Frontend
