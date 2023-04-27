@@ -27,8 +27,7 @@ Create, delete, view, modify your profile<br><br>
 
 If you want to create an admin
 Create superuser and follow the instructions in the terminal ``` py manage.py createsuperuser ```
-
-
+<br>
 ## Stack
 
 Frontend
