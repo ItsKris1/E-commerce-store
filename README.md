@@ -1,13 +1,14 @@
 
 ## Project description
-Store where you can manage and buy products.<br>
-Users can manage their profile, view and buy products.<br>
-Admins can delete or update the products and categories.<br>
+Online store where you view, add, update or delete products and categories.<br>
+Users can view, update, delete their profile and view, buy products.<br>
+Admins have all the privileges as normal users but can also delete, update products and categories.<br>
 
-Buying products involves:
+Buying a product involves:
 - Adding a product to your shopping cart
-- Having a shopping cart where you can manage your items
+- Having a shopping cart where you can view and manage your items.
 - Filling out a billing and shipping form
+- Payment(right now just a button)
 
 
 ## Run the project
@@ -15,7 +16,7 @@ Buying products involves:
 2. ``` py manage.py migrate ```
 3. ``` py manage.py runserver ```
 
-You can create an admin user with:  ``` py manage.py createsuperuser ```
+If you want to create an admin user you can do so with: ``` py manage.py createsuperuser ```
 
 ## Stack
 
