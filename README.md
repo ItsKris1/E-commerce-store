@@ -3,18 +3,18 @@
 
 Website where you can buy products as an user and manage them with superuser.
 
-### Shopping Cart
+#### Shopping Cart
 Add, subtract or remove products<br><br>
 
-### Products and categories
+#### Products and categories
 Update, delete, add - admin
 View - user
 Sort by price, category or brand - user
 
-### User profile
+#### User profile
 Create, delete, view, modify your profile<br><br>
 
-### Checkout 
+#### Checkout 
 1. Fill your shopping cart
 2. Enter your shipping and billing details
 4. View your order
