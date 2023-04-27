@@ -1,24 +1,14 @@
 
 ## Project description
+Store where you can manage and buy products.<br>
+Users can manage their profile, view and buy products.<br>
+Admins can delete or update the products and categories.<br>
 
-Website where you can buy products as an user and manage them with superuser.
+Buying products involves:
+- Adding a product to your shopping cart
+- Having a shopping cart where you can manage your items
+- Filling out a billing and shipping form
 
-#### Shopping Cart
-Add, subtract or remove products<
-
-#### Products and categories
-Update, delete, add - admin
-View - user
-Sort by price, category or brand - user
-
-#### User profile
-Create, delete, view, modify your profile
-
-#### Checkout 
-1. Fill your shopping cart
-2. Enter your shipping and billing details
-4. View your order
-5. Buy!
 
 ## Run the project
 1. Navigate to the project root folder
