@@ -237,9 +237,6 @@ def signup_view(request):
             # login(request, user)
             return redirect('login')
 
-        else:
-            print("Invalid")
-            print(user_form.errors)
     else:
         user_form = SignUpForm()
         profile_form = ProfileSignUpForm()
