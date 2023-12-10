@@ -1,7 +1,7 @@
 
 ## Project description
-Online store where you view, add, update or delete products and categories.<br>
-Users can view, update, delete their profile and view, buy products.<br>
+An e-commerce store where you can view, add, update or delete products and categories.<br>
+Users can view, update, delete their profile and view or buy products.<br>
 Admins have all the privileges as normal users but can also delete, update products and categories.<br>
 
 Buying a product involves:
