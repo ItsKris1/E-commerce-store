@@ -1,14 +1,23 @@
 
 ## Project description
-An e-commerce store where you can view, add, update or delete products and categories.<br>
-Users can view, update, delete their profile and view or buy products.<br>
-Admins have all the privileges as normal users but can also delete, update products and categories.<br>
+An e-commerce store.
 
 Buying a product involves:
 - Adding a product to your shopping cart
 - Having a shopping cart where you can view and manage your items.
 - Filling out a billing and shipping form
 - Payment(right now just a button)
+
+
+As a normal user, you can:
+- Create an account
+- Change your account settings later on if you wish to
+- Buy products
+
+As an admin, you can:
+- Do all, what the normal user could
+- Add, delete, change products
+- Add, delete, change categories
 
 
 ## Run the project
