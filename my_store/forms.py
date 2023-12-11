@@ -4,7 +4,6 @@ from .models import Product, Category, Profile
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
-from django_countries.fields import CountryField
 
 
 class ProductCreateForm(forms.ModelForm):
@@ -86,25 +85,15 @@ class SignUpForm(UserCreationForm):
     email = forms.EmailField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'id': 'Email'}))
 
-    class Meta:
-        model = User
-        fields = ('username', 'password1', 'password2',
-                  'first_name', 'last_name', 'email')
-
-
-class ProfileSignUpForm(forms.ModelForm):
-
-    #
-    country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
-        attrs={'class': 'form-control mb-3', 'id': 'Country'}))
-
-    #
     profile_picture = forms.ImageField(required=False, widget=forms.FileInput(
         attrs={'class': 'form-control', 'id': 'Profile picture'}))
 
     class Meta:
-        model = Profile
-        fields = ('country', 'profile_picture')
+        model = User
+        fields = ('username', 'password1', 'password2',
+                  'first_name', 'last_name', 'email', 'profile_picture')
+
+
 
 
 """"""
@@ -128,25 +117,12 @@ class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField(required=False, widget=forms.TextInput(
         attrs={'class': 'form-control', 'id': 'Email'}))
 
+    profile_picture = forms.FileInput(attrs={'class ': 'form-control-file'})
+
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email')
 
-
-class UserProfileUpdateForm(forms.ModelForm):
-    country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
-        attrs={'class': 'form-control mb-3', 'id': 'Country'}))
-
-    class Meta:
-        model = Profile
-        fields = (
-            'country',
-            'profile_picture'
-        )
-
-        widgets = {
-            'profile_picture': forms.FileInput(attrs={'class ': 'form-control-file'}),
-        }
 
 
 """"""
@@ -162,8 +138,7 @@ class AddressForm(forms.Form):
 
     shipping_zip = forms.CharField(required=False)
 
-    shipping_country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
-        attrs={'class': 'form-control mt-2 mb-3', 'id': 'Country'}))
+    shipping_country = forms.CharField(required=False)
 
     # BILLING
 
@@ -173,8 +148,7 @@ class AddressForm(forms.Form):
 
     billing_zip = forms.CharField(required=False)
 
-    billing_country = CountryField(blank_label='Select country').formfield(required=False, widget=forms.Select(
-        attrs={'class': 'form-control mt-2 mb-3', 'id': 'Country'}))
+    billing_country = forms.CharField(required=False)
 
     same_billing_address = forms.BooleanField(required=False)
 

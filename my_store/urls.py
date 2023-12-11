@@ -45,7 +45,7 @@ urlpatterns = [
 
 
     # AUTHENTICATION
-    path('accounts/log_out', views.LogoutView.as_view(), name='log_out'),
+    path('accounts/log_out', views.logout_view, name='log_out'),
     path('accounts/login/', views.LoginView.as_view(template_name="registration/login.html",
                                                     authentication_form=UserLoginForm), name='login'),
     path('accounts/sign_up', views.signup_view, name='sign_up'),

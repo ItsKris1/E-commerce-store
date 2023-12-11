@@ -1,6 +1,6 @@
 
 from .models import Product, Category, Profile, OrderItem, Order, Address
-from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserProfileUpdateForm, UserUpdateForm, AddressForm, ProfileSignUpForm
+from .forms import ProductCreateForm, CategoryCreateForm, SignUpForm, UserUpdateForm, AddressForm
 import requests
 import json
 from django.http import JsonResponse
@@ -15,7 +15,8 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.contrib.auth.views import LogoutView, LoginView
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.core.exceptions import ObjectDoesNotExist
@@ -207,8 +208,12 @@ class CategoryUpdateView(UpdateView):
 """AUTHENTICATION"""
 
 
-class Logout(LogoutView):
-    next_page = 'products'
+
+
+
+def logout_view(request):
+    logout(request)
+    return render(request, 'products/products_list.html')
 
 
 def signup_view(request):
@@ -216,7 +221,8 @@ def signup_view(request):
     if request.method == 'POST':
         user_form = SignUpForm(data=request.POST)
         profile_form = ProfileSignUpForm(
-            data=request.POST, files=request.FILES)
+            data=request.POST)
+
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.refresh_from_db()
@@ -234,14 +240,17 @@ def signup_view(request):
             raw_password = user_form.cleaned_data.get('password1')
             authenticate(username=username, password=raw_password)
             messages.info(request, 'User registered succesfully!')
-            # login(request, user)
             return redirect('login')
+
+        
 
     else:
         user_form = SignUpForm()
         profile_form = ProfileSignUpForm()
 
     return render(request, 'registration/sign_up.html', {'user_form': user_form, 'profile_form': profile_form})
+    
+
 
 
 """"""
@@ -265,36 +274,28 @@ class UserProfileDeleteView(DeleteView):
 def profile_update_view(request, pk):
 
     if request.method == 'POST':
-        user_profile_form = UserProfileUpdateForm(
-            data=request.POST, files=request.FILES, instance=request.user.profile)
         user_form = UserUpdateForm(data=request.POST, instance=request.user)
 
-        if user_form.is_valid() and user_profile_form.is_valid():
+        if user_form.is_valid():
             user = user_form.save()
             user.refresh_from_db()
 
             user.profile.first_name = user_form.cleaned_data.get('first_name')
             user.profile.last_name = user_form.cleaned_data.get('last_name')
             user.profile.email = user_form.cleaned_data.get('email')
-            user.profile.country = user_profile_form.cleaned_data.get(
-                'country')
-            user.profile.profile_picture = user_profile_form.cleaned_data.get(
-                'profile_picture')
+            # user.profile.profile_picture = user_form.cleaned_data.get(
+            #     'profile_picture')
             user.save()
             user.profile.save()
 
             return redirect('profile_view', request.user.profile.id)
     else:
-        user_profile_form = UserProfileUpdateForm(
-            instance=request.user.profile)
+     
         user_form = UserUpdateForm(instance=request.user)
 
-        context = {
-            'user_form': user_form,
-            'user_profile_form': user_profile_form
-        }
+       
 
-        return render(request, 'profile/user_profile_update_view.html', context)
+    return render(request, 'profile/user_profile_update_view.html', {'user_form': user_form})
 
 
 """"""
@@ -337,7 +338,6 @@ class PaymentSuccessful(View):
 
             order_num = Order.objects.get(
                 user=self.request.user, ordered=True, id=id)
-            print(order_num)
             context = {
                 'id': id,
             }

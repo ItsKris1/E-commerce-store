@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from django_countries.fields import CountryField
 
 
 class Product(models.Model):
@@ -39,7 +38,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30, default='-')
     last_name = models.CharField(max_length=30, default='-')
-    country = CountryField(multiple=False, blank=True, null=True)
     email = models.EmailField(max_length=250, default='-')
     profile_picture = models.ImageField(blank=True, null=True)
 
@@ -112,7 +110,7 @@ class Address(models.Model):
     street_address = models.CharField(max_length=100)
     appartment_address = models.CharField(max_length=100)
     zip = models.CharField(max_length=100)
-    country = CountryField(multiple=False)
+    country = models.CharField(max_length=100)
     address_type = models.CharField(blank=True, null=True, choices=ADDRESS_TYPES, max_length=1)
     default_address = models.BooleanField(default=False)
 
