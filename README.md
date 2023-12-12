@@ -2,13 +2,6 @@
 ## Project description
 An e-commerce store.
 
-Buying a product involves:
-- Adding a product to your shopping cart
-- Having a shopping cart where you can view and manage your items.
-- Filling out a billing and shipping form
-- Payment(right now just a button)
-
-
 As a normal user, you can:
 - Create an account
 - Change your account settings later on if you wish to
@@ -18,6 +11,12 @@ As an admin, you can:
 - Do all, what the normal user could
 - Add, delete, change products
 - Add, delete, change categories
+
+Buying a product involves:
+- Adding a product to your shopping cart
+- Having a shopping cart where you can view and manage your items.
+- Filling out a billing and shipping form
+- Payment(right now just a button)
 
 
 ## Run the project
@@ -36,8 +35,6 @@ Backend
 - Django
 - SQLite
 
-## Authors
-Kristofer Kangro(Me)
 
 ## Images
 ![final-project-1](https://user-images.githubusercontent.com/69897943/116808434-69221f80-ab41-11eb-9db2-578b37ea8b90.PNG)
